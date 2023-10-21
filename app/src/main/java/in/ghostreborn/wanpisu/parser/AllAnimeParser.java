@@ -1,6 +1,7 @@
 package in.ghostreborn.wanpisu.parser;
 
 import android.net.Uri;
+import android.util.Log;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -47,11 +48,12 @@ public class AllAnimeParser {
 
     public static void getEpisodes(String allAnimeID) {
         Constants.details = new ArrayList<>();
+        Constants.episodes = new ArrayList<>();
         OkHttpClient client = new OkHttpClient();
 
         HttpUrl.Builder urlBuilder = Objects.requireNonNull(HttpUrl.parse("https://api.allanime.day/api")).newBuilder();
         urlBuilder.addQueryParameter("variables", "{\"showId\":\"" + allAnimeID + "\"}");
-        urlBuilder.addQueryParameter("query", "query ($showId: String!) { show( _id: $showId ) { " + "name, " + "thumbnail, " + "description" + " }}");
+        urlBuilder.addQueryParameter("query", "query ($showId: String!) { show( _id: $showId ) { " + "name, " + "thumbnail, " + "description," + "availableEpisodesDetail " + " }}");
         String url = urlBuilder.build().toString();
 
         Request request = new Request.Builder().url(url).addHeader("User-Agent", "Mozilla/5.0 (Windows NT 6.1; Win64; rv:109.0) Gecko/20100101 Firefox/109.0").addHeader("Referer", "https://allanime.to").addHeader("Cipher", "AES256-SHA256").build();
@@ -59,11 +61,19 @@ public class AllAnimeParser {
         try (Response response = client.newCall(request).execute()) {
             assert response.body() != null;
             String rawJSON = response.body().string();
+            Log.e("TAG", rawJSON);
             JSONObject showObject = new JSONObject(rawJSON).getJSONObject("data").getJSONObject("show");
+            JSONArray episodes = showObject
+                    .getJSONObject("availableEpisodesDetail")
+                    .getJSONArray("sub");
             String name = showObject.getString("name");
             String thumbnail = showObject.getString("thumbnail");
             String description = showObject.getString("description");
             Constants.details.add(new Details(name, thumbnail, description));
+            for (int i = 0; i < episodes.length(); i++) {
+                Log.e("TAG", episodes.getString(i));
+                Constants.episodes.add(episodes.getString(i));
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
