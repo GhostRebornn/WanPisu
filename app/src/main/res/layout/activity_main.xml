@@ -8,7 +8,7 @@
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/main_fragment"
-        android:name="in.ghostreborn.wanpisu.AnimeSearchFragment"
+        android:name="in.ghostreborn.wanpisu.fragment.AnimeSearchFragment"
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
