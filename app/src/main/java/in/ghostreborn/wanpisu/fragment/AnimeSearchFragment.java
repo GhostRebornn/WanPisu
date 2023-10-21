@@ -7,9 +7,11 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import in.ghostreborn.wanpisu.R;
+import in.ghostreborn.wanpisu.adapter.AllAnimeAdapter;
 import in.ghostreborn.wanpisu.parser.AllAnimeParser;
 
 public class AnimeSearchFragment extends Fragment {
@@ -36,6 +38,8 @@ public class AnimeSearchFragment extends Fragment {
         @Override
         protected void onPostExecute(Void voids) {
             super.onPostExecute(voids);
+            allAnimeRecycler.setLayoutManager(new GridLayoutManager(getContext(), 3));
+            allAnimeRecycler.setAdapter(new AllAnimeAdapter());
         }
     }
 }
