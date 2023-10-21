@@ -7,5 +7,6 @@ import in.ghostreborn.wanpisu.model.AllAnime;
 public class Constants {
 
     public static ArrayList<AllAnime> allAnimes;
+    public static String ANIME_ID = "";
 
 }

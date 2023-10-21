@@ -34,6 +34,7 @@ public class AllAnimeAdapter extends RecyclerView.Adapter<AllAnimeAdapter.ViewHo
         holder.animeTextView.setText(allAnime.getName());
         Picasso.get().load(allAnime.getThumbnail()).into(holder.animeImageView);
         holder.itemView.setOnClickListener(v -> {
+            Constants.ANIME_ID = allAnime.getId();
             Context context = holder.itemView.getContext();
             context.startActivity(new Intent(
                 context, DetailActivity.class
