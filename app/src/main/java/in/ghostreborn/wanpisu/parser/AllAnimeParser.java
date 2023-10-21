@@ -1,7 +1,6 @@
 package in.ghostreborn.wanpisu.parser;
 
 import android.net.Uri;
-import android.util.Log;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -9,9 +8,11 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Objects;
 
 import in.ghostreborn.wanpisu.constants.Constants;
 import in.ghostreborn.wanpisu.model.AllAnime;
+import in.ghostreborn.wanpisu.model.Details;
 import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -46,31 +47,33 @@ public class AllAnimeParser {
         }
     }
 
-    public static String getEpisodes(String allAnimeID) {
+    public static void getEpisodes(String allAnimeID) {
+        Constants.details = new ArrayList<>();
         OkHttpClient client = new OkHttpClient();
 
-        HttpUrl.Builder urlBuilder = HttpUrl.parse("https://api.allanime.day/api").newBuilder();
-        urlBuilder.addQueryParameter("variables", "{\"malId\":\"" + allAnimeID + "\"}");
-        urlBuilder.addQueryParameter("query", "query ($showId: String!) { show( _id: $showId ) { " +
-                "_id,  " +
-                "type" +
-                " }}");
+        HttpUrl.Builder urlBuilder = Objects.requireNonNull(HttpUrl.parse("https://api.allanime.day/api")).newBuilder();
+        urlBuilder.addQueryParameter("variables", "{\"showId\":\"" + allAnimeID + "\"}");
+        urlBuilder.addQueryParameter("query", "query ($showId: String!) { show( _id: $showId ) { " + "name, " + "thumbnail, " + "description" + " }}");
         String url = urlBuilder.build().toString();
-
-        Log.e("TAG", url);
 
         Request request = new Request.Builder().url(url).addHeader("User-Agent", "Mozilla/5.0 (Windows NT 6.1; Win64; rv:109.0) Gecko/20100101 Firefox/109.0").addHeader("Referer", "https://allanime.to").addHeader("Cipher", "AES256-SHA256").build();
 
-        Response response;
         try {
-            response = client.newCall(request).execute();
-            return response.body().string();
+            try (Response response = client.newCall(request).execute()) {
+                assert response.body() != null;
+                String rawJSON = response.body().string();
+                JSONObject showObject = new JSONObject(rawJSON).getJSONObject("data").getJSONObject("show");
+                String name = showObject.getString("name");
+                String thumbnail = showObject.getString("thumbnail");
+                String description = showObject.getString("description");
+                Constants.details.add(new Details(name, thumbnail, description));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-        return "{}";
-
     }
-
 }
