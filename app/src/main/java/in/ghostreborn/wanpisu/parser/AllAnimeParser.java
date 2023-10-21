@@ -40,10 +40,8 @@ public class AllAnimeParser {
                 }
             }
 
-        } catch (JSONException e) {
+        } catch (JSONException | IOException e) {
             e.printStackTrace();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
         }
     }
 
@@ -58,22 +56,16 @@ public class AllAnimeParser {
 
         Request request = new Request.Builder().url(url).addHeader("User-Agent", "Mozilla/5.0 (Windows NT 6.1; Win64; rv:109.0) Gecko/20100101 Firefox/109.0").addHeader("Referer", "https://allanime.to").addHeader("Cipher", "AES256-SHA256").build();
 
-        try {
-            try (Response response = client.newCall(request).execute()) {
-                assert response.body() != null;
-                String rawJSON = response.body().string();
-                JSONObject showObject = new JSONObject(rawJSON).getJSONObject("data").getJSONObject("show");
-                String name = showObject.getString("name");
-                String thumbnail = showObject.getString("thumbnail");
-                String description = showObject.getString("description");
-                Constants.details.add(new Details(name, thumbnail, description));
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
+        try (Response response = client.newCall(request).execute()) {
+            assert response.body() != null;
+            String rawJSON = response.body().string();
+            JSONObject showObject = new JSONObject(rawJSON).getJSONObject("data").getJSONObject("show");
+            String name = showObject.getString("name");
+            String thumbnail = showObject.getString("thumbnail");
+            String description = showObject.getString("description");
+            Constants.details.add(new Details(name, thumbnail, description));
         } catch (Exception e) {
             e.printStackTrace();
         }
-
     }
 }
