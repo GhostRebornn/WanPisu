@@ -2,13 +2,12 @@ package in.ghostreborn.wanpisu.fragment;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
+import androidx.fragment.app.Fragment;
 
 import in.ghostreborn.wanpisu.R;
 import in.ghostreborn.wanpisu.parser.AllAnimeParser;
@@ -30,7 +29,7 @@ public class AnimeSearchFragment extends Fragment {
 
         @Override
         protected String doInBackground(Void... voids) {
-            return AllAnimeParser.searchAnime("One Piece");
+            return AllAnimeParser.searchAnime("");
         }
 
         @Override
