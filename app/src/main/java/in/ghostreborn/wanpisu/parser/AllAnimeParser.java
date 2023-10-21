@@ -1,6 +1,7 @@
 package in.ghostreborn.wanpisu.parser;
 
 import android.net.Uri;
+import android.util.Log;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -11,6 +12,7 @@ import java.util.ArrayList;
 
 import in.ghostreborn.wanpisu.constants.Constants;
 import in.ghostreborn.wanpisu.model.AllAnime;
+import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -42,6 +44,33 @@ public class AllAnimeParser {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public static String getEpisodes(String allAnimeID) {
+        OkHttpClient client = new OkHttpClient();
+
+        HttpUrl.Builder urlBuilder = HttpUrl.parse("https://api.allanime.day/api").newBuilder();
+        urlBuilder.addQueryParameter("variables", "{\"malId\":\"" + allAnimeID + "\"}");
+        urlBuilder.addQueryParameter("query", "query ($showId: String!) { show( _id: $showId ) { " +
+                "_id,  " +
+                "type" +
+                " }}");
+        String url = urlBuilder.build().toString();
+
+        Log.e("TAG", url);
+
+        Request request = new Request.Builder().url(url).addHeader("User-Agent", "Mozilla/5.0 (Windows NT 6.1; Win64; rv:109.0) Gecko/20100101 Firefox/109.0").addHeader("Referer", "https://allanime.to").addHeader("Cipher", "AES256-SHA256").build();
+
+        Response response;
+        try {
+            response = client.newCall(request).execute();
+            return response.body().string();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return "{}";
+
     }
 
 }
