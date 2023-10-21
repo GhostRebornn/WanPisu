@@ -65,10 +65,10 @@
                 app:layout_constraintTop_toBottomOf="@+id/cardView" />
 
             <Button
-                android:id="@+id/watch_buton"
+                android:id="@+id/watch_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Watch"
+                android:text="@string/watch"
                 app:layout_constraintBottom_toTopOf="@+id/detail_desc_text"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/cardView"

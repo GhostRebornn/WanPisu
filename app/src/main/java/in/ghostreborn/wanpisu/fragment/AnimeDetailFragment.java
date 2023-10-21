@@ -44,11 +44,9 @@ public class AnimeDetailFragment extends Fragment {
         detailNameText = view.findViewById(R.id.detail_name_text);
         detailDescText = view.findViewById(R.id.detail_desc_text);
         detailImageView = view.findViewById(R.id.detail_image_view);
-        watchButton = view.findViewById(R.id.watch_buton);
+        watchButton = view.findViewById(R.id.watch_button);
 
-        watchButton.setOnClickListener(v -> {
-            startActivity(new Intent(getContext(), EpisodeActivity.class));
-        });
+        watchButton.setOnClickListener(v -> startActivity(new Intent(getContext(), EpisodeActivity.class)));
     }
 
     @Override
