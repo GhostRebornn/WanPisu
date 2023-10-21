@@ -25,16 +25,17 @@ public class AnimeSearchFragment extends Fragment {
         return view;
     }
 
-    class AnimeSearchAsync extends AsyncTask<Void, Void, String> {
+    class AnimeSearchAsync extends AsyncTask<Void, Void, Void> {
 
         @Override
-        protected String doInBackground(Void... voids) {
-            return AllAnimeParser.searchAnime("");
+        protected Void doInBackground(Void... voids) {
+            AllAnimeParser.searchAnime("");
+            return null;
         }
 
         @Override
-        protected void onPostExecute(String output) {
-            super.onPostExecute(output);
+        protected void onPostExecute(Void voids) {
+            super.onPostExecute(voids);
         }
     }
 }
