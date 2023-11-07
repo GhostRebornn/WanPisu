@@ -1,5 +1,6 @@
 package in.ghostreborn.wanpisu.adapter;
 
+import android.app.Activity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -7,12 +8,23 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
 import in.ghostreborn.wanpisu.R;
 import in.ghostreborn.wanpisu.constants.Constants;
+import in.ghostreborn.wanpisu.fragment.ServersFragment;
+import in.ghostreborn.wanpisu.ui.EpisodeActivity;
 
 public class EpisodeAdapter extends RecyclerView.Adapter<EpisodeAdapter.ViewHolder> {
+
+    Activity activity;
+    FragmentManager fragmentManager;
+    public EpisodeAdapter(Activity activity, FragmentManager fragmentManager){
+        this.activity = activity;
+        this.fragmentManager = fragmentManager;
+    }
 
     @NonNull
     @Override
@@ -23,9 +35,14 @@ public class EpisodeAdapter extends RecyclerView.Adapter<EpisodeAdapter.ViewHold
 
     @Override
     public void onBindViewHolder(@NonNull EpisodeAdapter.ViewHolder holder, int position) {
-
         String episode = Constants.episodes.get(position);
         holder.animeTextView.setText(episode);
+        holder.itemView.setOnClickListener(v -> {
+            FragmentTransaction transaction = fragmentManager.beginTransaction();
+            transaction.replace(R.id.server_fragment_container, new ServersFragment());
+            transaction.commit();
+            EpisodeActivity.layout.setVisibility(View.VISIBLE);
+        });
     }
 
     @Override
