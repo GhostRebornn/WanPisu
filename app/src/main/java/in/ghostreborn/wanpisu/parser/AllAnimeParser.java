@@ -78,4 +78,60 @@ public class AllAnimeParser {
             e.printStackTrace();
         }
     }
+
+    public static void getServers(String showID, String episodeNumber) {
+
+        OkHttpClient client = new OkHttpClient();
+
+        String baseUrl = "https://api.allanime.day/api";
+        String queryUrl = baseUrl + "?variables=" +
+                Uri.encode("{\"showId\":\"" +
+                        showID +
+                        "\",\"translationType\":\"sub\",\"episodeString\":\"" +
+                        episodeNumber +
+                        "\"}") +
+                "&query=" +
+                Uri.encode("query($showId:String!,$translationType:VaildTranslationTypeEnumType!,$episodeString:String!){episode(showId:$showId,translationType:$translationType,episodeString:$episodeString){episodeString,sourceUrls}}");
+
+        Request request = new Request.Builder()
+                .url(queryUrl)
+                .header("Referer", "https://allanime.to")
+                .header("Cipher", "AES256-SHA256")
+                .header("User-Agent", "Mozilla/5.0 (Windows NT 6.1; Win64; rv:109.0) Gecko/20100101 Firefox/109.0")
+                .build();
+
+        try {
+            Response response = client.newCall(request).execute();
+            String rawJSON = response.body().string();
+            JSONObject jsonObject = new JSONObject(rawJSON);
+            JSONArray sourceURLs = jsonObject.getJSONObject("data")
+                    .getJSONObject("episode")
+                    .getJSONArray("sourceUrls");
+
+            for (int i = 0; i < sourceURLs.length(); i++) {
+
+                String server = sourceURLs.getJSONObject(i)
+                        .getString("sourceUrl");
+                Constants.servers.add(server);
+            }
+        } catch (IOException | JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static String decryptAllAnimeServer(String decrypt) {
+        StringBuilder result = new StringBuilder();
+        char[] inputChars = decrypt.toCharArray();
+
+        for (int i = 0; i < inputChars.length; i += 2) {
+            String hex = new String(inputChars, i, 2);
+            int dec = Integer.parseInt(hex, 16);
+            int xor = dec ^ 56;
+            String oct = String.format("%03o", xor);
+            result.append((char) Integer.parseInt(oct, 8));
+        }
+
+        return result.toString();
+    }
+
 }

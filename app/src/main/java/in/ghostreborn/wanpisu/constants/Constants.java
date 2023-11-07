@@ -10,6 +10,7 @@ public class Constants {
     public static ArrayList<AllAnime> allAnimes;
     public static ArrayList<Details> details;
     public static ArrayList<String> episodes;
+    public static ArrayList<String> servers;
     public static String ANIME_ID = "";
 
 }
