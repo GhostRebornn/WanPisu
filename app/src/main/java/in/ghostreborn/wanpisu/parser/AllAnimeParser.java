@@ -62,7 +62,14 @@ public class AllAnimeParser {
             assert response.body() != null;
             String rawJSON = response.body().string();
             Log.e("TAG", rawJSON);
-            JSONObject showObject = new JSONObject(rawJSON).getJSONObject("data").getJSONObject("show");
+            JSONObject rawJSONObject = new JSONObject(rawJSON);
+            JSONObject dataObject = rawJSONObject.getJSONObject("data");
+
+            if (dataObject.isNull("show")){
+                Log.e("TAG", "show object is null");
+            }
+
+            JSONObject showObject = dataObject.getJSONObject("show");
             JSONArray episodes = showObject
                     .getJSONObject("availableEpisodesDetail")
                     .getJSONArray("sub");
@@ -132,6 +139,42 @@ public class AllAnimeParser {
         }
 
         return result.toString();
+    }
+
+    public static Void connectAPITwo(String server, int position) {
+        OkHttpClient client = new OkHttpClient();
+
+        Request request = new Request.Builder()
+                .url(server)
+                .header("Referer", "https://allanime.to")
+                .header("Cipher", "AES256-SHA256")
+                .header("User-Agent", "Mozilla/5.0 (Windows NT 6.1; Win64; rv:109.0) Gecko/20100101 Firefox/109.0")
+                .build();
+
+        try {
+            Response response = client.newCall(request).execute();
+            String rawJSON = response.body().string();
+
+            Log.e("TAG", rawJSON);
+
+            Constants.servers.remove(position);
+
+            JSONObject jsonObject = new JSONObject(rawJSON);
+            Log.e("TAG", jsonObject.toString());
+
+            if (jsonObject.has("links")){
+                JSONArray linksArray = jsonObject
+                        .getJSONArray("links");
+                for (int i=0; i<linksArray.length(); i++) {
+                    Constants.servers.add(linksArray.getJSONObject(i).getString("link"));
+                }
+            }
+
+        } catch (JSONException | IOException e) {
+            e.printStackTrace();
+        }
+
+        return null;
     }
 
 }
