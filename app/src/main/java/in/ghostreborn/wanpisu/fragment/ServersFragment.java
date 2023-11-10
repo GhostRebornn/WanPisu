@@ -41,7 +41,7 @@ public class ServersFragment extends Fragment {
                     Constants.ANIME_EPISODE
             );
             handler.post(() -> {
-                ServersAdapter adapter = new ServersAdapter();
+                ServersAdapter adapter = new ServersAdapter(getContext());
                 LinearLayoutManager manager = new LinearLayoutManager(getContext());
                 serversRecycler.setLayoutManager(manager);
                 serversRecycler.setAdapter(adapter);

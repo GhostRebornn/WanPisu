@@ -20,5 +20,7 @@ public class Constants {
     public static String ANIME_ID = "";
     // Anime episode number
     public static String ANIME_EPISODE = "";
+    // Anime server url
+    public static String ANIME_SERVER = "";
 
 }

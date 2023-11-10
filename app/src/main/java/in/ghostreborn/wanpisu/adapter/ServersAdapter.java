@@ -1,5 +1,7 @@
 package in.ghostreborn.wanpisu.adapter;
 
+import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,8 +12,15 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import in.ghostreborn.wanpisu.R;
 import in.ghostreborn.wanpisu.constants.Constants;
+import in.ghostreborn.wanpisu.ui.PlayerActivity;
 
 public class ServersAdapter extends RecyclerView.Adapter<ServersAdapter.ViewHolder> {
+
+    Context context;
+
+    public ServersAdapter(Context context){
+        this.context = context;
+    }
 
     @NonNull
     @Override
@@ -29,6 +38,12 @@ public class ServersAdapter extends RecyclerView.Adapter<ServersAdapter.ViewHold
     @Override
     public void onBindViewHolder(@NonNull ServersAdapter.ViewHolder holder, int position) {
         holder.serversTextView.setText(Constants.servers.get(position));
+        holder.itemView.setOnClickListener(v -> {
+            Constants.ANIME_SERVER = Constants.servers.get(position);
+            context.startActivity(
+                    new Intent(context, PlayerActivity.class)
+            );
+        });
     }
 
     @Override
