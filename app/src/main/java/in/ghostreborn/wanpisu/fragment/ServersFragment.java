@@ -6,26 +6,28 @@ import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import in.ghostreborn.wanpisu.R;
+import in.ghostreborn.wanpisu.adapter.ServersAdapter;
 import in.ghostreborn.wanpisu.constants.Constants;
 import in.ghostreborn.wanpisu.parser.AllAnimeParser;
 
 public class ServersFragment extends Fragment {
 
-    TextView testText;
+    RecyclerView serversRecycler;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_servers, container, false);
-        testText = view.findViewById(R.id.test_text);
+        serversRecycler = view.findViewById(R.id.servers_recycler);
         getServers();
         return view;
     }
@@ -39,9 +41,10 @@ public class ServersFragment extends Fragment {
                     Constants.ANIME_EPISODE
             );
             handler.post(() -> {
-                for (String server : Constants.servers) {
-                    testText.append(server + "\n\n");
-                }
+                ServersAdapter adapter = new ServersAdapter();
+                LinearLayoutManager manager = new LinearLayoutManager(getContext());
+                serversRecycler.setLayoutManager(manager);
+                serversRecycler.setAdapter(adapter);
             });
         });
     }
