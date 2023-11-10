@@ -60,8 +60,9 @@ public class AnimeDetailFragment extends Fragment {
         Handler handler = new Handler(Looper.getMainLooper());
         executor.execute(() -> {
 
+            // Get and parse episodes available for that anime
             AllAnimeParser.getEpisodes(Constants.ANIME_ID);
-            Details details = Constants.details.get(0);
+            Details details = Constants.details;
 
             handler.post(() -> {
                 detailNameText.setText(details.getName());

@@ -21,6 +21,10 @@ import okhttp3.Response;
 
 public class AllAnimeParser {
 
+    /**
+     * AllAnime api to search for anime
+     * @param anime - Anime name
+     */
     public static void searchAnime(String anime) {
 
         Constants.allAnimes = new ArrayList<>();
@@ -46,8 +50,11 @@ public class AllAnimeParser {
         }
     }
 
+    /**
+     * AllAnime api to parse available episodes of anime
+     * @param allAnimeID - AllAnime anime ID
+     */
     public static void getEpisodes(String allAnimeID) {
-        Constants.details = new ArrayList<>();
         Constants.episodes = new ArrayList<>();
         OkHttpClient client = new OkHttpClient();
 
@@ -76,9 +83,8 @@ public class AllAnimeParser {
             String name = showObject.getString("name");
             String thumbnail = showObject.getString("thumbnail");
             String description = showObject.getString("description");
-            Constants.details.add(new Details(name, thumbnail, description));
+            Constants.details = new Details(name, thumbnail, description);
             for (int i = 0; i < episodes.length(); i++) {
-                Log.e("TAG", episodes.getString(i));
                 Constants.episodes.add(episodes.getString(i));
             }
         } catch (Exception e) {
@@ -86,9 +92,15 @@ public class AllAnimeParser {
         }
     }
 
+    /**
+     * AllAnime api to get available servers for anime
+     * @param showID - AllAnime anime ID
+     * @param episodeNumber - Anime episode number
+     */
     public static void getServers(String showID, String episodeNumber) {
 
         OkHttpClient client = new OkHttpClient();
+        Constants.servers = new ArrayList<>();
 
         String baseUrl = "https://api.allanime.day/api";
         String queryUrl = baseUrl + "?variables=" +
@@ -107,8 +119,8 @@ public class AllAnimeParser {
                 .header("User-Agent", "Mozilla/5.0 (Windows NT 6.1; Win64; rv:109.0) Gecko/20100101 Firefox/109.0")
                 .build();
 
-        try {
-            Response response = client.newCall(request).execute();
+        try (Response response = client.newCall(request).execute()) {
+            assert response.body() != null;
             String rawJSON = response.body().string();
             JSONObject jsonObject = new JSONObject(rawJSON);
             JSONArray sourceURLs = jsonObject.getJSONObject("data")
@@ -134,6 +146,11 @@ public class AllAnimeParser {
         }
     }
 
+    /**
+     * AllAnime servers are decrypted, this method decrypts it
+     * @param decrypt - Server url to be decypted
+     * @return - Decrypted server url
+     */
     public static String decryptAllAnimeServer(String decrypt) {
         StringBuilder result = new StringBuilder();
         char[] inputChars = decrypt.toCharArray();
@@ -149,7 +166,12 @@ public class AllAnimeParser {
         return result.toString();
     }
 
-    public static Void connectAPITwo(String server) {
+    /**
+     * Most of the server urls are stored in embedded site
+     * This method parses embedded url and gets servers from it
+     * @param server - Anime server url
+     */
+    public static void connectAPITwo(String server) {
         OkHttpClient client = new OkHttpClient();
 
         Request request = new Request.Builder()
@@ -159,12 +181,12 @@ public class AllAnimeParser {
                 .header("User-Agent", "Mozilla/5.0 (Windows NT 6.1; Win64; rv:109.0) Gecko/20100101 Firefox/109.0")
                 .build();
 
-        try {
-            Response response = client.newCall(request).execute();
+        try (Response response = client.newCall(request).execute()) {
+            assert response.body() != null;
             String rawJSON = response.body().string();
 
             if (rawJSON.contains("error")){
-                return null;
+                return;
             }
 
             Log.e("TAG", "Server: " + server);
@@ -185,7 +207,6 @@ public class AllAnimeParser {
             e.printStackTrace();
         }
 
-        return null;
     }
 
 }

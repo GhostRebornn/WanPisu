@@ -18,6 +18,9 @@ import in.ghostreborn.wanpisu.constants.Constants;
 import in.ghostreborn.wanpisu.model.AllAnime;
 import in.ghostreborn.wanpisu.ui.DetailActivity;
 
+/**
+ * Adapter used for the list view of anime
+ */
 public class AllAnimeAdapter extends RecyclerView.Adapter<AllAnimeAdapter.ViewHolder> {
 
     @NonNull

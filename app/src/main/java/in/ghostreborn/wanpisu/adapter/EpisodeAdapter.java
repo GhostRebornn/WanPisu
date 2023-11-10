@@ -17,6 +17,9 @@ import in.ghostreborn.wanpisu.constants.Constants;
 import in.ghostreborn.wanpisu.fragment.ServersFragment;
 import in.ghostreborn.wanpisu.ui.EpisodeActivity;
 
+/**
+ * Adapter used for the list view of episodes of anime
+ */
 public class EpisodeAdapter extends RecyclerView.Adapter<EpisodeAdapter.ViewHolder> {
 
     Activity activity;

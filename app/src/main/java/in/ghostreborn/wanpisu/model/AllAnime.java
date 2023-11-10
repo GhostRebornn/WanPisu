@@ -1,5 +1,8 @@
 package in.ghostreborn.wanpisu.model;
 
+/**
+ * AllAnime model
+ */
 public class AllAnime {
 
     String id;

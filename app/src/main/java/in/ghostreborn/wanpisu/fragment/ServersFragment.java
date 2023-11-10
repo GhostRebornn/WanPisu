@@ -1,7 +1,8 @@
 package in.ghostreborn.wanpisu.fragment;
 
-import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,7 +10,8 @@ import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
 
-import java.util.ArrayList;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import in.ghostreborn.wanpisu.R;
 import in.ghostreborn.wanpisu.constants.Constants;
@@ -24,35 +26,24 @@ public class ServersFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_servers, container, false);
         testText = view.findViewById(R.id.test_text);
-        new SeversAsync().execute();
+        getServers();
         return view;
     }
 
-    class SeversAsync extends AsyncTask<Void, Void, Void> {
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            testText.setText("");
-        }
-
-        @Override
-        protected Void doInBackground(Void... voids) {
-            Constants.servers = new ArrayList<>();
+    private void getServers() {
+        ExecutorService executor = Executors.newSingleThreadExecutor();
+        Handler handler = new Handler(Looper.getMainLooper());
+        executor.execute(() -> {
             AllAnimeParser.getServers(
                     Constants.ANIME_ID,
                     Constants.ANIME_EPISODE
             );
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Void unused) {
-            super.onPostExecute(unused);
-            for (String server: Constants.servers){
-                testText.append(server + "\n\n");
-            }
-        }
+            handler.post(() -> {
+                for (String server : Constants.servers) {
+                    testText.append(server + "\n\n");
+                }
+            });
+        });
     }
 
 }
