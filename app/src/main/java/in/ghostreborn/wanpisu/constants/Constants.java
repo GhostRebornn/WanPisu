@@ -12,5 +12,6 @@ public class Constants {
     public static ArrayList<String> episodes;
     public static ArrayList<String> servers;
     public static String ANIME_ID = "";
+    public static String ANIME_EPISODE = "";
 
 }

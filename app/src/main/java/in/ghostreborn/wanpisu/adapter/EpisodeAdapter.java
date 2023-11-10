@@ -38,6 +38,7 @@ public class EpisodeAdapter extends RecyclerView.Adapter<EpisodeAdapter.ViewHold
         String episode = Constants.episodes.get(position);
         holder.animeTextView.setText(episode);
         holder.itemView.setOnClickListener(v -> {
+            Constants.ANIME_EPISODE = episode;
             FragmentTransaction transaction = fragmentManager.beginTransaction();
             transaction.replace(R.id.server_fragment_container, new ServersFragment());
             transaction.commit();

@@ -25,51 +25,33 @@ public class ServersFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_servers, container, false);
         testText = view.findViewById(R.id.test_text);
         new SeversAsync().execute();
-
         return view;
     }
 
     class SeversAsync extends AsyncTask<Void, Void, Void> {
 
         @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            testText.setText("");
+        }
+
+        @Override
         protected Void doInBackground(Void... voids) {
             Constants.servers = new ArrayList<>();
-            AllAnimeParser.getServers("ReooPAxPMsHM4KPMY", "2");
+            AllAnimeParser.getServers(
+                    Constants.ANIME_ID,
+                    Constants.ANIME_EPISODE
+            );
             return null;
         }
 
         @Override
         protected void onPostExecute(Void unused) {
             super.onPostExecute(unused);
-
-            for (int i=0; i<Constants.servers.size(); i++){
-                String server = Constants.servers.get(i);
-                if (server.contains("--")) {
-                    server = AllAnimeParser.decryptAllAnimeServer(server.substring(2));
-                    if (server.contains("clock")) {
-                        server = "https://embed.ssbcontent.site/apivtwo/clock.json?id=" + server.substring(18);
-                    }
-                }
-                Constants.servers.add(server);
+            for (String server: Constants.servers){
+                testText.append(server + "\n\n");
             }
-
-        }
-    }
-
-    class ServerApiTwoConnect extends AsyncTask<Void, Void, Void> {
-
-        String server;
-        int position;
-
-        public ServerApiTwoConnect(String server, int position) {
-            this.server = server;
-            this.position = position;
-        }
-
-        @Override
-        protected Void doInBackground(Void... voids) {
-            AllAnimeParser.connectAPITwo(server, position);
-            return null;
         }
     }
 

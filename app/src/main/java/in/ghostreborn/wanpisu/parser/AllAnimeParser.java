@@ -119,6 +119,14 @@ public class AllAnimeParser {
 
                 String server = sourceURLs.getJSONObject(i)
                         .getString("sourceUrl");
+                if (server.contains("--")) {
+                    server = AllAnimeParser.decryptAllAnimeServer(server.substring(2));
+                    if (server.contains("clock")) {
+                        server = "https://embed.ssbcontent.site/apivtwo/clock.json?id=" + server.substring(18);
+                        connectAPITwo(server);
+                    }
+                }
+
                 Constants.servers.add(server);
             }
         } catch (IOException | JSONException e) {
@@ -141,7 +149,7 @@ public class AllAnimeParser {
         return result.toString();
     }
 
-    public static Void connectAPITwo(String server, int position) {
+    public static Void connectAPITwo(String server) {
         OkHttpClient client = new OkHttpClient();
 
         Request request = new Request.Builder()
@@ -155,18 +163,21 @@ public class AllAnimeParser {
             Response response = client.newCall(request).execute();
             String rawJSON = response.body().string();
 
+            if (rawJSON.contains("error")){
+                return null;
+            }
+
+            Log.e("TAG", "Server: " + server);
             Log.e("TAG", rawJSON);
 
-            Constants.servers.remove(position);
-
             JSONObject jsonObject = new JSONObject(rawJSON);
-            Log.e("TAG", jsonObject.toString());
 
             if (jsonObject.has("links")){
                 JSONArray linksArray = jsonObject
                         .getJSONArray("links");
                 for (int i=0; i<linksArray.length(); i++) {
-                    Constants.servers.add(linksArray.getJSONObject(i).getString("link"));
+                    String link = linksArray.getJSONObject(i).getString("link");
+                    Constants.servers.add(link);
                 }
             }
 
