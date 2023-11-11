@@ -41,7 +41,8 @@ public class EpisodeAdapter extends RecyclerView.Adapter<EpisodeAdapter.ViewHold
     @Override
     public void onBindViewHolder(@NonNull EpisodeAdapter.ViewHolder holder, int position) {
         String episode = Constants.episodes.get(position);
-        holder.animeTextView.setText(episode);
+        String episodeText = "Episode " + episode;
+        holder.animeTextView.setText(episodeText);
         holder.itemView.setOnClickListener(v -> {
             Constants.ANIME_EPISODE = episode;
             FragmentTransaction transaction = fragmentManager.beginTransaction();
