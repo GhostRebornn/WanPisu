@@ -82,7 +82,7 @@ public class AnimeDetailFragment extends Fragment {
 
             // Get and parse episodes available for that anime
             AllAnimeParser.getEpisodes(Constants.ANIME_ID);
-            allAnime = Constants.allAnime;
+            allAnime = Constants.animeDetail;
 
             handler.post(() -> {
                 try (UserAnimeDatabase userAnimeDatabase = new UserAnimeDatabase(getContext())) {

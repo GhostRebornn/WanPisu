@@ -10,7 +10,7 @@ public class Constants {
     public static ArrayList<AllAnime> allAnimes;
     public static ArrayList<AllAnime> userAnimes;
     // List of anime data
-    public static AllAnime allAnime;
+    public static AllAnime animeDetail;
     // List of episodes of anime
     public static ArrayList<String> episodes;
     // List of servers available for anime

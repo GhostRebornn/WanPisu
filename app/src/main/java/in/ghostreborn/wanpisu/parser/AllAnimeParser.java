@@ -94,7 +94,7 @@ public class AllAnimeParser {
             String name = showObject.getString("name");
             String thumbnail = showObject.getString("thumbnail");
             String description = showObject.getString("description");
-            Constants.allAnime = new AllAnime(allAnimeID, name, thumbnail, description);
+            Constants.animeDetail = new AllAnime(allAnimeID, name, thumbnail, description);
             for (int i = episodes.length() - 1; i >= 0; i--) {
                 Constants.episodes.add(episodes.getString(i));
             }
