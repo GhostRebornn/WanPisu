@@ -1,9 +1,12 @@
 package in.ghostreborn.wanpisu.fragment;
 
+import android.content.ContentValues;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +24,7 @@ import java.util.concurrent.Executors;
 
 import in.ghostreborn.wanpisu.R;
 import in.ghostreborn.wanpisu.constants.Constants;
+import in.ghostreborn.wanpisu.database.UserAnimeDatabase;
 import in.ghostreborn.wanpisu.model.Details;
 import in.ghostreborn.wanpisu.parser.AllAnimeParser;
 import in.ghostreborn.wanpisu.ui.EpisodeActivity;
@@ -31,6 +35,8 @@ public class AnimeDetailFragment extends Fragment {
     TextView detailDescText;
     ImageView detailImageView;
     Button watchButton;
+    Button saveButton;
+    Details details;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -45,8 +51,20 @@ public class AnimeDetailFragment extends Fragment {
         detailDescText = view.findViewById(R.id.detail_desc_text);
         detailImageView = view.findViewById(R.id.detail_image_view);
         watchButton = view.findViewById(R.id.watch_button);
+        saveButton = view.findViewById(R.id.save_button);
 
         watchButton.setOnClickListener(v -> startActivity(new Intent(getContext(), EpisodeActivity.class)));
+        saveButton.setOnClickListener(v -> {
+            UserAnimeDatabase database = new UserAnimeDatabase(getContext());
+            SQLiteDatabase db = database.getWritableDatabase();
+            ContentValues values = new ContentValues();
+            values.put(Constants.TABLE_ANIME_NAME, details.getName());
+            values.put(Constants.TABLE_ANIME_THUMBNAIL, details.getThumbnail());
+            values.put(Constants.TABLE_ANIME_DESC, details.getDescription());
+            long rowID = db.insert(Constants.TABLE_NAME, null, values);
+            Log.e("TAG", "rowID: " + rowID);
+            db.close();
+        });
     }
 
     @Override
@@ -62,7 +80,7 @@ public class AnimeDetailFragment extends Fragment {
 
             // Get and parse episodes available for that anime
             AllAnimeParser.getEpisodes(Constants.ANIME_ID);
-            Details details = Constants.details;
+            details = Constants.details;
 
             handler.post(() -> {
                 detailNameText.setText(details.getName());
