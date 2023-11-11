@@ -18,7 +18,7 @@ public class UserAnimeDatabase extends SQLiteOpenHelper {
                 "CREATE TABLE " + Constants.TABLE_NAME +
                         "(" +
                         Constants.TABLE_ANIME_NAME + " TEXT," +
-                        Constants.TABLE_ANIME_THUMBNAIL + " TEXT," +
+                        Constants.TABLE_ANIME_THUMBNAIL + " TEXT UNIQUE," +
                         Constants.TABLE_ANIME_DESC + " TEXT" +
                         ")"
         );
