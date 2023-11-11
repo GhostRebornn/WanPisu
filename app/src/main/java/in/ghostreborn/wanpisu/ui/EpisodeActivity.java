@@ -12,8 +12,8 @@ import in.ghostreborn.wanpisu.adapter.EpisodeAdapter;
 
 public class EpisodeActivity extends AppCompatActivity {
 
-    RecyclerView episodeRecycler;
-    public static FrameLayout layout;
+    public static RecyclerView episodeRecycler;
+    FrameLayout layout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,7 +23,7 @@ public class EpisodeActivity extends AppCompatActivity {
         layout = findViewById(R.id.server_fragment_container);
 
         episodeRecycler = findViewById(R.id.episode_recycler);
-        EpisodeAdapter adapter = new EpisodeAdapter(this,getSupportFragmentManager());
+        EpisodeAdapter adapter = new EpisodeAdapter(this,getSupportFragmentManager(), layout);
         LinearLayoutManager manager = new LinearLayoutManager(this);
         episodeRecycler.setLayoutManager(manager);
         episodeRecycler.setAdapter(adapter);

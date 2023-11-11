@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -15,7 +16,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import in.ghostreborn.wanpisu.R;
 import in.ghostreborn.wanpisu.constants.Constants;
 import in.ghostreborn.wanpisu.fragment.ServersFragment;
-import in.ghostreborn.wanpisu.ui.EpisodeActivity;
 
 /**
  * Adapter used for the list view of episodes of anime
@@ -24,9 +24,11 @@ public class EpisodeAdapter extends RecyclerView.Adapter<EpisodeAdapter.ViewHold
 
     Activity activity;
     FragmentManager fragmentManager;
-    public EpisodeAdapter(Activity activity, FragmentManager fragmentManager){
+    FrameLayout layout;
+    public EpisodeAdapter(Activity activity, FragmentManager fragmentManager, FrameLayout layout){
         this.activity = activity;
         this.fragmentManager = fragmentManager;
+        this.layout = layout;
     }
 
     @NonNull
@@ -43,9 +45,9 @@ public class EpisodeAdapter extends RecyclerView.Adapter<EpisodeAdapter.ViewHold
         holder.itemView.setOnClickListener(v -> {
             Constants.ANIME_EPISODE = episode;
             FragmentTransaction transaction = fragmentManager.beginTransaction();
-            transaction.replace(R.id.server_fragment_container, new ServersFragment());
+            transaction.replace(R.id.server_fragment_container, new ServersFragment(layout));
             transaction.commit();
-            EpisodeActivity.layout.setVisibility(View.VISIBLE);
+            layout.setVisibility(View.VISIBLE);
         });
     }
 

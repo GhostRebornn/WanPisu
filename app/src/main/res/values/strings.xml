@@ -13,4 +13,5 @@
     <string name="fast_forward_button">Fast Forward Button</string>
     <string name="next_button">Next Button</string>
     <string name="vr_button">VR Button</string>
+    <string name="x">X</string>
 </resources>
