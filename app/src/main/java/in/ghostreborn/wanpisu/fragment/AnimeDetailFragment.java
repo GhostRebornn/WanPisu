@@ -58,6 +58,7 @@ public class AnimeDetailFragment extends Fragment {
             UserAnimeDatabase database = new UserAnimeDatabase(getContext());
             SQLiteDatabase db = database.getWritableDatabase();
             ContentValues values = new ContentValues();
+            values.put(Constants.TABLE_ANIME_ID, details.getId());
             values.put(Constants.TABLE_ANIME_NAME, details.getName());
             values.put(Constants.TABLE_ANIME_THUMBNAIL, details.getThumbnail());
             values.put(Constants.TABLE_ANIME_DESC, details.getDescription());

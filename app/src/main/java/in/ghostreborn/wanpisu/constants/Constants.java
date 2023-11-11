@@ -9,6 +9,7 @@ public class Constants {
 
     // List of anime
     public static ArrayList<AllAnime> allAnimes;
+    public static ArrayList<Details> userAnimes;
     // List of anime data
     public static Details details;
     // List of episodes of anime
@@ -24,6 +25,7 @@ public class Constants {
     public static String ANIME_SERVER = "";
 
     public static final String TABLE_NAME = "USER_ANIME";
+    public static final String TABLE_ANIME_ID = "ANIME_ID";
     public static final String TABLE_ANIME_NAME = "ANIME_NAME";
     public static final String TABLE_ANIME_THUMBNAIL = "ANIME_THUMBNAIL";
     public static final String TABLE_ANIME_DESC = "ANIME_DESC";

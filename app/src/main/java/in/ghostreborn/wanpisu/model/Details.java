@@ -5,17 +5,24 @@ package in.ghostreborn.wanpisu.model;
  */
 public class Details {
 
+    String id;
     String name;
     String thumbnail;
     String description;
     public Details(
+            String id,
             String name,
             String thumbnail,
             String description
     ){
+        this.id = id;
         this.name = name;
         this.thumbnail = thumbnail;
         this.description = description;
+    }
+
+    public String getId() {
+        return id;
     }
 
     public String getName() {
