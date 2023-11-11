@@ -139,6 +139,7 @@ public class AllAnimeParser {
                     if (server.contains("clock")) {
                         server = "https://embed.ssbcontent.site/apivtwo/clock.json?id=" + server.substring(18);
                         connectAPITwo(server);
+                        continue;
                     }
                 }
 
