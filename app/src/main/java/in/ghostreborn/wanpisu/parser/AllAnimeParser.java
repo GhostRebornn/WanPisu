@@ -62,7 +62,13 @@ public class AllAnimeParser {
 
         HttpUrl.Builder urlBuilder = Objects.requireNonNull(HttpUrl.parse("https://api.allanime.day/api")).newBuilder();
         urlBuilder.addQueryParameter("variables", "{\"showId\":\"" + allAnimeID + "\"}");
-        urlBuilder.addQueryParameter("query", "query ($showId: String!) { show( _id: $showId ) { " + "name, " + "thumbnail, " + "description," + "availableEpisodesDetail " + " }}");
+        urlBuilder.addQueryParameter("query",
+                "query ($showId: String!) { show( _id: $showId ) { " +
+                        "name, " +
+                        "thumbnail, " +
+                        "description," +
+                        "availableEpisodesDetail " +
+                        " }}");
         String url = urlBuilder.build().toString();
 
         Request request = new Request.Builder().url(url).addHeader("User-Agent", "Mozilla/5.0 (Windows NT 6.1; Win64; rv:109.0) Gecko/20100101 Firefox/109.0").addHeader("Referer", "https://allanime.to").addHeader("Cipher", "AES256-SHA256").build();
