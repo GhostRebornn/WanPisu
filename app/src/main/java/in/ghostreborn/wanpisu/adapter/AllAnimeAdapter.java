@@ -13,6 +13,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
+
 import in.ghostreborn.wanpisu.R;
 import in.ghostreborn.wanpisu.constants.Constants;
 import in.ghostreborn.wanpisu.model.AllAnime;
@@ -22,6 +24,11 @@ import in.ghostreborn.wanpisu.ui.DetailActivity;
  * Adapter used for the list view of anime
  */
 public class AllAnimeAdapter extends RecyclerView.Adapter<AllAnimeAdapter.ViewHolder> {
+
+    ArrayList<AllAnime> allAnimes;
+    public AllAnimeAdapter(ArrayList<AllAnime> allAnimes){
+        this.allAnimes = allAnimes;
+    }
 
     @NonNull
     @Override
@@ -33,7 +40,7 @@ public class AllAnimeAdapter extends RecyclerView.Adapter<AllAnimeAdapter.ViewHo
     @Override
     public void onBindViewHolder(@NonNull AllAnimeAdapter.ViewHolder holder, int position) {
 
-        AllAnime allAnime = Constants.allAnimes.get(position);
+        AllAnime allAnime = allAnimes.get(position);
         holder.animeTextView.setText(allAnime.getName());
         Picasso.get().load(allAnime.getThumbnail()).into(holder.animeImageView);
         holder.itemView.setOnClickListener(v -> {
@@ -47,7 +54,7 @@ public class AllAnimeAdapter extends RecyclerView.Adapter<AllAnimeAdapter.ViewHo
 
     @Override
     public int getItemCount() {
-        return Constants.allAnimes.size();
+        return allAnimes.size();
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {

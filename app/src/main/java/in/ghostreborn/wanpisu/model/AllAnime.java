@@ -1,18 +1,24 @@
 package in.ghostreborn.wanpisu.model;
 
 /**
- * AllAnime model
+ * AllAnime anime model
  */
 public class AllAnime {
 
     String id;
     String name;
     String thumbnail;
-
-    public AllAnime(String id, String name, String thumbnail) {
+    String description;
+    public AllAnime(
+            String id,
+            String name,
+            String thumbnail,
+            String description
+    ){
         this.id = id;
         this.name = name;
         this.thumbnail = thumbnail;
+        this.description = description;
     }
 
     public String getId() {
@@ -25,5 +31,9 @@ public class AllAnime {
 
     public String getThumbnail() {
         return thumbnail;
+    }
+
+    public String getDescription() {
+        return description;
     }
 }

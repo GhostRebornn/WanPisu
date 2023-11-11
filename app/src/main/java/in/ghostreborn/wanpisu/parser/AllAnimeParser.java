@@ -13,7 +13,6 @@ import java.util.Objects;
 
 import in.ghostreborn.wanpisu.constants.Constants;
 import in.ghostreborn.wanpisu.model.AllAnime;
-import in.ghostreborn.wanpisu.model.Details;
 import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -30,7 +29,11 @@ public class AllAnimeParser {
 
         Constants.allAnimes = new ArrayList<>();
         OkHttpClient client = new OkHttpClient();
-        String queryUrl = "https://api.allanime.day/api?variables=" + Uri.encode("{\"search\":{\"allowAdult\":true,\"allowUnknown\":true,\"query\":\"" + anime + "\"},\"limit\":39,\"page\":1,\"translationType\":\"sub\",\"countryOrigin\":\"ALL\"}") + "&query=" + Uri.encode("query($search:SearchInput,$limit:Int,$page:Int,$translationType:VaildTranslationTypeEnumType,$countryOrigin:VaildCountryOriginEnumType){shows(search:$search,limit:$limit,page:$page,translationType:$translationType,countryOrigin:$countryOrigin){edges{" + "_id, " + "name, " + "thumbnail" + "}}}");
+        String queryUrl = "https://api.allanime.day/api?variables=" + Uri.encode("{\"search\":{\"allowAdult\":true,\"allowUnknown\":true,\"query\":\"" + anime + "\"},\"limit\":39,\"page\":1,\"translationType\":\"sub\",\"countryOrigin\":\"ALL\"}") + "&query=" + Uri.encode("query($search:SearchInput,$limit:Int,$page:Int,$translationType:VaildTranslationTypeEnumType,$countryOrigin:VaildCountryOriginEnumType){shows(search:$search,limit:$limit,page:$page,translationType:$translationType,countryOrigin:$countryOrigin){edges{" +
+                "_id, " +
+                "name, " +
+                "thumbnail" +
+                "}}}");
         Request request = new Request.Builder().url(queryUrl).header("Referer", "https://allanime.to").header("Cipher", "AES256-SHA256").header("User-Agent", "Mozilla/5.0 (Windows NT 6.1; Win64; rv:109.0) Gecko/20100101 Firefox/109.0").build();
 
         try {
@@ -42,7 +45,7 @@ public class AllAnimeParser {
                     String animeID = edges.getString("_id");
                     String animeName = edges.getString("name");
                     String thumbnail = edges.getString("thumbnail");
-                    Constants.allAnimes.add(new AllAnime(animeID, animeName, thumbnail));
+                    Constants.allAnimes.add(new AllAnime(animeID, animeName, thumbnail, ""));
                 }
             }
 
@@ -91,7 +94,7 @@ public class AllAnimeParser {
             String name = showObject.getString("name");
             String thumbnail = showObject.getString("thumbnail");
             String description = showObject.getString("description");
-            Constants.details = new Details(allAnimeID, name, thumbnail, description);
+            Constants.allAnime = new AllAnime(allAnimeID, name, thumbnail, description);
             for (int i = episodes.length() - 1; i >= 0; i--) {
                 Constants.episodes.add(episodes.getString(i));
             }

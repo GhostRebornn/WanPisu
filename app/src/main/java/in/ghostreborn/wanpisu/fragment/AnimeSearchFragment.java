@@ -17,6 +17,7 @@ import java.util.concurrent.Executors;
 
 import in.ghostreborn.wanpisu.R;
 import in.ghostreborn.wanpisu.adapter.AllAnimeAdapter;
+import in.ghostreborn.wanpisu.constants.Constants;
 import in.ghostreborn.wanpisu.parser.AllAnimeParser;
 
 public class AnimeSearchFragment extends Fragment {
@@ -55,7 +56,7 @@ public class AnimeSearchFragment extends Fragment {
             AllAnimeParser.searchAnime(anime);
             handler.post(() -> {
                 allAnimeRecycler.setLayoutManager(new GridLayoutManager(getContext(), 3));
-                allAnimeRecycler.setAdapter(new AllAnimeAdapter());
+                allAnimeRecycler.setAdapter(new AllAnimeAdapter(Constants.allAnimes));
             });
         });
     }

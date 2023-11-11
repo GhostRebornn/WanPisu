@@ -25,7 +25,7 @@ import java.util.concurrent.Executors;
 import in.ghostreborn.wanpisu.R;
 import in.ghostreborn.wanpisu.constants.Constants;
 import in.ghostreborn.wanpisu.database.UserAnimeDatabase;
-import in.ghostreborn.wanpisu.model.Details;
+import in.ghostreborn.wanpisu.model.AllAnime;
 import in.ghostreborn.wanpisu.parser.AllAnimeParser;
 import in.ghostreborn.wanpisu.ui.EpisodeActivity;
 
@@ -36,7 +36,7 @@ public class AnimeDetailFragment extends Fragment {
     ImageView detailImageView;
     Button watchButton;
     Button saveButton;
-    Details details;
+    AllAnime allAnime;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -58,10 +58,10 @@ public class AnimeDetailFragment extends Fragment {
             UserAnimeDatabase database = new UserAnimeDatabase(getContext());
             SQLiteDatabase db = database.getWritableDatabase();
             ContentValues values = new ContentValues();
-            values.put(Constants.TABLE_ANIME_ID, details.getId());
-            values.put(Constants.TABLE_ANIME_NAME, details.getName());
-            values.put(Constants.TABLE_ANIME_THUMBNAIL, details.getThumbnail());
-            values.put(Constants.TABLE_ANIME_DESC, details.getDescription());
+            values.put(Constants.TABLE_ANIME_ID, allAnime.getId());
+            values.put(Constants.TABLE_ANIME_NAME, allAnime.getName());
+            values.put(Constants.TABLE_ANIME_THUMBNAIL, allAnime.getThumbnail());
+            values.put(Constants.TABLE_ANIME_DESC, allAnime.getDescription());
             long rowID = db.insert(Constants.TABLE_NAME, null, values);
             Log.e("TAG", "rowID: " + rowID);
             db.close();
@@ -81,12 +81,12 @@ public class AnimeDetailFragment extends Fragment {
 
             // Get and parse episodes available for that anime
             AllAnimeParser.getEpisodes(Constants.ANIME_ID);
-            details = Constants.details;
+            allAnime = Constants.allAnime;
 
             handler.post(() -> {
-                detailNameText.setText(details.getName());
-                detailDescText.setText(details.getDescription());
-                Picasso.get().load(details.getThumbnail()).into(detailImageView);
+                detailNameText.setText(allAnime.getName());
+                detailDescText.setText(allAnime.getDescription());
+                Picasso.get().load(allAnime.getThumbnail()).into(detailImageView);
             });
         });
     }
