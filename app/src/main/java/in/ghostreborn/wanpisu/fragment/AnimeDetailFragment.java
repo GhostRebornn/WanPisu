@@ -2,6 +2,7 @@ package in.ghostreborn.wanpisu.fragment;
 
 import android.content.ContentValues;
 import android.content.Intent;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.os.Handler;
@@ -87,8 +88,28 @@ public class AnimeDetailFragment extends Fragment {
                 detailNameText.setText(allAnime.getName());
                 detailDescText.setText(allAnime.getDescription());
                 Picasso.get().load(allAnime.getThumbnail()).into(detailImageView);
+                if (checkAnime(allAnime.getId())){
+                    saveButton.setVisibility(View.GONE);
+                }
             });
         });
+    }
+
+    private boolean checkAnime(String animeID){
+        try (UserAnimeDatabase database = new UserAnimeDatabase(getContext())) {
+            SQLiteDatabase db = database.getReadableDatabase();
+            String query = "SELECT * FROM " + Constants.TABLE_NAME;
+            Cursor cursor = db.rawQuery(query, null);
+            while (cursor.moveToNext()){
+                String id = cursor.getString(0);
+                Log.e("TAG", "id: " + id);
+                if (id.equals(animeID)){
+                    return true;
+                }
+            }
+            cursor.close();
+        }
+        return false;
     }
 
 }
