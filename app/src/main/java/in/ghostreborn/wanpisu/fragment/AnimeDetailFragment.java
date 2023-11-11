@@ -2,7 +2,6 @@ package in.ghostreborn.wanpisu.fragment;
 
 import android.content.ContentValues;
 import android.content.Intent;
-import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.os.Handler;
@@ -26,6 +25,7 @@ import java.util.concurrent.Executors;
 import in.ghostreborn.wanpisu.R;
 import in.ghostreborn.wanpisu.constants.Constants;
 import in.ghostreborn.wanpisu.database.UserAnimeDatabase;
+import in.ghostreborn.wanpisu.helper.WanPisuUtils;
 import in.ghostreborn.wanpisu.model.AllAnime;
 import in.ghostreborn.wanpisu.parser.AllAnimeParser;
 import in.ghostreborn.wanpisu.ui.EpisodeActivity;
@@ -75,7 +75,7 @@ public class AnimeDetailFragment extends Fragment {
         getDetails();
     }
 
-    private void getDetails(){
+    private void getDetails() {
         ExecutorService executor = Executors.newSingleThreadExecutor();
         Handler handler = new Handler(Looper.getMainLooper());
         executor.execute(() -> {
@@ -85,31 +85,18 @@ public class AnimeDetailFragment extends Fragment {
             allAnime = Constants.allAnime;
 
             handler.post(() -> {
+                try (UserAnimeDatabase userAnimeDatabase = new UserAnimeDatabase(getContext())) {
+                    SQLiteDatabase db = userAnimeDatabase.getReadableDatabase();
+                    boolean isUserAnime = WanPisuUtils.checkAnime(allAnime.getId(), db);
+                    if (!isUserAnime) {
+                        saveButton.setVisibility(View.VISIBLE);
+                    }
+                }
                 detailNameText.setText(allAnime.getName());
                 detailDescText.setText(allAnime.getDescription());
                 Picasso.get().load(allAnime.getThumbnail()).into(detailImageView);
-                if (checkAnime(allAnime.getId())){
-                    saveButton.setVisibility(View.GONE);
-                }
             });
         });
-    }
-
-    private boolean checkAnime(String animeID){
-        try (UserAnimeDatabase database = new UserAnimeDatabase(getContext())) {
-            SQLiteDatabase db = database.getReadableDatabase();
-            String query = "SELECT * FROM " + Constants.TABLE_NAME;
-            Cursor cursor = db.rawQuery(query, null);
-            while (cursor.moveToNext()){
-                String id = cursor.getString(0);
-                Log.e("TAG", "id: " + id);
-                if (id.equals(animeID)){
-                    return true;
-                }
-            }
-            cursor.close();
-        }
-        return false;
     }
 
 }

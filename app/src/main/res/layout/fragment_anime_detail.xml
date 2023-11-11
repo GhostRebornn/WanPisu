@@ -79,6 +79,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/save"
+                android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="@+id/watch_button"
                 app:layout_constraintEnd_toStartOf="@+id/watch_button"
                 app:layout_constraintStart_toEndOf="@+id/cardView"
