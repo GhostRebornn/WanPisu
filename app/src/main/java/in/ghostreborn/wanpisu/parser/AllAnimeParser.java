@@ -23,6 +23,7 @@ public class AllAnimeParser {
 
     /**
      * AllAnime api to search for anime
+     *
      * @param anime - Anime name
      */
     public static void searchAnime(String anime) {
@@ -52,6 +53,7 @@ public class AllAnimeParser {
 
     /**
      * AllAnime api to parse available episodes of anime
+     *
      * @param allAnimeID - AllAnime anime ID
      */
     public static void getEpisodes(String allAnimeID) {
@@ -72,7 +74,7 @@ public class AllAnimeParser {
             JSONObject rawJSONObject = new JSONObject(rawJSON);
             JSONObject dataObject = rawJSONObject.getJSONObject("data");
 
-            if (dataObject.isNull("show")){
+            if (dataObject.isNull("show")) {
                 Log.e("TAG", "show object is null");
             }
 
@@ -84,7 +86,7 @@ public class AllAnimeParser {
             String thumbnail = showObject.getString("thumbnail");
             String description = showObject.getString("description");
             Constants.details = new Details(name, thumbnail, description);
-            for (int i = 0; i < episodes.length(); i++) {
+            for (int i = episodes.length() - 1; i >= 0; i--) {
                 Constants.episodes.add(episodes.getString(i));
             }
         } catch (Exception e) {
@@ -94,7 +96,8 @@ public class AllAnimeParser {
 
     /**
      * AllAnime api to get available servers for anime
-     * @param showID - AllAnime anime ID
+     *
+     * @param showID        - AllAnime anime ID
      * @param episodeNumber - Anime episode number
      */
     public static void getServers(String showID, String episodeNumber) {
@@ -148,6 +151,7 @@ public class AllAnimeParser {
 
     /**
      * AllAnime servers are decrypted, this method decrypts it
+     *
      * @param decrypt - Server url to be decypted
      * @return - Decrypted server url
      */
@@ -169,6 +173,7 @@ public class AllAnimeParser {
     /**
      * Most of the server urls are stored in embedded site
      * This method parses embedded url and gets servers from it
+     *
      * @param server - Anime server url
      */
     public static void connectAPITwo(String server) {
@@ -185,7 +190,7 @@ public class AllAnimeParser {
             assert response.body() != null;
             String rawJSON = response.body().string();
 
-            if (rawJSON.contains("error")){
+            if (rawJSON.contains("error")) {
                 return;
             }
 
@@ -194,10 +199,10 @@ public class AllAnimeParser {
 
             JSONObject jsonObject = new JSONObject(rawJSON);
 
-            if (jsonObject.has("links")){
+            if (jsonObject.has("links")) {
                 JSONArray linksArray = jsonObject
                         .getJSONArray("links");
-                for (int i=0; i<linksArray.length(); i++) {
+                for (int i = 0; i < linksArray.length(); i++) {
                     String link = linksArray.getJSONObject(i).getString("link");
                     Constants.servers.add(link);
                 }
