@@ -17,17 +17,13 @@ import android.widget.TextView;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import com.squareup.picasso.Picasso;
-
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import in.ghostreborn.wanpisu.R;
 import in.ghostreborn.wanpisu.constants.Constants;
 import in.ghostreborn.wanpisu.database.UserAnimeDatabase;
-import in.ghostreborn.wanpisu.helper.WanPisuUtils;
 import in.ghostreborn.wanpisu.model.AllAnime;
-import in.ghostreborn.wanpisu.parser.AllAnimeParser;
 import in.ghostreborn.wanpisu.ui.EpisodeActivity;
 
 public class AnimeDetailFragment extends Fragment {
@@ -62,7 +58,6 @@ public class AnimeDetailFragment extends Fragment {
             values.put(Constants.TABLE_ANIME_ID, allAnime.getId());
             values.put(Constants.TABLE_ANIME_NAME, allAnime.getName());
             values.put(Constants.TABLE_ANIME_THUMBNAIL, allAnime.getThumbnail());
-            values.put(Constants.TABLE_ANIME_DESC, allAnime.getDescription());
             long rowID = db.insert(Constants.TABLE_NAME, null, values);
             Log.e("TAG", "rowID: " + rowID);
             db.close();
@@ -79,22 +74,8 @@ public class AnimeDetailFragment extends Fragment {
         ExecutorService executor = Executors.newSingleThreadExecutor();
         Handler handler = new Handler(Looper.getMainLooper());
         executor.execute(() -> {
-
-            // Get and parse episodes available for that anime
-            AllAnimeParser.getEpisodes(Constants.ANIME_ID);
-            allAnime = Constants.animeDetail;
-
             handler.post(() -> {
-                try (UserAnimeDatabase userAnimeDatabase = new UserAnimeDatabase(getContext())) {
-                    SQLiteDatabase db = userAnimeDatabase.getReadableDatabase();
-                    boolean isUserAnime = WanPisuUtils.checkAnime(allAnime.getId(), db);
-                    if (!isUserAnime) {
-                        saveButton.setVisibility(View.VISIBLE);
-                    }
-                }
-                detailNameText.setText(allAnime.getName());
-                detailDescText.setText(allAnime.getDescription());
-                Picasso.get().load(allAnime.getThumbnail()).into(detailImageView);
+
             });
         });
     }

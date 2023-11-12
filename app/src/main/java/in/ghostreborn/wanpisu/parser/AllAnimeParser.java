@@ -33,6 +33,7 @@ public class AllAnimeParser {
         OkHttpClient client = new OkHttpClient();
         String queryUrl = "https://api.allanime.day/api?variables=" + Uri.encode("{\"search\":{\"allowAdult\":true,\"allowUnknown\":true,\"query\":\"" + anime + "\"},\"limit\":39,\"page\":1,\"translationType\":\"sub\",\"countryOrigin\":\"ALL\"}") + "&query=" + Uri.encode("query($search:SearchInput,$limit:Int,$page:Int,$translationType:VaildTranslationTypeEnumType,$countryOrigin:VaildCountryOriginEnumType){shows(search:$search,limit:$limit,page:$page,translationType:$translationType,countryOrigin:$countryOrigin){edges{" +
                 "_id, " +
+                "malId, " +
                 "name, " +
                 "thumbnail" +
                 "}}}");
@@ -45,9 +46,10 @@ public class AllAnimeParser {
                 for (int i = 0; i < edgesArray.length(); i++) {
                     JSONObject edges = edgesArray.getJSONObject(i);
                     String animeID = edges.getString("_id");
+                    String malId = edges.getString("malId");
                     String animeName = edges.getString("name");
                     String thumbnail = edges.getString("thumbnail");
-                    Constants.allAnimes.add(new AllAnime(animeID, animeName, thumbnail, ""));
+                    Constants.allAnimes.add(new AllAnime(animeID, malId, animeName, thumbnail));
                 }
             }
 
@@ -69,9 +71,6 @@ public class AllAnimeParser {
         urlBuilder.addQueryParameter("variables", "{\"showId\":\"" + allAnimeID + "\"}");
         urlBuilder.addQueryParameter("query",
                 "query ($showId: String!) { show( _id: $showId ) { " +
-                        "name, " +
-                        "thumbnail, " +
-                        "description," +
                         "availableEpisodesDetail " +
                         " }}");
         String url = urlBuilder.build().toString();
@@ -93,10 +92,6 @@ public class AllAnimeParser {
             JSONArray episodes = showObject
                     .getJSONObject("availableEpisodesDetail")
                     .getJSONArray("sub");
-            String name = showObject.getString("name");
-            String thumbnail = showObject.getString("thumbnail");
-            String description = showObject.getString("description");
-            Constants.animeDetail = new AllAnime(allAnimeID, name, thumbnail, description);
             Constants.episodeGroup = new ArrayList<>();
             for (int i = episodes.length() - 1; i >= 0; i--) {
                 Constants.episodes.add(episodes.getString(i));
@@ -160,25 +155,25 @@ public class AllAnimeParser {
                 }
 
                 String name = server;
-                if (server.contains("fast4speed")){
+                if (server.contains("fast4speed")) {
                     name = "Fast4Speed";
-                }else if(server.contains("ok.ru")){
+                } else if (server.contains("ok.ru")) {
                     name = "Ok Ru";
-                }else if(server.contains("streamsb")){
+                } else if (server.contains("streamsb")) {
                     name = "StreamSB";
-                }else if(server.contains("filemoon")){
+                } else if (server.contains("filemoon")) {
                     name = "FileMoon";
-                }else if(server.contains("goone")){
+                } else if (server.contains("goone")) {
                     name = "GoOne";
-                }else if(server.contains("mp4upload")){
+                } else if (server.contains("mp4upload")) {
                     name = "MP4Upload";
-                }else if(server.contains("streamlare")){
+                } else if (server.contains("streamlare")) {
                     name = "Streamlare";
-                }else if(server.contains("streamwish")){
+                } else if (server.contains("streamwish")) {
                     name = "StreamWish";
                 }
 
-                Constants.servers.add(new Server(name,server));
+                Constants.servers.add(new Server(name, server));
             }
         } catch (IOException | JSONException e) {
             e.printStackTrace();
@@ -243,19 +238,19 @@ public class AllAnimeParser {
 
                     String name = link;
 
-                    if (link.contains("kaavid")){
+                    if (link.contains("kaavid")) {
                         name = "Kaavid";
-                    }else if (link.contains("dropbox")){
+                    } else if (link.contains("dropbox")) {
                         name = "Dropbox";
-                    }else if (link.contains("sharepoint")){
+                    } else if (link.contains("sharepoint")) {
                         name = "Sharepoint";
-                    }else if (link.contains("vipanicdn")){
+                    } else if (link.contains("vipanicdn")) {
                         name = "Vipanicdn";
-                    }else if (link.contains("anifastcdn")){
+                    } else if (link.contains("anifastcdn")) {
                         name = "AniFastCDN";
-                    }else if (link.contains("workfields")){
+                    } else if (link.contains("workfields")) {
                         name = "WorkFields";
-                    }else if (link.contains("wixmp")){
+                    } else if (link.contains("wixmp")) {
                         name = "WixMP";
                     }
 
