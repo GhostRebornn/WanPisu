@@ -4,6 +4,8 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
+import java.util.ArrayList;
+
 import in.ghostreborn.wanpisu.constants.Constants;
 
 public class WanPisuUtils {
@@ -24,9 +26,13 @@ public class WanPisuUtils {
 
     public static void setupEpisodeGroups(){
         int currentEpisode = 1;
-        int lastEpisode = Integer.parseInt(
-                Constants.episodes.get(Constants.episodes.size() - 1)
-        );
+        int lastEpisode = Constants.ALL_ANIME_TOTAL_EPISODES;
+
+        if (lastEpisode < 100){
+            return;
+        }
+
+        Constants.episodeGroup = new ArrayList<>();
         String episodeGroup;
         for (int i = 0; i < lastEpisode; i += 100) {
             episodeGroup = (i + 1) + " - " + (i + 100);
