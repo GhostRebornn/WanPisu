@@ -1,6 +1,7 @@
 package in.ghostreborn.wanpisu.adapter;
 
 import android.app.Activity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -58,7 +59,8 @@ public class EpisodeAdapter extends RecyclerView.Adapter<EpisodeAdapter.ViewHold
         if (Constants.ALL_ANIME_EPISODE_ADD < (Constants.ALL_ANIME_TOTAL_EPISODES - 100)){
             return 100;
         }else {
-            return Constants.ALL_ANIME_TOTAL_EPISODES % 100;
+            Log.e("TAG", ("Max: " + Constants.ALL_ANIME_TOTAL_EPISODES % 100));
+            return Constants.ALL_ANIME_TOTAL_EPISODES - Constants.ALL_ANIME_EPISODE_ADD + 1;
         }
     }
 

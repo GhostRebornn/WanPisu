@@ -101,11 +101,8 @@ public class AllAnimeParser {
             for (int i = episodes.length() - 1; i >= 0; i--) {
                 Constants.episodes.add(episodes.getString(i));
             }
-            Constants.ALL_ANIME_TOTAL_EPISODES = Integer.parseInt(
-                    Constants.episodes.get(
-                            Constants.episodes.size() - 1
-                    )
-            );
+            Constants.ALL_ANIME_TOTAL_EPISODES = Constants.episodes.size() - 1;
+
             WanPisuUtils.setupEpisodeGroups();
 
         } catch (Exception e) {
