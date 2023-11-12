@@ -7,6 +7,8 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import in.ghostreborn.wanpisu.constants.Constants;
+import in.ghostreborn.wanpisu.model.Jikan;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -24,10 +26,13 @@ public class JikanParser {
                 .url(url)
                 .build();
 
-        try {
-            Response response = client.newCall(request).execute();
+
+        try (Response response = client.newCall(request).execute()) {
+            assert response.body() != null;
             JSONObject dataObject = new JSONObject(response.body().string())
                     .getJSONObject("data");
+
+            String title = dataObject.getString("title");
 
             String thumbnail = dataObject
                     .getJSONObject("images")
@@ -37,9 +42,9 @@ public class JikanParser {
             JSONArray titlesArray = dataObject.getJSONArray("titles");
             for (int i = 0; i < titlesArray.length(); i++) {
                 JSONObject titlesObject = titlesArray.getJSONObject(i);
-                String title = titlesObject.getString("type") +
+                String titleAtPosition = titlesObject.getString("type") +
                         ":" + titlesObject.getString("title");
-                titles.add(title);
+                titles.add(titleAtPosition);
             }
             String type = dataObject.getString("type");
             String source = dataObject.getString("source");
@@ -47,7 +52,7 @@ public class JikanParser {
             String status = dataObject.getString("status");
             String aired = dataObject
                     .getJSONObject("aired")
-                            .getString("string");
+                    .getString("string");
             String duration = dataObject.getString("duration");
             String rating = dataObject.getString("rating");
             String score = dataObject.getString("score");
@@ -55,7 +60,24 @@ public class JikanParser {
             String season = dataObject.getString("season");
 
             String broadcast = dataObject.getJSONObject("broadcast")
-                            .getString("string");
+                    .getString("string");
+
+            Constants.jikan = new Jikan(
+                    title,
+                    thumbnail,
+                    titles,
+                    type,
+                    source,
+                    episodes,
+                    status,
+                    aired,
+                    duration,
+                    rating,
+                    score,
+                    synopsis,
+                    season,
+                    broadcast
+            );
 
         } catch (IOException | JSONException e) {
             e.printStackTrace();

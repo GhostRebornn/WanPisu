@@ -3,6 +3,7 @@ package in.ghostreborn.wanpisu.constants;
 import java.util.ArrayList;
 
 import in.ghostreborn.wanpisu.model.AllAnime;
+import in.ghostreborn.wanpisu.model.Jikan;
 import in.ghostreborn.wanpisu.model.Server;
 
 public class Constants {
@@ -10,16 +11,17 @@ public class Constants {
     // List of anime
     public static ArrayList<AllAnime> allAnimes;
     public static ArrayList<AllAnime> userAnimes;
-    // List of anime data
-    public static AllAnime animeDetail;
     // List of episodes of anime
     public static ArrayList<String> episodes;
     public static ArrayList<String> episodeGroup;
     // List of servers available for anime
     public static ArrayList<Server> servers;
 
+    public static Jikan jikan;
+
     // AllAnime ID
     public static String ANIME_ID = "";
+    public static String ANIME_MAL_ID = "";
     // Anime episode number
     public static String ANIME_EPISODE = "";
     // Anime server url
