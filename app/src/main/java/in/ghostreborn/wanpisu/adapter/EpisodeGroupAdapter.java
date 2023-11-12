@@ -1,17 +1,38 @@
 package in.ghostreborn.wanpisu.adapter;
 
+import android.app.Activity;
 import android.support.annotation.NonNull;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 
+import androidx.fragment.app.FragmentManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import in.ghostreborn.wanpisu.R;
 import in.ghostreborn.wanpisu.constants.Constants;
 
 public class EpisodeGroupAdapter extends RecyclerView.Adapter<EpisodeGroupAdapter.ViewHolder> {
+
+    RecyclerView recyclerView;
+    Activity activity;
+    FragmentManager manager;
+    FrameLayout layout;
+    public EpisodeGroupAdapter(
+            RecyclerView recyclerView,
+            Activity activity,
+            FragmentManager manager,
+            FrameLayout layout
+    ){
+        this.recyclerView = recyclerView;
+        this.activity = activity;
+        this.manager = manager;
+        this.layout = layout;
+    }
 
     @NonNull
     @Override
@@ -23,7 +44,19 @@ public class EpisodeGroupAdapter extends RecyclerView.Adapter<EpisodeGroupAdapte
 
     @Override
     public void onBindViewHolder(@NonNull EpisodeGroupAdapter.ViewHolder holder, int position) {
-        holder.episodeGroupTextView.setText(Constants.episodeGroup.get(position));
+        holder.episodeGroupTextView.setText(Constants.episodeGroup.get(holder.getAbsoluteAdapterPosition()));
+        Log.e("TAG", "Size: " + Constants.episodes.size());
+        holder.itemView.setOnClickListener(v -> {
+            Constants.ALL_ANIME_EPISODE_ADD = holder.getAbsoluteAdapterPosition() * 100;
+            EpisodeAdapter adapter = new EpisodeAdapter(
+                    activity,
+                    manager,
+                    layout
+            );
+            LinearLayoutManager linearLayoutManager = new LinearLayoutManager(activity);
+            recyclerView.setLayoutManager(linearLayoutManager);
+            recyclerView.setAdapter(adapter);
+        });
     }
 
     @Override

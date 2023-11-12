@@ -40,7 +40,8 @@ public class EpisodeAdapter extends RecyclerView.Adapter<EpisodeAdapter.ViewHold
 
     @Override
     public void onBindViewHolder(@NonNull EpisodeAdapter.ViewHolder holder, int position) {
-        String episode = Constants.episodes.get(position);
+        int pos = holder.getAbsoluteAdapterPosition() + Constants.ALL_ANIME_EPISODE_ADD;
+        String episode = Constants.episodes.get(pos);
         String episodeText = "Episode " + episode;
         holder.animeTextView.setText(episodeText);
         holder.itemView.setOnClickListener(v -> {
@@ -54,10 +55,10 @@ public class EpisodeAdapter extends RecyclerView.Adapter<EpisodeAdapter.ViewHold
 
     @Override
     public int getItemCount() {
-        if (Constants.episodeGroup.size() > 1){
+        if (Constants.ALL_ANIME_EPISODE_ADD < (Constants.ALL_ANIME_TOTAL_EPISODES - 100)){
             return 100;
         }else {
-            return Integer.parseInt(Constants.episodeGroup.get(0));
+            return Constants.ALL_ANIME_TOTAL_EPISODES % 100;
         }
     }
 

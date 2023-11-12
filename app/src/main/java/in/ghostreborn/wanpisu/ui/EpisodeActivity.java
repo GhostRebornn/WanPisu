@@ -32,8 +32,13 @@ public class EpisodeActivity extends AppCompatActivity {
         episodeRecycler.setLayoutManager(manager);
         episodeRecycler.setAdapter(adapter);
 
-        EpisodeGroupAdapter groupAdapter = new EpisodeGroupAdapter();
-        LinearLayoutManager groupManager = new LinearLayoutManager(this);
+        EpisodeGroupAdapter groupAdapter = new EpisodeGroupAdapter(
+                episodeRecycler,
+                EpisodeActivity.this,
+                getSupportFragmentManager(),
+                layout
+        );
+        LinearLayoutManager groupManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
         episodeGroupRecycler.setAdapter(groupAdapter);
         episodeGroupRecycler.setLayoutManager(groupManager);
 

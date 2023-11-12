@@ -24,6 +24,9 @@ public class Constants {
     // Anime server url
     public static String ANIME_SERVER = "";
 
+    public static int ALL_ANIME_EPISODE_ADD = 0;
+    public static int ALL_ANIME_TOTAL_EPISODES = 0;
+
     public static final String TABLE_NAME = "USER_ANIME";
     public static final String TABLE_ANIME_ID = "ANIME_ID";
     public static final String TABLE_ANIME_NAME = "ANIME_NAME";
