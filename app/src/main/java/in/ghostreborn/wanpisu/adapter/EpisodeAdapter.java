@@ -54,7 +54,11 @@ public class EpisodeAdapter extends RecyclerView.Adapter<EpisodeAdapter.ViewHold
 
     @Override
     public int getItemCount() {
-        return Constants.episodes.size();
+        if (Constants.episodeGroup.size() > 1){
+            return 100;
+        }else {
+            return Integer.parseInt(Constants.episodeGroup.get(0));
+        }
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {

@@ -22,4 +22,24 @@ public class WanPisuUtils {
         return false;
     }
 
+    public static void setupEpisodeGroups(){
+        int currentEpisode = 1;
+        int lastEpisode = Integer.parseInt(
+                Constants.episodes.get(Constants.episodes.size() - 1)
+        );
+        String episodeGroup;
+        for (int i = 0; i < lastEpisode; i += 100) {
+            episodeGroup = (i + 1) + " - " + (i + 100);
+            Constants.episodeGroup.add(episodeGroup);
+            currentEpisode = i + 1;
+        }
+        episodeGroup = currentEpisode + " - " + lastEpisode;
+        if (Constants.episodeGroup.size() > 2) {
+            Constants.episodeGroup.remove(Constants.episodeGroup.size() - 1);
+            Constants.episodeGroup.add(episodeGroup);
+        } else {
+            Constants.episodeGroup.add(episodeGroup);
+        }
+    }
+
 }

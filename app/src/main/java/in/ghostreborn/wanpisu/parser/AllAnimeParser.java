@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 import in.ghostreborn.wanpisu.constants.Constants;
+import in.ghostreborn.wanpisu.helper.WanPisuUtils;
 import in.ghostreborn.wanpisu.model.AllAnime;
 import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
@@ -95,9 +96,13 @@ public class AllAnimeParser {
             String thumbnail = showObject.getString("thumbnail");
             String description = showObject.getString("description");
             Constants.animeDetail = new AllAnime(allAnimeID, name, thumbnail, description);
+            Constants.episodeGroup = new ArrayList<>();
             for (int i = episodes.length() - 1; i >= 0; i--) {
                 Constants.episodes.add(episodes.getString(i));
             }
+
+            WanPisuUtils.setupEpisodeGroups();
+
         } catch (Exception e) {
             e.printStackTrace();
         }
