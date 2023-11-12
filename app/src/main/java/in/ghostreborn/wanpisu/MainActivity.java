@@ -15,6 +15,10 @@ public class MainActivity extends AppCompatActivity {
     Fragment fragment;
     int previouslySelected = 0;
 
+    // TODO if mal id is no available in jikan,
+    //  parse it from allanime api
+    //  only show thumbnail, animeName and description
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

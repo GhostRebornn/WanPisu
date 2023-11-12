@@ -10,6 +10,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import in.ghostreborn.wanpisu.R;
+import in.ghostreborn.wanpisu.parser.JikanParser;
 
 public class DetailActivity extends AppCompatActivity {
 
@@ -25,9 +26,12 @@ public class DetailActivity extends AppCompatActivity {
     private void getDetails() {
         ExecutorService executor = Executors.newSingleThreadExecutor();
         Handler handler = new Handler(Looper.getMainLooper());
-        executor.execute(() -> handler.post(() -> {
+        executor.execute(() -> {
+            JikanParser.parseAnimeFull("21");
+            handler.post(() -> {
 
-        }));
+            });
+        });
     }
 
 }
