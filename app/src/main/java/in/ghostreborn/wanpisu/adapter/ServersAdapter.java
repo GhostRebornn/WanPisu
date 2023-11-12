@@ -37,9 +37,9 @@ public class ServersAdapter extends RecyclerView.Adapter<ServersAdapter.ViewHold
 
     @Override
     public void onBindViewHolder(@NonNull ServersAdapter.ViewHolder holder, int position) {
-        holder.serversTextView.setText(Constants.servers.get(position));
+        holder.serversTextView.setText(Constants.servers.get(position).getName());
         holder.itemView.setOnClickListener(v -> {
-            Constants.ANIME_SERVER = Constants.servers.get(position);
+            Constants.ANIME_SERVER = Constants.servers.get(position).getUrl();
             context.startActivity(
                     new Intent(context, PlayerActivity.class)
             );

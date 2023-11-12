@@ -14,6 +14,7 @@ import java.util.Objects;
 import in.ghostreborn.wanpisu.constants.Constants;
 import in.ghostreborn.wanpisu.helper.WanPisuUtils;
 import in.ghostreborn.wanpisu.model.AllAnime;
+import in.ghostreborn.wanpisu.model.Server;
 import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -161,7 +162,26 @@ public class AllAnimeParser {
                     }
                 }
 
-                Constants.servers.add(server);
+                String name = server;
+                if (server.contains("fast4speed")){
+                    name = "Fast4Speed";
+                }else if(server.contains("ok.ru")){
+                    name = "Ok Ru";
+                }else if(server.contains("streamsb")){
+                    name = "StreamSB";
+                }else if(server.contains("filemoon")){
+                    name = "FileMoon";
+                }else if(server.contains("goone")){
+                    name = "GoOne";
+                }else if(server.contains("mp4upload")){
+                    name = "MP4Upload";
+                }else if(server.contains("streamlare")){
+                    name = "Streamlare";
+                }else if(server.contains("streamwish")){
+                    name = "StreamWish";
+                }
+
+                Constants.servers.add(new Server("Normal: " + name,server));
             }
         } catch (IOException | JSONException e) {
             e.printStackTrace();
@@ -223,7 +243,26 @@ public class AllAnimeParser {
                         .getJSONArray("links");
                 for (int i = 0; i < linksArray.length(); i++) {
                     String link = linksArray.getJSONObject(i).getString("link");
-                    Constants.servers.add(link);
+
+                    String name = link;
+
+                    if (link.contains("kaavid")){
+                        name = "Kaavid";
+                    }else if (link.contains("dropbox")){
+                        name = "Dropbox";
+                    }else if (link.contains("sharepoint")){
+                        name = "Sharepoint";
+                    }else if (link.contains("vipanicdn")){
+                        name = "Vipanicdn";
+                    }else if (link.contains("anifastcdn")){
+                        name = "AniFastCDN";
+                    }else if (link.contains("workfields")){
+                        name = "WorkFields";
+                    }else if (link.contains("wixmp")){
+                        name = "WixMP";
+                    }
+
+                    Constants.servers.add(new Server("Embedded: " + name, link));
                 }
             }
 

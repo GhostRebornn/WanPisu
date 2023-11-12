@@ -3,6 +3,7 @@ package in.ghostreborn.wanpisu.constants;
 import java.util.ArrayList;
 
 import in.ghostreborn.wanpisu.model.AllAnime;
+import in.ghostreborn.wanpisu.model.Server;
 
 public class Constants {
 
@@ -15,7 +16,7 @@ public class Constants {
     public static ArrayList<String> episodes;
     public static ArrayList<String> episodeGroup;
     // List of servers available for anime
-    public static ArrayList<String> servers;
+    public static ArrayList<Server> servers;
 
     // AllAnime ID
     public static String ANIME_ID = "";
