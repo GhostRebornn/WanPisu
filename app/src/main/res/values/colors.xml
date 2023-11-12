@@ -9,4 +9,5 @@
     <color name="white">#FFFFFFFF</color>
     <color name="dark">#C8434343</color>
     <color name="icon_fill">#C8ECECEC</color>
+    <color name="shape_color">#C8474747</color>
 </resources>
