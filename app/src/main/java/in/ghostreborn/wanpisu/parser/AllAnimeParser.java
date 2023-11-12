@@ -1,7 +1,6 @@
 package in.ghostreborn.wanpisu.parser;
 
 import android.net.Uri;
-import android.util.Log;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -80,13 +79,8 @@ public class AllAnimeParser {
         try (Response response = client.newCall(request).execute()) {
             assert response.body() != null;
             String rawJSON = response.body().string();
-            Log.e("TAG", rawJSON);
             JSONObject rawJSONObject = new JSONObject(rawJSON);
             JSONObject dataObject = rawJSONObject.getJSONObject("data");
-
-            if (dataObject.isNull("show")) {
-                Log.e("TAG", "show object is null");
-            }
 
             JSONObject showObject = dataObject.getJSONObject("show");
             JSONArray episodes = showObject
@@ -224,9 +218,6 @@ public class AllAnimeParser {
             if (rawJSON.contains("error")) {
                 return;
             }
-
-            Log.e("TAG", "Server: " + server);
-            Log.e("TAG", rawJSON);
 
             JSONObject jsonObject = new JSONObject(rawJSON);
 

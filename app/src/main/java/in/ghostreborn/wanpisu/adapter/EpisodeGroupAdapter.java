@@ -2,7 +2,6 @@ package in.ghostreborn.wanpisu.adapter;
 
 import android.app.Activity;
 import android.support.annotation.NonNull;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -45,7 +44,6 @@ public class EpisodeGroupAdapter extends RecyclerView.Adapter<EpisodeGroupAdapte
     @Override
     public void onBindViewHolder(@NonNull EpisodeGroupAdapter.ViewHolder holder, int position) {
         holder.episodeGroupTextView.setText(Constants.episodeGroup.get(holder.getAbsoluteAdapterPosition()));
-        Log.e("TAG", "Size: " + Constants.episodes.size());
         holder.itemView.setOnClickListener(v -> {
             Constants.ALL_ANIME_EPISODE_ADD = holder.getAbsoluteAdapterPosition() * 100;
             EpisodeAdapter adapter = new EpisodeAdapter(

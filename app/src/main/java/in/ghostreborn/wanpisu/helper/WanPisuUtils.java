@@ -2,7 +2,6 @@ package in.ghostreborn.wanpisu.helper;
 
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.util.Log;
 
 import java.util.ArrayList;
 
@@ -15,7 +14,6 @@ public class WanPisuUtils {
         Cursor cursor = db.rawQuery(query, null);
         while (cursor.moveToNext()) {
             String id = cursor.getString(0);
-            Log.e("TAG", "id: " + id);
             if (id.equals(animeID)) {
                 return true;
             }
