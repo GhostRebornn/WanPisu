@@ -178,7 +178,7 @@ public class AllAnimeParser {
                     name = "StreamWish";
                 }
 
-                Constants.servers.add(new Server("Normal: " + name,server));
+                Constants.servers.add(new Server(name,server));
             }
         } catch (IOException | JSONException e) {
             e.printStackTrace();
@@ -259,7 +259,7 @@ public class AllAnimeParser {
                         name = "WixMP";
                     }
 
-                    Constants.servers.add(new Server("Embedded: " + name, link));
+                    Constants.servers.add(new Server(name, link));
                 }
             }
 
