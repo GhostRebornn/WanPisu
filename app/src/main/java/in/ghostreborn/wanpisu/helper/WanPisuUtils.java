@@ -39,7 +39,7 @@ public class WanPisuUtils {
             Constants.episodeGroup.add(episodeGroup);
             currentEpisode = i + 1;
         }
-        episodeGroup = currentEpisode + " - " + lastEpisode;
+        episodeGroup = currentEpisode + " - " + Constants.episodes.get(Constants.episodes.size() - 1);
         if (Constants.episodeGroup.size() > 2) {
             Constants.episodeGroup.remove(Constants.episodeGroup.size() - 1);
             Constants.episodeGroup.add(episodeGroup);
