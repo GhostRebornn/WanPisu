@@ -1,7 +1,6 @@
 package in.ghostreborn.wanpisu.parser;
 
 import android.net.Uri;
-import android.util.Log;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -12,7 +11,6 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 import in.ghostreborn.wanpisu.constants.Constants;
-import in.ghostreborn.wanpisu.helper.WanPisuUtils;
 import in.ghostreborn.wanpisu.model.AllAnime;
 import in.ghostreborn.wanpisu.model.Server;
 import okhttp3.HttpUrl;
@@ -67,19 +65,12 @@ public class AllAnimeParser {
         Constants.episodes = new ArrayList<>();
         OkHttpClient client = new OkHttpClient();
 
-        String queryParameter;
-        if (!getDetails){
-            queryParameter = "query ($showId: String!) { show( _id: $showId ) { " +
-                    "availableEpisodesDetail " +
-                    " }}";
-        }else {
-            queryParameter = "query ($showId: String!) { show( _id: $showId ) { " +
-                    "name, " +
-                    "thumbnail, " +
-                    "description," +
-                    "availableEpisodesDetail " +
-                    " }}";
-        }
+        String queryParameter = "query ($showId: String!) { show( _id: $showId ) { " +
+                "name, " +
+                "thumbnail, " +
+                "description," +
+                "availableEpisodesDetail " +
+                " }}";
 
         HttpUrl.Builder urlBuilder = Objects.requireNonNull(HttpUrl.parse("https://api.allanime.day/api")).newBuilder();
         urlBuilder.addQueryParameter("variables", "{\"showId\":\"" + allAnimeID + "\"}");
@@ -99,31 +90,28 @@ public class AllAnimeParser {
                     .getJSONObject("availableEpisodesDetail")
                     .getJSONArray("sub");
 
-            Log.e("TAG", rawJSON);
-
-            if (getDetails){
-                String name = showObject.getString("name");
-                String thumbnail = showObject.getString("thumbnail");
-                String description = showObject.getString("description");
-                Constants.allAnime = new AllAnime(
-                        allAnimeID,
-                        "",
-                        name,
-                        thumbnail,
-                        description
-                );
-            }else {
-                JikanParser.parseAnimeFull(Constants.ANIME_MAL_ID);
-                JikanParser.getEpisodes(Constants.ANIME_MAL_ID, "1");
-            }
-
-            Constants.episodeGroup = new ArrayList<>();
             for (int i = episodes.length() - 1; i >= 0; i--) {
                 Constants.episodes.add(episodes.getString(i));
             }
-            Constants.ALL_ANIME_TOTAL_EPISODES = Constants.episodes.size() - 1;
 
-            WanPisuUtils.setupEpisodeGroups();
+            Constants.ALL_ANIME_TOTAL_EPISODES = Constants.episodes.size();
+
+            if (!getDetails) {
+                JikanParser.parseAnimeFull(Constants.ANIME_MAL_ID);
+                JikanParser.getEpisodes(Constants.ANIME_MAL_ID, "1");
+                return;
+            }
+
+            String name = showObject.getString("name");
+            String thumbnail = showObject.getString("thumbnail");
+            String description = showObject.getString("description");
+            Constants.allAnime = new AllAnime(
+                    allAnimeID,
+                    "",
+                    name,
+                    thumbnail,
+                    description
+            );
 
         } catch (Exception e) {
             e.printStackTrace();

@@ -84,6 +84,7 @@ public class JikanParser {
     }
 
     public static void getEpisodes(String malID, String page){
+
         Constants.jikanEpisodes = new ArrayList<>();
         String url = "https://api.jikan.moe/v4/anime/" +
                 malID +
@@ -105,11 +106,11 @@ public class JikanParser {
                 String title = dataObject.getString("title");
                 Constants.jikanEpisodes.add(title);
             }
+            Constants.ANIME_TOTAL_PAGES = baseJSON.getJSONObject("pagination")
+                    .getInt("last_visible_page");
         } catch (IOException | JSONException e) {
             e.printStackTrace();
         }
-
-
     }
 
 }

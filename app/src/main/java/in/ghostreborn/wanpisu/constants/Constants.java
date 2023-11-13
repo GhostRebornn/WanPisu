@@ -13,10 +13,12 @@ public class Constants {
     public static ArrayList<AllAnime> userAnimes;
     // List of episodes of anime
     public static ArrayList<String> episodes;
-    public static ArrayList<String> episodeGroup;
     // List of servers available for anime
     public static ArrayList<Server> servers;
     public static ArrayList<String> jikanEpisodes;
+
+    public static int ANIME_TOTAL_PAGES = 1;
+    public static int ANIME_CURRENT_PAGE = 1;
 
     public static Jikan jikan;
     public static AllAnime allAnime;
@@ -29,13 +31,12 @@ public class Constants {
     // Anime server url
     public static String ANIME_SERVER = "";
 
-    public static int ALL_ANIME_EPISODE_ADD = 0;
-    public static int ALL_ANIME_TOTAL_EPISODES = 0;
-
     public static final String TABLE_NAME = "USER_ANIME";
     public static final String TABLE_ANIME_ID = "ANIME_ID";
     public static final String TABLE_ANIME_NAME = "ANIME_NAME";
     public static final String TABLE_ANIME_THUMBNAIL = "ANIME_THUMBNAIL";
     public static final String TABLE_ANIME_DESC = "ANIME_DESC";
 
+    public static int ALL_ANIME_EPISODE_ADD = 0;
+    public static int ALL_ANIME_TOTAL_EPISODES;
 }

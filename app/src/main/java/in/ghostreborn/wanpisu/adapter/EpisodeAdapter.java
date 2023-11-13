@@ -45,6 +45,7 @@ public class EpisodeAdapter extends RecyclerView.Adapter<EpisodeAdapter.ViewHold
         int pos = holder.getAbsoluteAdapterPosition() + Constants.ALL_ANIME_EPISODE_ADD;
         String episode;
         if (isJikan){
+            pos = holder.getAbsoluteAdapterPosition();
             episode = Constants.jikanEpisodes.get(pos);
         }else {
             episode = Constants.episodes.get(pos);

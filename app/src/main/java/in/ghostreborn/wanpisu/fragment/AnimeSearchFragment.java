@@ -31,7 +31,7 @@ public class AnimeSearchFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_anime_search,container, false);
         allAnimeRecycler = view.findViewById(R.id.all_anime_recycler);
         allAnimeSearchView = view.findViewById(R.id.all_anime_search);
-        searchAnime("");
+        searchAnime("One Piece");
 
         allAnimeSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override

@@ -24,4 +24,17 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/next_episodes_fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="24dp"
+        android:layout_marginBottom="24dp"
+        android:contentDescription="@string/move_button"
+        android:clickable="true"
+        app:layout_constraintBottom_toTopOf="@+id/server_fragment_container"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:srcCompat="@drawable/next"
+        android:focusable="true" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
