@@ -106,6 +106,7 @@ public class JikanParser {
                 String title = dataObject.getString("title");
                 Constants.jikanEpisodes.add(title);
             }
+            Constants.ALL_ANIME_TOTAL_EPISODES = Constants.jikanEpisodes.size();
             Constants.ANIME_TOTAL_PAGES = baseJSON.getJSONObject("pagination")
                     .getInt("last_visible_page");
         } catch (IOException | JSONException e) {

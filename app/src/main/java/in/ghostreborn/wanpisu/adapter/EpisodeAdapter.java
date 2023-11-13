@@ -63,10 +63,14 @@ public class EpisodeAdapter extends RecyclerView.Adapter<EpisodeAdapter.ViewHold
 
     @Override
     public int getItemCount() {
-        if (Constants.ALL_ANIME_EPISODE_ADD < (Constants.ALL_ANIME_TOTAL_EPISODES - 100)){
-            return 100;
+        if (!isJikan){
+            if (Constants.ALL_ANIME_EPISODE_ADD < (Constants.ALL_ANIME_TOTAL_EPISODES - 100)){
+                return 100;
+            }else {
+                return Constants.ALL_ANIME_TOTAL_EPISODES - Constants.ALL_ANIME_EPISODE_ADD + 1;
+            }
         }else {
-            return Constants.ALL_ANIME_TOTAL_EPISODES - Constants.ALL_ANIME_EPISODE_ADD + 1;
+            return Constants.ALL_ANIME_TOTAL_EPISODES;
         }
     }
 
