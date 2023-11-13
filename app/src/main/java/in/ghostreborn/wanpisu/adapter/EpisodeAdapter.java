@@ -44,13 +44,15 @@ public class EpisodeAdapter extends RecyclerView.Adapter<EpisodeAdapter.ViewHold
     public void onBindViewHolder(@NonNull EpisodeAdapter.ViewHolder holder, int position) {
         int pos = holder.getAbsoluteAdapterPosition() + Constants.ALL_ANIME_EPISODE_ADD;
         String episode;
+        String episodeText;
         if (isJikan){
             pos = holder.getAbsoluteAdapterPosition();
             episode = Constants.jikanEpisodes.get(pos);
+            episodeText = episode;
         }else {
             episode = Constants.episodes.get(pos);
+            episodeText = "Episode " + episode;
         }
-        String episodeText = "Episode " + episode;
         holder.animeTextView.setText(episodeText);
         holder.itemView.setOnClickListener(v -> {
             Constants.ANIME_EPISODE = episode;
