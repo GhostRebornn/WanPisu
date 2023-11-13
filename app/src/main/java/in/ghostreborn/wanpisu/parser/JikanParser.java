@@ -101,6 +101,11 @@ public class JikanParser {
             assert response.body() != null;
             JSONObject baseJSON = new JSONObject(response.body().string());
             JSONArray dataArray = baseJSON.getJSONArray("data");
+
+            if (dataArray.length() == 0){
+                Constants.jikanEpisodes.add("Episode 1");
+            }
+
             for (int i=0; i<dataArray.length(); i++) {
                 JSONObject dataObject = dataArray.getJSONObject(i);
                 String title = dataObject.getString("title");
