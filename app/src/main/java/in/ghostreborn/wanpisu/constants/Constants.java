@@ -16,6 +16,7 @@ public class Constants {
     public static ArrayList<String> episodeGroup;
     // List of servers available for anime
     public static ArrayList<Server> servers;
+    public static ArrayList<String> jikanEpisodes;
 
     public static Jikan jikan;
     public static AllAnime allAnime;

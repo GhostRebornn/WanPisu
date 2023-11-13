@@ -83,4 +83,38 @@ public class JikanParser {
 
     }
 
+    public static boolean getEpisodes(String malID){
+        boolean hasNextPage = false;
+        Constants.jikanEpisodes = new ArrayList<>();
+        String url = "https://api.jikan.moe/v4/anime/" +
+                malID +
+                "/episodes";
+
+        OkHttpClient client = new OkHttpClient();
+
+        Request request = new Request.Builder()
+                .url(url)
+                .build();
+
+        try (Response response = client.newCall(request).execute()) {
+            assert response.body() != null;
+            JSONObject baseJSON = new JSONObject(response.body().string());
+            JSONArray dataArray = baseJSON.getJSONArray("data");
+            for (int i=0; i<dataArray.length(); i++) {
+                JSONObject dataObject = dataArray.getJSONObject(i);
+                String title = dataObject.getString("title");
+                Constants.jikanEpisodes.add(title);
+            }
+
+            hasNextPage = baseJSON.getJSONObject("pagination")
+                    .getBoolean("has_next_page");
+
+        } catch (IOException | JSONException e) {
+            e.printStackTrace();
+        }
+
+        return hasNextPage;
+
+    }
+
 }

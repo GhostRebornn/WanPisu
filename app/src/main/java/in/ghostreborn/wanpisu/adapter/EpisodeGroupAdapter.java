@@ -12,6 +12,8 @@ import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.ArrayList;
+
 import in.ghostreborn.wanpisu.R;
 import in.ghostreborn.wanpisu.constants.Constants;
 
@@ -21,16 +23,19 @@ public class EpisodeGroupAdapter extends RecyclerView.Adapter<EpisodeGroupAdapte
     Activity activity;
     FragmentManager manager;
     FrameLayout layout;
+    ArrayList<String> episodes;
     public EpisodeGroupAdapter(
             RecyclerView recyclerView,
             Activity activity,
             FragmentManager manager,
-            FrameLayout layout
+            FrameLayout layout,
+            ArrayList<String> episodes
     ){
         this.recyclerView = recyclerView;
         this.activity = activity;
         this.manager = manager;
         this.layout = layout;
+        this.episodes = episodes;
     }
 
     @NonNull
@@ -49,7 +54,8 @@ public class EpisodeGroupAdapter extends RecyclerView.Adapter<EpisodeGroupAdapte
             EpisodeAdapter adapter = new EpisodeAdapter(
                     activity,
                     manager,
-                    layout
+                    layout,
+                    episodes
             );
             LinearLayoutManager linearLayoutManager = new LinearLayoutManager(activity);
             recyclerView.setLayoutManager(linearLayoutManager);

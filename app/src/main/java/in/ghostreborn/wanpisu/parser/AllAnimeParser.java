@@ -114,6 +114,7 @@ public class AllAnimeParser {
                 );
             }else {
                 JikanParser.parseAnimeFull(Constants.ANIME_MAL_ID);
+                JikanParser.getEpisodes("21");
             }
 
             Constants.episodeGroup = new ArrayList<>();
