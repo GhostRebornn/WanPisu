@@ -1,6 +1,7 @@
 package in.ghostreborn.wanpisu.parser;
 
 import android.net.Uri;
+import android.util.Log;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -48,7 +49,7 @@ public class AllAnimeParser {
                     String malId = edges.getString("malId");
                     String animeName = edges.getString("name");
                     String thumbnail = edges.getString("thumbnail");
-                    Constants.allAnimes.add(new AllAnime(animeID, malId, animeName, thumbnail));
+                    Constants.allAnimes.add(new AllAnime(animeID, malId, animeName, thumbnail, ""));
                 }
             }
 
@@ -62,16 +63,27 @@ public class AllAnimeParser {
      *
      * @param allAnimeID - AllAnime anime ID
      */
-    public static void getEpisodes(String allAnimeID) {
+    public static void getEpisodes(String allAnimeID, boolean getDetails) {
         Constants.episodes = new ArrayList<>();
         OkHttpClient client = new OkHttpClient();
 
+        String queryParameter;
+        if (!getDetails){
+            queryParameter = "query ($showId: String!) { show( _id: $showId ) { " +
+                    "availableEpisodesDetail " +
+                    " }}";
+        }else {
+            queryParameter = "query ($showId: String!) { show( _id: $showId ) { " +
+                    "name, " +
+                    "thumbnail, " +
+                    "description," +
+                    "availableEpisodesDetail " +
+                    " }}";
+        }
+
         HttpUrl.Builder urlBuilder = Objects.requireNonNull(HttpUrl.parse("https://api.allanime.day/api")).newBuilder();
         urlBuilder.addQueryParameter("variables", "{\"showId\":\"" + allAnimeID + "\"}");
-        urlBuilder.addQueryParameter("query",
-                "query ($showId: String!) { show( _id: $showId ) { " +
-                        "availableEpisodesDetail " +
-                        " }}");
+        urlBuilder.addQueryParameter("query", queryParameter);
         String url = urlBuilder.build().toString();
 
         Request request = new Request.Builder().url(url).addHeader("User-Agent", "Mozilla/5.0 (Windows NT 6.1; Win64; rv:109.0) Gecko/20100101 Firefox/109.0").addHeader("Referer", "https://allanime.to").addHeader("Cipher", "AES256-SHA256").build();
@@ -86,6 +98,24 @@ public class AllAnimeParser {
             JSONArray episodes = showObject
                     .getJSONObject("availableEpisodesDetail")
                     .getJSONArray("sub");
+
+            Log.e("TAG", rawJSON);
+
+            if (getDetails){
+                String name = showObject.getString("name");
+                String thumbnail = showObject.getString("thumbnail");
+                String description = showObject.getString("description");
+                Constants.allAnime = new AllAnime(
+                        allAnimeID,
+                        "",
+                        name,
+                        thumbnail,
+                        description
+                );
+            }else {
+                JikanParser.parseAnimeFull(Constants.ANIME_MAL_ID);
+            }
+
             Constants.episodeGroup = new ArrayList<>();
             for (int i = episodes.length() - 1; i >= 0; i--) {
                 Constants.episodes.add(episodes.getString(i));

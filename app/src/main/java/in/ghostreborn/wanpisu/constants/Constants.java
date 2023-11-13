@@ -18,6 +18,7 @@ public class Constants {
     public static ArrayList<Server> servers;
 
     public static Jikan jikan;
+    public static AllAnime allAnime;
 
     // AllAnime ID
     public static String ANIME_ID = "";
