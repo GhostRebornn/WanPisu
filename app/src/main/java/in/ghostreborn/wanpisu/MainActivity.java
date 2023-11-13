@@ -15,10 +15,8 @@ public class MainActivity extends AppCompatActivity {
     Fragment fragment;
     int previouslySelected = 0;
 
-    // TODO if mal id is no available in jikan,
-    //  parse it from allanime api
-    //  only show thumbnail, animeName and description
-
+    // TODO drop grouping anime episodes and
+    //  show a arrow on both sides to move towards next
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
