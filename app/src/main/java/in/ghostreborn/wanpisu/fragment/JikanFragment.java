@@ -1,5 +1,6 @@
 package in.ghostreborn.wanpisu.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -11,6 +12,7 @@ import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.squareup.picasso.Picasso;
 
 import java.util.concurrent.ExecutorService;
@@ -20,6 +22,7 @@ import in.ghostreborn.wanpisu.R;
 import in.ghostreborn.wanpisu.constants.Constants;
 import in.ghostreborn.wanpisu.model.Jikan;
 import in.ghostreborn.wanpisu.parser.AllAnimeParser;
+import in.ghostreborn.wanpisu.ui.EpisodeActivity;
 
 public class JikanFragment extends Fragment {
 
@@ -37,6 +40,7 @@ public class JikanFragment extends Fragment {
     TextView jikanAnimeSeasonText;
     TextView jikanAnimeBroadcastText;
     TextView jikanAnimeSynopsisText;
+    FloatingActionButton watchFloatingButton;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -62,6 +66,7 @@ public class JikanFragment extends Fragment {
         jikanAnimeSeasonText = view.findViewById(R.id.jikan_anime_season_text);
         jikanAnimeBroadcastText = view.findViewById(R.id.jikan_anime_broadcast_text);
         jikanAnimeSynopsisText = view.findViewById(R.id.jikan_anime_synopsis_text);
+        watchFloatingButton = view.findViewById(R.id.jikan_watch_floating_button);
     }
 
     private void getJikans() {
@@ -89,6 +94,9 @@ public class JikanFragment extends Fragment {
                 jikanAnimeSeasonText.setText(jikan.getSeason());
                 jikanAnimeBroadcastText.setText(jikan.getBroadcast());
                 jikanAnimeSynopsisText.setText(jikan.getSynopsis());
+                watchFloatingButton.setOnClickListener(v -> requireContext().startActivity(
+                        new Intent(getContext(), EpisodeActivity.class)
+                ));
             });
         });
     }

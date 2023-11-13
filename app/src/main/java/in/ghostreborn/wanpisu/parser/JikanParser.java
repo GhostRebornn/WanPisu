@@ -41,10 +41,8 @@ public class JikanParser {
             ArrayList<String> titles = new ArrayList<>();
             JSONArray titlesArray = dataObject.getJSONArray("titles");
             for (int i = 0; i < titlesArray.length(); i++) {
-                JSONObject titlesObject = titlesArray.getJSONObject(i);
-                String titleAtPosition = titlesObject.getString("type") +
-                        ":" + titlesObject.getString("title");
-                titles.add(titleAtPosition);
+                String titleNow = titlesArray.getJSONObject(i).getString("title");
+                titles.add(titleNow);
             }
             String type = dataObject.getString("type");
             String source = dataObject.getString("source");
