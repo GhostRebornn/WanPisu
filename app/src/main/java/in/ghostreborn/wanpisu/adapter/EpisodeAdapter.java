@@ -13,8 +13,6 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.util.ArrayList;
-
 import in.ghostreborn.wanpisu.R;
 import in.ghostreborn.wanpisu.constants.Constants;
 import in.ghostreborn.wanpisu.fragment.ServersFragment;
@@ -27,10 +25,10 @@ public class EpisodeAdapter extends RecyclerView.Adapter<EpisodeAdapter.ViewHold
     Activity activity;
     FragmentManager fragmentManager;
     FrameLayout layout;
-    ArrayList<String> episodes;
-    public EpisodeAdapter(Activity activity, FragmentManager fragmentManager, FrameLayout layout, ArrayList<String> episodes){
+    boolean isJikan;
+    public EpisodeAdapter(Activity activity, FragmentManager fragmentManager, FrameLayout layout, boolean isJikan){
         this.activity = activity;
-        this.episodes = episodes;
+        this.isJikan = isJikan;
         this.fragmentManager = fragmentManager;
         this.layout = layout;
     }
@@ -45,7 +43,12 @@ public class EpisodeAdapter extends RecyclerView.Adapter<EpisodeAdapter.ViewHold
     @Override
     public void onBindViewHolder(@NonNull EpisodeAdapter.ViewHolder holder, int position) {
         int pos = holder.getAbsoluteAdapterPosition() + Constants.ALL_ANIME_EPISODE_ADD;
-        String episode = episodes.get(pos);
+        String episode;
+        if (isJikan){
+            episode = Constants.jikanEpisodes.get(pos);
+        }else {
+            episode = Constants.episodes.get(pos);
+        }
         String episodeText = "Episode " + episode;
         holder.animeTextView.setText(episodeText);
         holder.itemView.setOnClickListener(v -> {

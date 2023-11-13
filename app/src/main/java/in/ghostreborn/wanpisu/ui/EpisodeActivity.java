@@ -7,8 +7,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.util.ArrayList;
-
 import in.ghostreborn.wanpisu.R;
 import in.ghostreborn.wanpisu.adapter.EpisodeAdapter;
 import in.ghostreborn.wanpisu.adapter.EpisodeGroupAdapter;
@@ -30,14 +28,10 @@ public class EpisodeActivity extends AppCompatActivity {
         episodeRecycler = findViewById(R.id.episode_recycler);
         episodeGroupRecycler = findViewById(R.id.episode_group_recycler);
 
-        ArrayList<String> episodes;
-        if (Constants.ANIME_MAL_ID.equals("null")){
-            episodes = Constants.episodes;
-        }else {
-            episodes = Constants.jikanEpisodes;
-        }
+        boolean isJikan;
+        isJikan = !Constants.ANIME_MAL_ID.equals("null");
 
-        EpisodeAdapter adapter = new EpisodeAdapter(this,getSupportFragmentManager(), layout, episodes);
+        EpisodeAdapter adapter = new EpisodeAdapter(this,getSupportFragmentManager(), layout, isJikan);
         LinearLayoutManager manager = new LinearLayoutManager(this);
         episodeRecycler.setLayoutManager(manager);
         episodeRecycler.setAdapter(adapter);
@@ -47,7 +41,7 @@ public class EpisodeActivity extends AppCompatActivity {
                 EpisodeActivity.this,
                 getSupportFragmentManager(),
                 layout,
-                episodes
+                isJikan
         );
         LinearLayoutManager groupManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
         episodeGroupRecycler.setAdapter(groupAdapter);
