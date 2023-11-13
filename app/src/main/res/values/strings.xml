@@ -18,4 +18,5 @@
     <string name="user">User</string>
     <string name="save">Save</string>
     <string name="select_server">Select Server</string>
+    <string name="move_button">Move Button</string>
 </resources>
