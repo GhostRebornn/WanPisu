@@ -22,7 +22,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
         BottomNavigationView navigationView = findViewById(R.id.main_bottom_navigation);
         navigationView.setSelectedItemId(R.id.navigation_home);
         navigationView.setOnItemSelectedListener(item -> {

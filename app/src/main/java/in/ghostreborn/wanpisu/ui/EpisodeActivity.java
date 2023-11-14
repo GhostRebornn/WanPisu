@@ -52,6 +52,14 @@ public class EpisodeActivity extends AppCompatActivity {
             }
         });
 
+        FloatingActionButton previousFloatingButton = findViewById(R.id.previous_episodes_fab);
+        previousFloatingButton.setOnClickListener(v -> {
+            if (Constants.ANIME_CURRENT_PAGE!=1){
+                Constants.ANIME_CURRENT_PAGE--;
+                new EpisodeAsync().execute();
+            }
+        });
+
     }
 
     private void getTotalNext(boolean isJikan) {
