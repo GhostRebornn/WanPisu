@@ -1,7 +1,8 @@
 package in.ghostreborn.wanpisu.ui;
 
-import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.widget.FrameLayout;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -9,6 +10,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import in.ghostreborn.wanpisu.R;
 import in.ghostreborn.wanpisu.adapter.EpisodeAdapter;
@@ -48,7 +52,7 @@ public class EpisodeActivity extends AppCompatActivity {
         nextFloatingButton.setOnClickListener(v -> {
             if (Constants.ANIME_CURRENT_PAGE!=Constants.ANIME_TOTAL_PAGES){
                 Constants.ANIME_CURRENT_PAGE++;
-                new EpisodeAsync().execute();
+                getEpisodes();
             }
         });
 
@@ -56,7 +60,7 @@ public class EpisodeActivity extends AppCompatActivity {
         previousFloatingButton.setOnClickListener(v -> {
             if (Constants.ANIME_CURRENT_PAGE!=1){
                 Constants.ANIME_CURRENT_PAGE--;
-                new EpisodeAsync().execute();
+                getEpisodes();
             }
         });
 
@@ -68,27 +72,23 @@ public class EpisodeActivity extends AppCompatActivity {
         }
     }
 
-    class EpisodeAsync extends AsyncTask<Void, Void, Void> {
-
-        @Override
-        protected Void doInBackground(Void... voids) {
+    private void getEpisodes() {
+        ExecutorService executor = Executors.newSingleThreadExecutor();
+        Handler handler = new Handler(Looper.getMainLooper());
+        executor.execute(() -> {
             JikanParser.getEpisodes(Constants.ANIME_MAL_ID, Constants.ANIME_CURRENT_PAGE + "");
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Void unused) {
-            super.onPostExecute(unused);
-            adapter = new EpisodeAdapter(
-                    EpisodeActivity.this,
-                    getSupportFragmentManager(),
-                    layout,
-                    isJikan
-            );
-            manager = new LinearLayoutManager(EpisodeActivity.this);
-            episodeRecycler.setLayoutManager(manager);
-            episodeRecycler.setAdapter(adapter);
-        }
+            handler.post(() -> {
+                adapter = new EpisodeAdapter(
+                        EpisodeActivity.this,
+                        getSupportFragmentManager(),
+                        layout,
+                        isJikan
+                );
+                manager = new LinearLayoutManager(EpisodeActivity.this);
+                episodeRecycler.setLayoutManager(manager);
+                episodeRecycler.setAdapter(adapter);
+            });
+        });
     }
 
 
