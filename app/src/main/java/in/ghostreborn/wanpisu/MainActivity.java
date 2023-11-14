@@ -15,8 +15,8 @@ public class MainActivity extends AppCompatActivity {
     Fragment fragment;
     int previouslySelected = 0;
 
-    // TODO drop grouping anime episodes and
-    //  show a arrow on both sides to move towards next
+    // TODO show info button in search result, clicking
+    //  it shows info of the anime else get to episode selection directly
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
