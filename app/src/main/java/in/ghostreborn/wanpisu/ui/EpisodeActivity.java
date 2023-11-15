@@ -17,6 +17,7 @@ import java.util.concurrent.Executors;
 import in.ghostreborn.wanpisu.R;
 import in.ghostreborn.wanpisu.adapter.EpisodeAdapter;
 import in.ghostreborn.wanpisu.constants.Constants;
+import in.ghostreborn.wanpisu.parser.AllAnimeParser;
 import in.ghostreborn.wanpisu.parser.JikanParser;
 
 public class EpisodeActivity extends AppCompatActivity {
@@ -37,16 +38,7 @@ public class EpisodeActivity extends AppCompatActivity {
         isJikan = !Constants.ANIME_MAL_ID.equals("null");
 
         getTotalNext(isJikan);
-
-        adapter = new EpisodeAdapter(
-                this,
-                getSupportFragmentManager(),
-                layout,
-                isJikan
-        );
-        manager = new LinearLayoutManager(this);
-        episodeRecycler.setLayoutManager(manager);
-        episodeRecycler.setAdapter(adapter);
+        getEpisodes();
 
         FloatingActionButton nextFloatingButton = findViewById(R.id.next_episodes_fab);
         nextFloatingButton.setOnClickListener(v -> {
@@ -76,7 +68,12 @@ public class EpisodeActivity extends AppCompatActivity {
         ExecutorService executor = Executors.newSingleThreadExecutor();
         Handler handler = new Handler(Looper.getMainLooper());
         executor.execute(() -> {
-            JikanParser.getEpisodes(Constants.ANIME_MAL_ID, Constants.ANIME_CURRENT_PAGE + "");
+            if (isJikan){
+                AllAnimeParser.getEpisodes(Constants.ANIME_ID, false);
+                JikanParser.getEpisodes(Constants.ANIME_MAL_ID, Constants.ANIME_CURRENT_PAGE + "");
+            }else {
+                AllAnimeParser.getEpisodes(Constants.ANIME_ID, true);
+            }
             handler.post(() -> {
                 adapter = new EpisodeAdapter(
                         EpisodeActivity.this,

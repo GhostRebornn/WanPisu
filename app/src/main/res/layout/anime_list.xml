@@ -26,20 +26,22 @@
             android:scaleType="centerCrop" />
 
         <LinearLayout
+            android:id="@+id/anime_info_linear_layout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:visibility="gone">
 
             <Button
-                android:id="@+id/button2"
+                android:id="@+id/anime_info_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:text="@string/info" />
 
             <Button
-                android:id="@+id/button3"
+                android:id="@+id/anime_watch_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"

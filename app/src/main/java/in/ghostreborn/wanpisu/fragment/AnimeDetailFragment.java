@@ -21,7 +21,6 @@ import java.util.concurrent.Executors;
 import in.ghostreborn.wanpisu.R;
 import in.ghostreborn.wanpisu.constants.Constants;
 import in.ghostreborn.wanpisu.model.AllAnime;
-import in.ghostreborn.wanpisu.parser.AllAnimeParser;
 import in.ghostreborn.wanpisu.ui.EpisodeActivity;
 
 public class AnimeDetailFragment extends Fragment {
@@ -48,18 +47,15 @@ public class AnimeDetailFragment extends Fragment {
     private void getDetails() {
         ExecutorService executor = Executors.newSingleThreadExecutor();
         Handler handler = new Handler(Looper.getMainLooper());
-        executor.execute(() -> {
-            AllAnimeParser.getEpisodes(Constants.ANIME_ID, true);
-            handler.post(() -> {
-                AllAnime allAnime = Constants.allAnime;
-                detailAnimeNameText.setText(allAnime.getName());
-                detailAnimeSynopsisText.setText(allAnime.getDescription());
-                Picasso.get().load(allAnime.getThumbnail()).into(detailAnimeImageView);
-                detailWatchFloatingButton.setOnClickListener(v -> requireContext().startActivity(
-                        new Intent(getContext(), EpisodeActivity.class)
-                ));
-            });
-        });
+        executor.execute(() -> handler.post(() -> {
+            AllAnime allAnime = Constants.allAnime;
+            detailAnimeNameText.setText(allAnime.getName());
+            detailAnimeSynopsisText.setText(allAnime.getDescription());
+            Picasso.get().load(allAnime.getThumbnail()).into(detailAnimeImageView);
+            detailWatchFloatingButton.setOnClickListener(v -> requireContext().startActivity(
+                    new Intent(getContext(), EpisodeActivity.class)
+            ));
+        }));
     }
 
 }

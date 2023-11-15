@@ -15,8 +15,8 @@ public class MainActivity extends AppCompatActivity {
     Fragment fragment;
     int previouslySelected = 0;
 
-    // TODO show info button in search result, clicking
-    //  it shows info of the anime else get to episode selection directly
+    // TODO fix animes without malID is not showing
+    //  episodes because jikan is not available
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
