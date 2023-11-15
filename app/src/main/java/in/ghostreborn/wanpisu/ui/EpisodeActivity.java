@@ -3,7 +3,9 @@ package in.ghostreborn.wanpisu.ui;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.ProgressBar;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -27,6 +29,7 @@ public class EpisodeActivity extends AppCompatActivity {
     EpisodeAdapter adapter;
     LinearLayoutManager manager;
     boolean isJikan;
+    ProgressBar episodeProgress;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +38,7 @@ public class EpisodeActivity extends AppCompatActivity {
 
         layout = findViewById(R.id.server_fragment_container);
         episodeRecycler = findViewById(R.id.episode_recycler);
+        episodeProgress = findViewById(R.id.episode_progress);
         isJikan = !Constants.ANIME_MAL_ID.equals("null");
 
         getEpisodes();
@@ -87,6 +91,7 @@ public class EpisodeActivity extends AppCompatActivity {
                 episodeRecycler.setAdapter(adapter);
 
                 getTotalNext(isJikan);
+                episodeProgress.setVisibility(View.GONE);
 
             });
         });

@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
@@ -29,6 +30,7 @@ public class AnimeDetailFragment extends Fragment {
     TextView detailAnimeSynopsisText;
     ImageView detailAnimeImageView;
     FloatingActionButton detailWatchFloatingButton;
+    ProgressBar detailsFragmentProgress;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -39,6 +41,7 @@ public class AnimeDetailFragment extends Fragment {
         detailAnimeSynopsisText = view.findViewById(R.id.detail_anime_synopsis_text);
         detailAnimeImageView = view.findViewById(R.id.detail_anime_image_view);
         detailWatchFloatingButton = view.findViewById(R.id.detail_watch_floating_button);
+        detailsFragmentProgress = view.findViewById(R.id.detail_fragment_progress);
 
         getDetails();
         return view;
@@ -55,6 +58,7 @@ public class AnimeDetailFragment extends Fragment {
             detailWatchFloatingButton.setOnClickListener(v -> requireContext().startActivity(
                     new Intent(getContext(), EpisodeActivity.class)
             ));
+            detailsFragmentProgress.setVisibility(View.GONE);
         }));
     }
 

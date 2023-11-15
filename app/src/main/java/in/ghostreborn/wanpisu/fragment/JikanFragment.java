@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
@@ -41,6 +42,7 @@ public class JikanFragment extends Fragment {
     TextView jikanAnimeBroadcastText;
     TextView jikanAnimeSynopsisText;
     FloatingActionButton watchFloatingButton;
+    ProgressBar jikanFragmentProgress;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -67,6 +69,7 @@ public class JikanFragment extends Fragment {
         jikanAnimeBroadcastText = view.findViewById(R.id.jikan_anime_broadcast_text);
         jikanAnimeSynopsisText = view.findViewById(R.id.jikan_anime_synopsis_text);
         watchFloatingButton = view.findViewById(R.id.jikan_watch_floating_button);
+        jikanFragmentProgress = view.findViewById(R.id.jikan_fragment_progress);
     }
 
     private void getJikans() {
@@ -97,6 +100,7 @@ public class JikanFragment extends Fragment {
                 watchFloatingButton.setOnClickListener(v -> requireContext().startActivity(
                         new Intent(getContext(), EpisodeActivity.class)
                 ));
+                jikanFragmentProgress.setVisibility(View.GONE);
             });
         });
     }
