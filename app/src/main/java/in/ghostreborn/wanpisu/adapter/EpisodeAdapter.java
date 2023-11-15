@@ -43,6 +43,7 @@ public class EpisodeAdapter extends RecyclerView.Adapter<EpisodeAdapter.ViewHold
     @Override
     public void onBindViewHolder(@NonNull EpisodeAdapter.ViewHolder holder, int position) {
         int pos = holder.getAbsoluteAdapterPosition() + Constants.ALL_ANIME_EPISODE_ADD;
+        String episodeNumber = String.valueOf(pos);
         String episode;
         String episodeText;
         if (isJikan){
@@ -54,8 +55,9 @@ public class EpisodeAdapter extends RecyclerView.Adapter<EpisodeAdapter.ViewHold
             episodeText = "Episode " + episode;
         }
         holder.animeTextView.setText(episodeText);
+        holder.animeEpisodeTextView.setText(episodeNumber);
         holder.itemView.setOnClickListener(v -> {
-            Constants.ANIME_EPISODE = episode;
+            Constants.ANIME_EPISODE = episodeNumber;
             FragmentTransaction transaction = fragmentManager.beginTransaction();
             transaction.replace(R.id.server_fragment_container, new ServersFragment(layout));
             transaction.commit();
@@ -79,11 +81,13 @@ public class EpisodeAdapter extends RecyclerView.Adapter<EpisodeAdapter.ViewHold
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
         public TextView animeTextView;
+        public TextView animeEpisodeTextView;
         public ImageView animeImageView;
 
         public ViewHolder(View itemView) {
             super(itemView);
             animeTextView = itemView.findViewById(R.id.episode_text_view);
+            animeEpisodeTextView = itemView.findViewById(R.id.episode_number_text);
             animeImageView = itemView.findViewById(R.id.episode_image_view);
         }
     }
