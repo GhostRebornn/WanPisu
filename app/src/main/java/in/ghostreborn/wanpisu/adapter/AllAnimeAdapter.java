@@ -66,7 +66,7 @@ public class AllAnimeAdapter extends RecyclerView.Adapter<AllAnimeAdapter.ViewHo
         public ViewHolder(View itemView) {
             super(itemView);
             animeTextView = itemView.findViewById(R.id.anime_text_view);
-            animeImageView = itemView.findViewById(R.id.jikan_anime_image_view);
+            animeImageView = itemView.findViewById(R.id.anime_image_view);
         }
     }
 

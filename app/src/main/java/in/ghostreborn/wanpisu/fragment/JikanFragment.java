@@ -52,7 +52,7 @@ public class JikanFragment extends Fragment {
     }
 
     private void findViews(View view){
-        jikanAnimeImageView = view.findViewById(R.id.jikan_anime_image_view);
+        jikanAnimeImageView = view.findViewById(R.id.anime_image_view);
         jikanAnimeNameText = view.findViewById(R.id.jikan_anime_name_text);
         jikanAnimeTitlesText = view.findViewById(R.id.jikan_anime_titles_text);
         jikanAnimeTypeText = view.findViewById(R.id.jikan_anime_type_text);
