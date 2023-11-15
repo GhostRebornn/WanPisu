@@ -17,8 +17,8 @@ public class Constants {
     public static ArrayList<Server> servers;
     public static ArrayList<String> jikanEpisodes;
 
-    public static int ANIME_TOTAL_PAGES = 1;
-    public static int ANIME_CURRENT_PAGE = 1;
+    public static int ANIME_TOTAL_PAGES = 0;
+    public static int ANIME_CURRENT_PAGE = 0;
 
     public static Jikan jikan;
     public static AllAnime allAnime;

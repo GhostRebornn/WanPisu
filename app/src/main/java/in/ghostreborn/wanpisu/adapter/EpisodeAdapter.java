@@ -26,7 +26,8 @@ public class EpisodeAdapter extends RecyclerView.Adapter<EpisodeAdapter.ViewHold
     FragmentManager fragmentManager;
     FrameLayout layout;
     boolean isJikan;
-    public EpisodeAdapter(Activity activity, FragmentManager fragmentManager, FrameLayout layout, boolean isJikan){
+
+    public EpisodeAdapter(Activity activity, FragmentManager fragmentManager, FrameLayout layout, boolean isJikan) {
         this.activity = activity;
         this.isJikan = isJikan;
         this.fragmentManager = fragmentManager;
@@ -43,14 +44,16 @@ public class EpisodeAdapter extends RecyclerView.Adapter<EpisodeAdapter.ViewHold
     @Override
     public void onBindViewHolder(@NonNull EpisodeAdapter.ViewHolder holder, int position) {
         int pos = holder.getAbsoluteAdapterPosition() + Constants.ALL_ANIME_EPISODE_ADD;
-        String episodeNumber = Constants.episodes.get(pos);
+        String episodeNumber;
         String episode;
         String episodeText;
-        if (isJikan){
+        if (isJikan) {
             pos = holder.getAbsoluteAdapterPosition();
             episode = Constants.jikanEpisodes.get(pos);
+            episodeNumber = Integer.parseInt(Constants.episodes.get(pos)) + Constants.ALL_ANIME_EPISODE_ADD + "";
             episodeText = episode;
-        }else {
+        } else {
+            episodeNumber = Constants.episodes.get(pos);
             episode = Constants.episodes.get(pos);
             episodeText = "Episode " + episode;
         }
@@ -67,13 +70,13 @@ public class EpisodeAdapter extends RecyclerView.Adapter<EpisodeAdapter.ViewHold
 
     @Override
     public int getItemCount() {
-        if (!isJikan){
-            if (Constants.ALL_ANIME_EPISODE_ADD < (Constants.ALL_ANIME_TOTAL_EPISODES - 100)){
+        if (!isJikan) {
+            if (Constants.ALL_ANIME_EPISODE_ADD < (Constants.ALL_ANIME_TOTAL_EPISODES - 100)) {
                 return 100;
-            }else {
+            } else {
                 return Constants.ALL_ANIME_TOTAL_EPISODES - Constants.ALL_ANIME_EPISODE_ADD + 1;
             }
-        }else {
+        } else {
             return Constants.ALL_ANIME_TOTAL_EPISODES;
         }
     }

@@ -37,21 +37,22 @@ public class EpisodeActivity extends AppCompatActivity {
         episodeRecycler = findViewById(R.id.episode_recycler);
         isJikan = !Constants.ANIME_MAL_ID.equals("null");
 
-        getTotalNext(isJikan);
         getEpisodes();
 
         FloatingActionButton nextFloatingButton = findViewById(R.id.next_episodes_fab);
         nextFloatingButton.setOnClickListener(v -> {
-            if (Constants.ANIME_CURRENT_PAGE!=Constants.ANIME_TOTAL_PAGES){
+            if (Constants.ANIME_CURRENT_PAGE!=Constants.ANIME_TOTAL_PAGES-1){
                 Constants.ANIME_CURRENT_PAGE++;
+                Constants.ALL_ANIME_EPISODE_ADD = Constants.ANIME_CURRENT_PAGE * 100;
                 getEpisodes();
             }
         });
 
         FloatingActionButton previousFloatingButton = findViewById(R.id.previous_episodes_fab);
         previousFloatingButton.setOnClickListener(v -> {
-            if (Constants.ANIME_CURRENT_PAGE!=1){
+            if (Constants.ANIME_CURRENT_PAGE!=0){
                 Constants.ANIME_CURRENT_PAGE--;
+                Constants.ALL_ANIME_EPISODE_ADD = Constants.ANIME_CURRENT_PAGE * 100;
                 getEpisodes();
             }
         });
@@ -70,7 +71,7 @@ public class EpisodeActivity extends AppCompatActivity {
         executor.execute(() -> {
             if (isJikan){
                 AllAnimeParser.getEpisodes(Constants.ANIME_ID, false);
-                JikanParser.getEpisodes(Constants.ANIME_MAL_ID, Constants.ANIME_CURRENT_PAGE + "");
+                JikanParser.getEpisodes(Constants.ANIME_MAL_ID, Constants.ANIME_CURRENT_PAGE+1 + "");
             }else {
                 AllAnimeParser.getEpisodes(Constants.ANIME_ID, true);
             }
@@ -84,6 +85,9 @@ public class EpisodeActivity extends AppCompatActivity {
                 manager = new LinearLayoutManager(EpisodeActivity.this);
                 episodeRecycler.setLayoutManager(manager);
                 episodeRecycler.setAdapter(adapter);
+
+                getTotalNext(isJikan);
+
             });
         });
     }

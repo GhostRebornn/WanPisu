@@ -15,8 +15,7 @@ public class MainActivity extends AppCompatActivity {
     Fragment fragment;
     int previouslySelected = 0;
 
-    // TODO fix animes without malID is not showing
-    //  episodes because jikan is not available
+    // TODO fix episodes not showing for chinese animes
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
