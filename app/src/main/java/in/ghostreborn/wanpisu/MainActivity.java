@@ -15,7 +15,7 @@ public class MainActivity extends AppCompatActivity {
     Fragment fragment;
     int previouslySelected = 0;
 
-    // TODO fix episodes not showing for chinese animes
+    // TODO fix user's anime
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
