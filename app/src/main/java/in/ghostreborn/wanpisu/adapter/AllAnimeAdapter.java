@@ -67,6 +67,7 @@ public class AllAnimeAdapter extends RecyclerView.Adapter<AllAnimeAdapter.ViewHo
         });
         holder.animeInfoButton.setOnClickListener(v -> {
             setupVariables(allAnime);
+            Constants.allAnime = allAnime;
             Context context = holder.itemView.getContext();
             context.startActivity(new Intent(
                     context, DetailActivity.class

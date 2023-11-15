@@ -1,9 +1,12 @@
 package in.ghostreborn.wanpisu.fragment;
 
+import android.content.ContentValues;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +24,7 @@ import java.util.concurrent.Executors;
 
 import in.ghostreborn.wanpisu.R;
 import in.ghostreborn.wanpisu.constants.Constants;
+import in.ghostreborn.wanpisu.database.UserAnimeDatabase;
 import in.ghostreborn.wanpisu.model.Jikan;
 import in.ghostreborn.wanpisu.parser.AllAnimeParser;
 import in.ghostreborn.wanpisu.ui.EpisodeActivity;
@@ -42,6 +46,7 @@ public class JikanFragment extends Fragment {
     TextView jikanAnimeBroadcastText;
     TextView jikanAnimeSynopsisText;
     FloatingActionButton watchFloatingButton;
+    FloatingActionButton addFloatingButton;
     ProgressBar jikanFragmentProgress;
 
     @Override
@@ -49,6 +54,19 @@ public class JikanFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_jikan, container, false);
         findViews(view);
+
+        addFloatingButton.setOnClickListener(v -> {
+            UserAnimeDatabase database = new UserAnimeDatabase(getContext());
+            SQLiteDatabase db = database.getWritableDatabase();
+            ContentValues values = new ContentValues();
+            values.put(Constants.TABLE_ANIME_ID, Constants.allAnime.getId());
+            values.put(Constants.TABLE_ANIME_NAME, Constants.allAnime.getName());
+            values.put(Constants.TABLE_ANIME_THUMBNAIL, Constants.allAnime.getThumbnail());
+            long rowID = db.insert(Constants.TABLE_NAME, null, values);
+            Log.e("TAG", "rowID: " + rowID);
+            db.close();
+        });
+
         getJikans();
         return view;
     }
@@ -69,6 +87,7 @@ public class JikanFragment extends Fragment {
         jikanAnimeBroadcastText = view.findViewById(R.id.jikan_anime_broadcast_text);
         jikanAnimeSynopsisText = view.findViewById(R.id.jikan_anime_synopsis_text);
         watchFloatingButton = view.findViewById(R.id.jikan_watch_floating_button);
+        addFloatingButton = view.findViewById(R.id.jikan_add_floating_button);
         jikanFragmentProgress = view.findViewById(R.id.jikan_fragment_progress);
     }
 

@@ -11,8 +11,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -39,34 +37,10 @@ public class EpisodeActivity extends AppCompatActivity {
         layout = findViewById(R.id.server_fragment_container);
         episodeRecycler = findViewById(R.id.episode_recycler);
         episodeProgress = findViewById(R.id.episode_progress);
-        isJikan = !Constants.ANIME_MAL_ID.equals("null");
+        isJikan = !Constants.ANIME_MAL_ID.equals("null") && !Constants.ANIME_MAL_ID.equals("");
 
         getEpisodes();
 
-        FloatingActionButton nextFloatingButton = findViewById(R.id.next_episodes_fab);
-        nextFloatingButton.setOnClickListener(v -> {
-            if (Constants.ANIME_CURRENT_PAGE!=Constants.ANIME_TOTAL_PAGES-1){
-                Constants.ANIME_CURRENT_PAGE++;
-                Constants.ALL_ANIME_EPISODE_ADD = Constants.ANIME_CURRENT_PAGE * 100;
-                getEpisodes();
-            }
-        });
-
-        FloatingActionButton previousFloatingButton = findViewById(R.id.previous_episodes_fab);
-        previousFloatingButton.setOnClickListener(v -> {
-            if (Constants.ANIME_CURRENT_PAGE!=0){
-                Constants.ANIME_CURRENT_PAGE--;
-                Constants.ALL_ANIME_EPISODE_ADD = Constants.ANIME_CURRENT_PAGE * 100;
-                getEpisodes();
-            }
-        });
-
-    }
-
-    private void getTotalNext(boolean isJikan) {
-        if (!isJikan) {
-            Constants.ANIME_TOTAL_PAGES = Constants.episodes.size() / 100;
-        }
     }
 
     private void getEpisodes() {
@@ -90,7 +64,6 @@ public class EpisodeActivity extends AppCompatActivity {
                 episodeRecycler.setLayoutManager(manager);
                 episodeRecycler.setAdapter(adapter);
 
-                getTotalNext(isJikan);
                 episodeProgress.setVisibility(View.GONE);
 
             });

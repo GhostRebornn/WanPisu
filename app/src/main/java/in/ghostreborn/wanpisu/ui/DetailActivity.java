@@ -20,7 +20,7 @@ public class DetailActivity extends AppCompatActivity {
 
         FragmentManager manager = getSupportFragmentManager();
         FragmentTransaction transaction = manager.beginTransaction();
-        if (Constants.ANIME_MAL_ID.equals("null")){
+        if (Constants.ANIME_MAL_ID.equals("null") || Constants.ANIME_MAL_ID.equals("")){
             transaction.add(R.id.details_frame_layout, new AnimeDetailFragment());
         }else {
             transaction.add(R.id.details_frame_layout, new JikanFragment());

@@ -43,12 +43,11 @@ public class EpisodeAdapter extends RecyclerView.Adapter<EpisodeAdapter.ViewHold
 
     @Override
     public void onBindViewHolder(@NonNull EpisodeAdapter.ViewHolder holder, int position) {
-        int pos = holder.getAbsoluteAdapterPosition() + Constants.ALL_ANIME_EPISODE_ADD;
+        int pos = holder.getAbsoluteAdapterPosition();
         String episodeNumber;
         String episode;
         String episodeText;
         if (isJikan) {
-            pos = holder.getAbsoluteAdapterPosition();
             episode = Constants.jikanEpisodes.get(pos);
             episodeNumber = Integer.parseInt(Constants.episodes.get(pos)) + Constants.ALL_ANIME_EPISODE_ADD + "";
             episodeText = episode;
@@ -70,15 +69,7 @@ public class EpisodeAdapter extends RecyclerView.Adapter<EpisodeAdapter.ViewHold
 
     @Override
     public int getItemCount() {
-        if (!isJikan) {
-            if (Constants.ALL_ANIME_EPISODE_ADD < (Constants.ALL_ANIME_TOTAL_EPISODES - 100)) {
-                return 100;
-            } else {
-                return Constants.ALL_ANIME_TOTAL_EPISODES - Constants.ALL_ANIME_EPISODE_ADD + 1;
-            }
-        } else {
-            return Constants.ALL_ANIME_TOTAL_EPISODES;
-        }
+        return Constants.ALL_ANIME_TOTAL_EPISODES;
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
