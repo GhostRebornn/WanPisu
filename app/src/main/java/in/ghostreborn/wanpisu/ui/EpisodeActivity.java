@@ -8,6 +8,7 @@ import android.widget.FrameLayout;
 import android.widget.ProgressBar;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -16,18 +17,21 @@ import java.util.concurrent.Executors;
 
 import in.ghostreborn.wanpisu.R;
 import in.ghostreborn.wanpisu.adapter.EpisodeAdapter;
+import in.ghostreborn.wanpisu.adapter.EpisodeGroupAdapter;
 import in.ghostreborn.wanpisu.constants.Constants;
 import in.ghostreborn.wanpisu.parser.AllAnimeParser;
-import in.ghostreborn.wanpisu.parser.JikanParser;
 
 public class EpisodeActivity extends AppCompatActivity {
 
-    public static RecyclerView episodeRecycler;
+    boolean isJikan;
     FrameLayout layout;
     EpisodeAdapter adapter;
-    LinearLayoutManager manager;
-    boolean isJikan;
+    EpisodeGroupAdapter groupAdapter;
     ProgressBar episodeProgress;
+    LinearLayoutManager manager;
+    GridLayoutManager groupManager;
+    RecyclerView episodeRecycler;
+    RecyclerView episodeGroupRecycler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +40,7 @@ public class EpisodeActivity extends AppCompatActivity {
 
         layout = findViewById(R.id.server_fragment_container);
         episodeRecycler = findViewById(R.id.episode_recycler);
+        episodeGroupRecycler = findViewById(R.id.episode_group_recycler);
         episodeProgress = findViewById(R.id.episode_progress);
         isJikan = !Constants.ANIME_MAL_ID.equals("null") && !Constants.ANIME_MAL_ID.equals("");
 
@@ -47,28 +52,59 @@ public class EpisodeActivity extends AppCompatActivity {
         ExecutorService executor = Executors.newSingleThreadExecutor();
         Handler handler = new Handler(Looper.getMainLooper());
         executor.execute(() -> {
-            if (isJikan){
-                AllAnimeParser.getEpisodes(Constants.ANIME_ID, false);
-                JikanParser.getEpisodes(Constants.ANIME_MAL_ID, Constants.ANIME_CURRENT_PAGE+1 + "");
-            }else {
-                AllAnimeParser.getEpisodes(Constants.ANIME_ID, true);
-            }
+            String page = Constants.ANIME_CURRENT_PAGE + 1 + "";
+            AllAnimeParser.getEpisodes(
+                    Constants.ANIME_ID,
+                    !isJikan,
+                    page
+            );
             handler.post(() -> {
-                adapter = new EpisodeAdapter(
-                        EpisodeActivity.this,
-                        getSupportFragmentManager(),
-                        layout,
-                        isJikan
-                );
-                manager = new LinearLayoutManager(EpisodeActivity.this);
-                episodeRecycler.setLayoutManager(manager);
-                episodeRecycler.setAdapter(adapter);
-
+                setEpisodeAdapter();
+                setEpisodeGroupAdapter();
                 episodeProgress.setVisibility(View.GONE);
-
             });
         });
     }
 
+    private void setEpisodeGroupAdapter() {
+        int pages = getPages(isJikan);
+        if (pages != 1) {
+            groupAdapter = new EpisodeGroupAdapter(
+                    pages,
+                    isJikan,
+                    episodeRecycler,
+                    EpisodeActivity.this,
+                    getSupportFragmentManager(),
+                    layout
+            );
+            groupManager = new GridLayoutManager(EpisodeActivity.this, 1, GridLayoutManager.HORIZONTAL, false);
+            episodeGroupRecycler.setLayoutManager(groupManager);
+            episodeGroupRecycler.setAdapter(groupAdapter);
+        }
+    }
+
+    private void setEpisodeAdapter() {
+        adapter = new EpisodeAdapter(
+                EpisodeActivity.this,
+                getSupportFragmentManager(),
+                layout,
+                isJikan
+        );
+        manager = new LinearLayoutManager(EpisodeActivity.this, LinearLayoutManager.VERTICAL, false);
+        episodeRecycler.setLayoutManager(manager);
+        episodeRecycler.setAdapter(adapter);
+    }
+
+    private int getPages(boolean isJikan) {
+        if (isJikan) {
+            return Constants.ANIME_TOTAL_PAGES;
+        } else {
+            if (Constants.ALL_ANIME_TOTAL_EPISODES % 100 == 0) {
+                return Constants.ALL_ANIME_TOTAL_EPISODES / 100;
+            } else {
+                return (Constants.ALL_ANIME_TOTAL_EPISODES / 100) + 1;
+            }
+        }
+    }
 
 }

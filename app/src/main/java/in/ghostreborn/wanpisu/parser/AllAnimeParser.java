@@ -61,7 +61,7 @@ public class AllAnimeParser {
      *
      * @param allAnimeID - AllAnime anime ID
      */
-    public static void getEpisodes(String allAnimeID, boolean getDetails) {
+    public static void getEpisodes(String allAnimeID, boolean getDetails, String page) {
         Constants.episodes = new ArrayList<>();
         OkHttpClient client = new OkHttpClient();
 
@@ -94,11 +94,10 @@ public class AllAnimeParser {
                 Constants.episodes.add(episodes.getString(i));
             }
 
-            Constants.ALL_ANIME_TOTAL_EPISODES = Constants.episodes.size();
+            Constants.ALL_ANIME_TOTAL_EPISODES = episodes.length();
 
             if (!getDetails) {
-                JikanParser.parseAnimeFull(Constants.ANIME_MAL_ID);
-                JikanParser.getEpisodes(Constants.ANIME_MAL_ID, "1");
+                JikanParser.getEpisodes(Constants.ANIME_MAL_ID, page);
                 return;
             }
 

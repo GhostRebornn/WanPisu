@@ -26,7 +26,6 @@ import in.ghostreborn.wanpisu.R;
 import in.ghostreborn.wanpisu.constants.Constants;
 import in.ghostreborn.wanpisu.database.UserAnimeDatabase;
 import in.ghostreborn.wanpisu.model.Jikan;
-import in.ghostreborn.wanpisu.parser.AllAnimeParser;
 import in.ghostreborn.wanpisu.ui.EpisodeActivity;
 
 public class JikanFragment extends Fragment {
@@ -94,34 +93,31 @@ public class JikanFragment extends Fragment {
     private void getJikans() {
         ExecutorService executor = Executors.newSingleThreadExecutor();
         Handler handler = new Handler(Looper.getMainLooper());
-        executor.execute(() -> {
-            AllAnimeParser.getEpisodes(Constants.ANIME_ID, false);
-            handler.post(() -> {
-                Jikan jikan = Constants.jikan;
-                Picasso.get().load(jikan.getThumbnail()).into(jikanAnimeImageView);
-                jikanAnimeNameText.setText(jikan.getTitle());
-                StringBuilder titles = new StringBuilder();
-                for (String title: jikan.getTitles()){
-                    titles.append(title).append(" ");
-                }
-                jikanAnimeTitlesText.setText(titles);
-                jikanAnimeTypeText.setText(jikan.getType());
-                jikanAnimeSourceText.setText(jikan.getSource());
-                jikanAnimeEpisodesText.setText(jikan.getEpisodes());
-                jikanAnimeStatusText.setText(jikan.getStatus());
-                jikanAnimeAiredText.setText(jikan.getAired());
-                jikanAnimeDurationText.setText(jikan.getDuration());
-                jikanAnimeRatingText.setText(jikan.getRating());
-                jikanAnimeScoreText.setText(jikan.getScore());
-                jikanAnimeSeasonText.setText(jikan.getSeason());
-                jikanAnimeBroadcastText.setText(jikan.getBroadcast());
-                jikanAnimeSynopsisText.setText(jikan.getSynopsis());
-                watchFloatingButton.setOnClickListener(v -> requireContext().startActivity(
-                        new Intent(getContext(), EpisodeActivity.class)
-                ));
-                jikanFragmentProgress.setVisibility(View.GONE);
-            });
-        });
+        executor.execute(() -> handler.post(() -> {
+            Jikan jikan = Constants.jikan;
+            Picasso.get().load(jikan.getThumbnail()).into(jikanAnimeImageView);
+            jikanAnimeNameText.setText(jikan.getTitle());
+            StringBuilder titles = new StringBuilder();
+            for (String title: jikan.getTitles()){
+                titles.append(title).append(" ");
+            }
+            jikanAnimeTitlesText.setText(titles);
+            jikanAnimeTypeText.setText(jikan.getType());
+            jikanAnimeSourceText.setText(jikan.getSource());
+            jikanAnimeEpisodesText.setText(jikan.getEpisodes());
+            jikanAnimeStatusText.setText(jikan.getStatus());
+            jikanAnimeAiredText.setText(jikan.getAired());
+            jikanAnimeDurationText.setText(jikan.getDuration());
+            jikanAnimeRatingText.setText(jikan.getRating());
+            jikanAnimeScoreText.setText(jikan.getScore());
+            jikanAnimeSeasonText.setText(jikan.getSeason());
+            jikanAnimeBroadcastText.setText(jikan.getBroadcast());
+            jikanAnimeSynopsisText.setText(jikan.getSynopsis());
+            watchFloatingButton.setOnClickListener(v -> requireContext().startActivity(
+                    new Intent(getContext(), EpisodeActivity.class)
+            ));
+            jikanFragmentProgress.setVisibility(View.GONE);
+        }));
     }
 
 }

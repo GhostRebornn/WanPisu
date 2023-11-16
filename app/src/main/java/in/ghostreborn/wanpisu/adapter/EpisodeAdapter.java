@@ -49,7 +49,7 @@ public class EpisodeAdapter extends RecyclerView.Adapter<EpisodeAdapter.ViewHold
         String episodeText;
         if (isJikan) {
             episode = Constants.jikanEpisodes.get(pos);
-            episodeNumber = Integer.parseInt(Constants.episodes.get(pos)) + Constants.ALL_ANIME_EPISODE_ADD + "";
+            episodeNumber = Integer.parseInt(Constants.episodes.get(pos)) + (Constants.ANIME_CURRENT_PAGE * 100) + "";
             episodeText = episode;
         } else {
             episodeNumber = Constants.episodes.get(pos);
