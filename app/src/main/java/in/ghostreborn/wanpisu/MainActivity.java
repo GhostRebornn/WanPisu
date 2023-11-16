@@ -12,9 +12,6 @@ import in.ghostreborn.wanpisu.fragment.UserAnimeFragment;
 
 public class MainActivity extends AppCompatActivity {
 
-    // TODO show number of pages on bottom of screen in
-    //  rounded boxes with arrows to navigate just like in websites
-
     Fragment fragment;
     int previouslySelected = 0;
 
