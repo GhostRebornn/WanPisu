@@ -3,6 +3,7 @@ package in.ghostreborn.wanpisu.constants;
 import java.util.ArrayList;
 
 import in.ghostreborn.wanpisu.model.AllAnime;
+import in.ghostreborn.wanpisu.model.AnimeDetails;
 import in.ghostreborn.wanpisu.model.Server;
 
 public class Constants {
@@ -19,6 +20,7 @@ public class Constants {
     public static int ANIME_CURRENT_PAGE = 0;
 
     public static AllAnime allAnime;
+    public static AnimeDetails animeDetails;
 
     // AllAnime ID
     public static String ANIME_ID = "";

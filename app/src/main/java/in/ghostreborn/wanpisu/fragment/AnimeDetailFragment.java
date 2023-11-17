@@ -25,7 +25,7 @@ import java.util.concurrent.Executors;
 import in.ghostreborn.wanpisu.R;
 import in.ghostreborn.wanpisu.constants.Constants;
 import in.ghostreborn.wanpisu.database.UserAnimeDatabase;
-import in.ghostreborn.wanpisu.model.AllAnime;
+import in.ghostreborn.wanpisu.parser.AllAnimeParser;
 import in.ghostreborn.wanpisu.ui.EpisodeActivity;
 
 public class AnimeDetailFragment extends Fragment {
@@ -52,9 +52,9 @@ public class AnimeDetailFragment extends Fragment {
             UserAnimeDatabase database = new UserAnimeDatabase(getContext());
             SQLiteDatabase db = database.getWritableDatabase();
             ContentValues values = new ContentValues();
-            values.put(Constants.TABLE_ANIME_ID, Constants.allAnime.getId());
-            values.put(Constants.TABLE_ANIME_NAME, Constants.allAnime.getName());
-            values.put(Constants.TABLE_ANIME_THUMBNAIL, Constants.allAnime.getThumbnail());
+            values.put(Constants.TABLE_ANIME_ID, Constants.ANIME_ID);
+            values.put(Constants.TABLE_ANIME_NAME, Constants.animeDetails.getEnglishName());
+            values.put(Constants.TABLE_ANIME_THUMBNAIL, Constants.animeDetails.getThumbnail());
             long rowID = db.insert(Constants.TABLE_NAME, null, values);
             Log.e("TAG", "rowID: " + rowID);
             db.close();
@@ -69,15 +69,17 @@ public class AnimeDetailFragment extends Fragment {
     private void getDetails() {
         ExecutorService executor = Executors.newSingleThreadExecutor();
         Handler handler = new Handler(Looper.getMainLooper());
-        executor.execute(() -> handler.post(() -> {
-            AllAnime allAnime = Constants.allAnime;
-            detailAnimeNameText.setText(allAnime.getName());
-            Picasso.get().load(allAnime.getThumbnail()).into(detailAnimeImageView);
-            detailWatchFloatingButton.setOnClickListener(v -> requireContext().startActivity(
-                    new Intent(getContext(), EpisodeActivity.class)
-            ));
-            detailsFragmentProgress.setVisibility(View.GONE);
-        }));
+        executor.execute(() -> {
+            AllAnimeParser.getAnimeDetails(Constants.ANIME_ID);
+            handler.post(() -> {
+                detailAnimeNameText.setText(Constants.animeDetails.getEnglishName());
+                Picasso.get().load(Constants.animeDetails.getThumbnail()).into(detailAnimeImageView);
+                detailWatchFloatingButton.setOnClickListener(v -> requireContext().startActivity(
+                        new Intent(getContext(), EpisodeActivity.class)
+                ));
+                detailsFragmentProgress.setVisibility(View.GONE);
+            });
+        });
     }
 
 }

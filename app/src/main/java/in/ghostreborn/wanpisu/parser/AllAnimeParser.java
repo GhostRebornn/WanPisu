@@ -13,6 +13,7 @@ import java.util.Objects;
 
 import in.ghostreborn.wanpisu.constants.Constants;
 import in.ghostreborn.wanpisu.model.AllAnime;
+import in.ghostreborn.wanpisu.model.AnimeDetails;
 import in.ghostreborn.wanpisu.model.Server;
 import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
@@ -56,14 +57,15 @@ public class AllAnimeParser {
         }
     }
 
-    public static String getAnimeDetails(String allAnimeID){
+    public static void getAnimeDetails(String allAnimeID) {
         OkHttpClient client = new OkHttpClient();
 
         String queryParameter = "query ($showId: String!) { show( _id: $showId ) { " +
+                "_id, " +
+                "name, " +
                 "englishName, " +
-                "characters, " +
-                "relatedShows, " +
-                "lastEpisodeInfo " +
+                "thumbnail, " +
+                "relatedShows " +
                 " }}";
 
         HttpUrl.Builder urlBuilder = Objects.requireNonNull(HttpUrl.parse("https://api.allanime.day/api")).newBuilder();
@@ -75,12 +77,44 @@ public class AllAnimeParser {
 
         try (Response response = client.newCall(request).execute()) {
             assert response.body() != null;
-            return response.body().string();
-        } catch (IOException e) {
+
+            JSONObject showObject = new JSONObject(response.body().string())
+                    .getJSONObject("data")
+                    .getJSONObject("show");
+
+            String name = showObject.getString("name");
+            String englishName = showObject.getString("englishName");
+            if (!englishName.equals("null")){
+                name = englishName;
+            }
+
+            String thumbnail = showObject.getString("thumbnail");
+            String sequel = "";
+            String prequel = "";
+            if (showObject.has("relation")){
+                JSONArray relationArray = showObject.getJSONArray("relation");
+                for (int i = 0; i < relationArray.length(); i++) {
+                    JSONObject relationObject = relationArray.getJSONObject(i);
+                    String relation = relationObject.getString("relation");
+                    if (relation.equals("prequel")){
+                        prequel = relationObject.getString("showId");
+                    }
+                    if (relation.equals("sequel")){
+                        sequel = relationObject.getString("showId");
+                    }
+                }
+            }
+
+            Constants.animeDetails = new AnimeDetails(
+                    name,
+                    thumbnail,
+                    sequel,
+                    prequel
+            );
+
+        } catch (IOException | JSONException e) {
             e.printStackTrace();
         }
-
-        return "NULL";
 
     }
 
