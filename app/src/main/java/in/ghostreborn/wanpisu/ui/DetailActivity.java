@@ -8,6 +8,7 @@ import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -31,8 +32,8 @@ public class DetailActivity extends AppCompatActivity {
 
     TextView detailAnimeNameText;
     TextView detailAnimeSynopsisText;
-    TextView detailSequelText;
-    TextView detailPrequelText;
+    Button detailSequelButton;
+    Button detailPrequelButton;
     ImageView detailAnimeImageView;
     FloatingActionButton detailWatchFloatingButton;
     FloatingActionButton detailAddFloatingButton;
@@ -54,8 +55,8 @@ public class DetailActivity extends AppCompatActivity {
 
     private void findViews(){
         detailAnimeNameText = findViewById(R.id.detail_anime_name_text);
-        detailPrequelText = findViewById(R.id.detail_prequel_text);
-        detailSequelText = findViewById(R.id.detail_sequel_text);
+        detailPrequelButton = findViewById(R.id.details_prequel_button);
+        detailSequelButton = findViewById(R.id.details_sequel_button);
         detailAnimeSynopsisText = findViewById(R.id.detail_anime_synopsis_text);
         detailAnimeImageView = findViewById(R.id.detail_anime_image_view);
         detailWatchFloatingButton = findViewById(R.id.detail_watch_floating_button);
@@ -103,8 +104,28 @@ public class DetailActivity extends AppCompatActivity {
             AllAnimeParser.getAnimeDetails(Constants.ANIME_ID);
             handler.post(() -> {
                 detailAnimeNameText.setText(Constants.animeDetails.getEnglishName());
-                detailPrequelText.setText(Constants.animeDetails.getPrequel());
-                detailSequelText.setText(Constants.animeDetails.getSequel());
+                String prequel = Constants.animeDetails.getPrequel();
+                String sequel = Constants.animeDetails.getSequel();
+                if (!prequel.equals("")){
+                    detailPrequelButton.setOnClickListener(v -> {
+                        Constants.ANIME_ID = Constants.animeDetails.getPrequel();
+                        startActivity(new Intent(
+                                DetailActivity.this,
+                                DetailActivity.class
+                        ));
+                        finish();
+                    });
+                }
+                if (!sequel.equals("")){
+                    detailSequelButton.setOnClickListener(v -> {
+                        Constants.ANIME_ID = Constants.animeDetails.getSequel();
+                        startActivity(new Intent(
+                                DetailActivity.this,
+                                DetailActivity.class
+                        ));
+                        finish();
+                    });
+                }
                 Picasso.get().load(Constants.animeDetails.getThumbnail()).into(detailAnimeImageView);
                 detailWatchFloatingButton.setOnClickListener(v -> startActivity(
                         new Intent(DetailActivity.this, EpisodeActivity.class)
