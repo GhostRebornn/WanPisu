@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -23,6 +24,7 @@ import java.util.concurrent.Executors;
 import in.ghostreborn.wanpisu.R;
 import in.ghostreborn.wanpisu.constants.Constants;
 import in.ghostreborn.wanpisu.database.UserAnimeDatabase;
+import in.ghostreborn.wanpisu.helper.WanPisuUtils;
 import in.ghostreborn.wanpisu.parser.AllAnimeParser;
 
 public class DetailActivity extends AppCompatActivity {
@@ -45,9 +47,35 @@ public class DetailActivity extends AppCompatActivity {
         detailWatchFloatingButton = findViewById(R.id.detail_watch_floating_button);
         detailAddFloatingButton = findViewById(R.id.detail_add_floating_button);
 
-        detailAddFloatingButton.setOnClickListener(v -> {
-            UserAnimeDatabase database = new UserAnimeDatabase(DetailActivity.this);
-            SQLiteDatabase db = database.getWritableDatabase();
+        detailAddFloatingButton.setOnClickListener(v -> addAnime());
+
+        detailsFragmentProgress = findViewById(R.id.detail_fragment_progress);
+
+        checkAnime();
+        getDetails();
+    }
+
+    private void checkAnime(){
+        try(UserAnimeDatabase database = new UserAnimeDatabase(DetailActivity.this)){
+            if (WanPisuUtils.checkAnime(Constants.ANIME_ID, database.getReadableDatabase())){
+                detailAddFloatingButton.setImageResource(R.drawable.minus);
+            }else {
+                detailAddFloatingButton.setImageResource(R.drawable.plus);
+            }
+        }
+    }
+
+    private void addAnime(){
+        UserAnimeDatabase database = new UserAnimeDatabase(DetailActivity.this);
+        SQLiteDatabase db = database.getWritableDatabase();
+        if(WanPisuUtils.checkAnime(Constants.ANIME_ID, database.getReadableDatabase())){
+            String whereClause = Constants.TABLE_ANIME_ID + " = ?";
+            String[] whereArgs = {Constants.ANIME_ID};
+            db.delete(Constants.TABLE_NAME, whereClause, whereArgs);
+            db.close();
+            Toast.makeText(DetailActivity.this, "Removed!", Toast.LENGTH_SHORT).show();
+            detailAddFloatingButton.setImageResource(R.drawable.plus);
+        }else {
             ContentValues values = new ContentValues();
             values.put(Constants.TABLE_ANIME_ID, Constants.ANIME_ID);
             values.put(Constants.TABLE_ANIME_NAME, Constants.animeDetails.getEnglishName());
@@ -55,11 +83,10 @@ public class DetailActivity extends AppCompatActivity {
             long rowID = db.insert(Constants.TABLE_NAME, null, values);
             Log.e("TAG", "rowID: " + rowID);
             db.close();
-        });
+            Toast.makeText(DetailActivity.this, "Added!", Toast.LENGTH_SHORT).show();
+            detailAddFloatingButton.setImageResource(R.drawable.minus);
+        }
 
-        detailsFragmentProgress = findViewById(R.id.detail_fragment_progress);
-
-        getDetails();
     }
 
     private void getDetails() {
