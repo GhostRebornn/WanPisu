@@ -13,6 +13,7 @@ import java.util.Objects;
 
 import in.ghostreborn.wanpisu.constants.Constants;
 import in.ghostreborn.wanpisu.model.AllAnime;
+import in.ghostreborn.wanpisu.model.AnimeCharacter;
 import in.ghostreborn.wanpisu.model.AnimeDetails;
 import in.ghostreborn.wanpisu.model.Server;
 import okhttp3.HttpUrl;
@@ -63,10 +64,13 @@ public class AllAnimeParser {
         String queryParameter = "query ($showId: String!) { show( _id: $showId ) { " +
                 "_id, " +
                 "name, " +
+                "characters, " +
                 "englishName, " +
                 "thumbnail, " +
                 "relatedShows " +
                 " }}";
+
+        ArrayList<AnimeCharacter> animeCharacters = new ArrayList<>();
 
         HttpUrl.Builder urlBuilder = Objects.requireNonNull(HttpUrl.parse("https://api.allanime.day/api")).newBuilder();
         urlBuilder.addQueryParameter("variables", "{\"showId\":\"" + allAnimeID + "\"}");
@@ -107,11 +111,23 @@ public class AllAnimeParser {
                 }
             }
 
+            JSONArray charactersArray = showObject.getJSONArray("characters");
+            for (int i=0; i<charactersArray.length(); i++){
+                JSONObject charactersObject = charactersArray.getJSONObject(i);
+                String role = charactersObject.getString("role");
+                String characterName = charactersObject.getJSONObject("name")
+                        .getString("full");
+                String image = charactersObject.getJSONObject("image")
+                        .getString("large");
+                animeCharacters.add(new AnimeCharacter(role, characterName, image));
+            }
+
             Constants.animeDetails = new AnimeDetails(
                     name,
                     thumbnail,
                     sequel,
-                    prequel
+                    prequel,
+                    animeCharacters
             );
 
         } catch (IOException | JSONException e) {

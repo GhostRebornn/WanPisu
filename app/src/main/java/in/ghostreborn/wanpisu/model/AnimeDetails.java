@@ -1,22 +1,31 @@
 package in.ghostreborn.wanpisu.model;
 
+import java.util.ArrayList;
+
 public class AnimeDetails {
 
     String englishName;
     String thumbnail;
     String sequel;
     String prequel;
+    ArrayList<AnimeCharacter> animeCharacters;
 
     public AnimeDetails(
             String englishName,
             String thumbnail,
             String sequel,
-            String prequel
+            String prequel,
+            ArrayList<AnimeCharacter> animeCharacters
     ) {
         this.englishName = englishName;
         this.thumbnail = thumbnail;
         this.sequel = sequel;
         this.prequel = prequel;
+        this.animeCharacters = animeCharacters;
+    }
+
+    public ArrayList<AnimeCharacter> getAnimeCharacters() {
+        return animeCharacters;
     }
 
     public String getThumbnail() {

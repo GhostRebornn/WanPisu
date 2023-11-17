@@ -1,18 +1,14 @@
 package in.ghostreborn.wanpisu.ui;
 
-import android.content.ContentValues;
 import android.content.Intent;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -46,7 +42,7 @@ public class DetailActivity extends AppCompatActivity {
 
         findViews();
 
-        detailAddFloatingButton.setOnClickListener(v -> addAnime());
+        detailAddFloatingButton.setOnClickListener(v -> WanPisuUtils.addAnime(DetailActivity.this, detailAddFloatingButton));
         detailsFragmentProgress = findViewById(R.id.detail_fragment_progress);
 
         checkAnime();
@@ -71,30 +67,6 @@ public class DetailActivity extends AppCompatActivity {
                 detailAddFloatingButton.setImageResource(R.drawable.plus);
             }
         }
-    }
-
-    private void addAnime(){
-        UserAnimeDatabase database = new UserAnimeDatabase(DetailActivity.this);
-        SQLiteDatabase db = database.getWritableDatabase();
-        if(WanPisuUtils.checkAnime(Constants.ANIME_ID, database.getReadableDatabase())){
-            String whereClause = Constants.TABLE_ANIME_ID + " = ?";
-            String[] whereArgs = {Constants.ANIME_ID};
-            db.delete(Constants.TABLE_NAME, whereClause, whereArgs);
-            db.close();
-            Toast.makeText(DetailActivity.this, "Removed!", Toast.LENGTH_SHORT).show();
-            detailAddFloatingButton.setImageResource(R.drawable.plus);
-        }else {
-            ContentValues values = new ContentValues();
-            values.put(Constants.TABLE_ANIME_ID, Constants.ANIME_ID);
-            values.put(Constants.TABLE_ANIME_NAME, Constants.animeDetails.getEnglishName());
-            values.put(Constants.TABLE_ANIME_THUMBNAIL, Constants.animeDetails.getThumbnail());
-            long rowID = db.insert(Constants.TABLE_NAME, null, values);
-            Log.e("TAG", "rowID: " + rowID);
-            db.close();
-            Toast.makeText(DetailActivity.this, "Added!", Toast.LENGTH_SHORT).show();
-            detailAddFloatingButton.setImageResource(R.drawable.minus);
-        }
-
     }
 
     private void getDetails() {
