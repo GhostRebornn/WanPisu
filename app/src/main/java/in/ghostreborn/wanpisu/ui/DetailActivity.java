@@ -107,6 +107,7 @@ public class DetailActivity extends AppCompatActivity {
                 String prequel = Constants.animeDetails.getPrequel();
                 String sequel = Constants.animeDetails.getSequel();
                 if (!prequel.equals("")){
+                    detailPrequelButton.setVisibility(View.VISIBLE);
                     detailPrequelButton.setOnClickListener(v -> {
                         Constants.ANIME_ID = Constants.animeDetails.getPrequel();
                         startActivity(new Intent(
@@ -117,6 +118,7 @@ public class DetailActivity extends AppCompatActivity {
                     });
                 }
                 if (!sequel.equals("")){
+                    detailSequelButton.setVisibility(View.VISIBLE);
                     detailSequelButton.setOnClickListener(v -> {
                         Constants.ANIME_ID = Constants.animeDetails.getSequel();
                         startActivity(new Intent(
