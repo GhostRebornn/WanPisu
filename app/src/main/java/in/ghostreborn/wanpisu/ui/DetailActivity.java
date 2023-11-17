@@ -31,6 +31,8 @@ public class DetailActivity extends AppCompatActivity {
 
     TextView detailAnimeNameText;
     TextView detailAnimeSynopsisText;
+    TextView detailSequelText;
+    TextView detailPrequelText;
     ImageView detailAnimeImageView;
     FloatingActionButton detailWatchFloatingButton;
     FloatingActionButton detailAddFloatingButton;
@@ -41,18 +43,23 @@ public class DetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
 
-        detailAnimeNameText = findViewById(R.id.detail_anime_name_text);
-        detailAnimeSynopsisText = findViewById(R.id.detail_anime_synopsis_text);
-        detailAnimeImageView = findViewById(R.id.detail_anime_image_view);
-        detailWatchFloatingButton = findViewById(R.id.detail_watch_floating_button);
-        detailAddFloatingButton = findViewById(R.id.detail_add_floating_button);
+        findViews();
 
         detailAddFloatingButton.setOnClickListener(v -> addAnime());
-
         detailsFragmentProgress = findViewById(R.id.detail_fragment_progress);
 
         checkAnime();
         getDetails();
+    }
+
+    private void findViews(){
+        detailAnimeNameText = findViewById(R.id.detail_anime_name_text);
+        detailPrequelText = findViewById(R.id.detail_prequel_text);
+        detailSequelText = findViewById(R.id.detail_sequel_text);
+        detailAnimeSynopsisText = findViewById(R.id.detail_anime_synopsis_text);
+        detailAnimeImageView = findViewById(R.id.detail_anime_image_view);
+        detailWatchFloatingButton = findViewById(R.id.detail_watch_floating_button);
+        detailAddFloatingButton = findViewById(R.id.detail_add_floating_button);
     }
 
     private void checkAnime(){
@@ -96,6 +103,8 @@ public class DetailActivity extends AppCompatActivity {
             AllAnimeParser.getAnimeDetails(Constants.ANIME_ID);
             handler.post(() -> {
                 detailAnimeNameText.setText(Constants.animeDetails.getEnglishName());
+                detailPrequelText.setText(Constants.animeDetails.getPrequel());
+                detailSequelText.setText(Constants.animeDetails.getSequel());
                 Picasso.get().load(Constants.animeDetails.getThumbnail()).into(detailAnimeImageView);
                 detailWatchFloatingButton.setOnClickListener(v -> startActivity(
                         new Intent(DetailActivity.this, EpisodeActivity.class)

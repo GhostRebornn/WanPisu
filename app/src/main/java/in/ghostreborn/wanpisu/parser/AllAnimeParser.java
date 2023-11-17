@@ -88,11 +88,13 @@ public class AllAnimeParser {
                 name = englishName;
             }
 
+            Log.e("TAG", showObject.toString());
+
             String thumbnail = showObject.getString("thumbnail");
             String sequel = "";
             String prequel = "";
-            if (showObject.has("relation")){
-                JSONArray relationArray = showObject.getJSONArray("relation");
+            if (showObject.has("relatedShows")){
+                JSONArray relationArray = showObject.getJSONArray("relatedShows");
                 for (int i = 0; i < relationArray.length(); i++) {
                     JSONObject relationObject = relationArray.getJSONObject(i);
                     String relation = relationObject.getString("relation");
