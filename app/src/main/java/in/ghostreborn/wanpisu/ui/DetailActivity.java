@@ -11,6 +11,8 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.squareup.picasso.Picasso;
@@ -19,6 +21,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import in.ghostreborn.wanpisu.R;
+import in.ghostreborn.wanpisu.adapter.CharacterAdapter;
 import in.ghostreborn.wanpisu.constants.Constants;
 import in.ghostreborn.wanpisu.database.UserAnimeDatabase;
 import in.ghostreborn.wanpisu.helper.WanPisuUtils;
@@ -34,6 +37,7 @@ public class DetailActivity extends AppCompatActivity {
     FloatingActionButton detailWatchFloatingButton;
     FloatingActionButton detailAddFloatingButton;
     ProgressBar detailsFragmentProgress;
+    RecyclerView charactersRecycler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +61,7 @@ public class DetailActivity extends AppCompatActivity {
         detailAnimeImageView = findViewById(R.id.detail_anime_image_view);
         detailWatchFloatingButton = findViewById(R.id.detail_watch_floating_button);
         detailAddFloatingButton = findViewById(R.id.detail_add_floating_button);
+        charactersRecycler = findViewById(R.id.characters_recycler);
     }
 
     private void checkAnime(){
@@ -105,6 +110,11 @@ public class DetailActivity extends AppCompatActivity {
                         new Intent(DetailActivity.this, EpisodeActivity.class)
                 ));
                 detailsFragmentProgress.setVisibility(View.GONE);
+
+                CharacterAdapter adapter = new CharacterAdapter(Constants.animeDetails.getAnimeCharacters());
+                charactersRecycler.setLayoutManager(new LinearLayoutManager(DetailActivity.this, LinearLayoutManager.HORIZONTAL, false));
+                charactersRecycler.setAdapter(adapter);
+
             });
         });
     }
