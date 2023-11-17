@@ -56,6 +56,34 @@ public class AllAnimeParser {
         }
     }
 
+    public static String getAnimeDetails(String allAnimeID){
+        OkHttpClient client = new OkHttpClient();
+
+        String queryParameter = "query ($showId: String!) { show( _id: $showId ) { " +
+                "englishName, " +
+                "characters, " +
+                "relatedShows, " +
+                "lastEpisodeInfo " +
+                " }}";
+
+        HttpUrl.Builder urlBuilder = Objects.requireNonNull(HttpUrl.parse("https://api.allanime.day/api")).newBuilder();
+        urlBuilder.addQueryParameter("variables", "{\"showId\":\"" + allAnimeID + "\"}");
+        urlBuilder.addQueryParameter("query", queryParameter);
+        String url = urlBuilder.build().toString();
+
+        Request request = new Request.Builder().url(url).addHeader("User-Agent", "Mozilla/5.0 (Windows NT 6.1; Win64; rv:109.0) Gecko/20100101 Firefox/109.0").addHeader("Referer", "https://allanime.to").addHeader("Cipher", "AES256-SHA256").build();
+
+        try (Response response = client.newCall(request).execute()) {
+            assert response.body() != null;
+            return response.body().string();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return "NULL";
+
+    }
+
     /**
      * AllAnime api to parse available episodes of anime
      *

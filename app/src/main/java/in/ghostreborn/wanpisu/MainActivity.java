@@ -27,16 +27,16 @@ public class MainActivity extends AppCompatActivity {
         navigationView.setOnItemSelectedListener(item -> {
             int itemId = item.getItemId();
 
-            if (itemId == previouslySelected){
+            if (itemId == previouslySelected) {
                 return true;
             }
 
-            if (itemId == R.id.navigation_home){
+            if (itemId == R.id.navigation_home) {
                 fragment = new AnimeSearchFragment();
                 getSupportFragmentManager().beginTransaction()
                         .replace(R.id.main_fragment_container, fragment)
                         .commit();
-            }else if (itemId == R.id.navigation_user){
+            } else if (itemId == R.id.navigation_user) {
                 fragment = new UserAnimeFragment();
                 getSupportFragmentManager().beginTransaction()
                         .replace(R.id.main_fragment_container, fragment)
