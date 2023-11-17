@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import in.ghostreborn.wanpisu.fragment.AnimeSearchFragment;
+import in.ghostreborn.wanpisu.fragment.SettingsFragment;
 import in.ghostreborn.wanpisu.fragment.UserAnimeFragment;
 
 public class MainActivity extends AppCompatActivity {
@@ -38,6 +39,11 @@ public class MainActivity extends AppCompatActivity {
                         .commit();
             } else if (itemId == R.id.navigation_user) {
                 fragment = new UserAnimeFragment();
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.main_fragment_container, fragment)
+                        .commit();
+            }else if (itemId == R.id.navigation_settings) {
+                fragment = new SettingsFragment();
                 getSupportFragmentManager().beginTransaction()
                         .replace(R.id.main_fragment_container, fragment)
                         .commit();

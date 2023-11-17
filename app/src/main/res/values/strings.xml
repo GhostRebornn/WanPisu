@@ -20,4 +20,5 @@
     <string name="select_server">Select Server</string>
     <string name="move_button">Move Button</string>
     <string name="info">INFO</string>
+    <string name="settings">Settings</string>
 </resources>

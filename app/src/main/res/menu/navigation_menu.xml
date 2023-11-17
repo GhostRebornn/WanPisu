@@ -8,4 +8,8 @@
         android:id="@+id/navigation_home"
         android:title="@string/home"
         android:icon="@drawable/home" />
+    <item
+        android:id="@+id/navigation_settings"
+        android:title="@string/settings"
+        android:icon="@drawable/settings" />
 </menu>
