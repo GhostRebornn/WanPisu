@@ -67,7 +67,17 @@ public class AllAnimeAdapter extends RecyclerView.Adapter<AllAnimeAdapter.ViewHo
 
     private void itemViewClickListener(AllAnimeAdapter.ViewHolder holder){
         if (holder.animeInfoLinearLayout.getVisibility() == View.VISIBLE){
-            holder.animeInfoLinearLayout.setVisibility(View.GONE);
+            holder.animeInfoLinearLayout.animate()
+                    .alpha(0.0f)
+                    .setDuration(250)
+                    .setListener(new AnimatorListenerAdapter() {
+                        @Override
+                        public void onAnimationEnd(Animator animation) {
+                            super.onAnimationEnd(animation);
+                            holder.animeInfoLinearLayout.setVisibility(View.GONE);
+                        }
+                    })
+                    .start();
         }else {
             holder.animeInfoLinearLayout.animate()
                     .alpha(0.85f)
