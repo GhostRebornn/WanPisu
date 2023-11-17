@@ -15,6 +15,8 @@ public class MainActivity extends AppCompatActivity {
     Fragment fragment;
     int previouslySelected = 0;
 
+    // TODO jikan is dropped, so get episode title etc from AllAnime api
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,8 +47,5 @@ public class MainActivity extends AppCompatActivity {
         });
 
     }
-
-
-
 
 }

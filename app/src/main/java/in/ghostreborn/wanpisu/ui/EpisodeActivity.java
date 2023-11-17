@@ -52,11 +52,8 @@ public class EpisodeActivity extends AppCompatActivity {
         ExecutorService executor = Executors.newSingleThreadExecutor();
         Handler handler = new Handler(Looper.getMainLooper());
         executor.execute(() -> {
-            String page = Constants.ANIME_CURRENT_PAGE + 1 + "";
             AllAnimeParser.getEpisodes(
-                    Constants.ANIME_ID,
-                    !isJikan,
-                    page
+                    Constants.ANIME_ID
             );
             handler.post(() -> {
                 setEpisodeAdapter();
@@ -87,8 +84,7 @@ public class EpisodeActivity extends AppCompatActivity {
         adapter = new EpisodeAdapter(
                 EpisodeActivity.this,
                 getSupportFragmentManager(),
-                layout,
-                isJikan
+                layout
         );
         manager = new LinearLayoutManager(EpisodeActivity.this, LinearLayoutManager.VERTICAL, false);
         episodeRecycler.setLayoutManager(manager);

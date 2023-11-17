@@ -19,7 +19,6 @@ import java.util.concurrent.Executors;
 
 import in.ghostreborn.wanpisu.R;
 import in.ghostreborn.wanpisu.constants.Constants;
-import in.ghostreborn.wanpisu.parser.JikanParser;
 
 public class EpisodeGroupAdapter extends RecyclerView.Adapter<EpisodeGroupAdapter.ViewHolder> {
 
@@ -61,25 +60,19 @@ public class EpisodeGroupAdapter extends RecyclerView.Adapter<EpisodeGroupAdapte
         holder.episodeGroupTextView.setOnClickListener(v -> {
             ExecutorService executor = Executors.newSingleThreadExecutor();
             Handler handler = new Handler(Looper.getMainLooper());
-            executor.execute(() -> {
+            executor.execute(() -> handler.post(() -> {
                 if (isJikan) {
-                    JikanParser.getEpisodes(Constants.ANIME_MAL_ID, page);
+                    EpisodeAdapter adapter = new EpisodeAdapter(
+                            activity,
+                            fragmentManager,
+                            layout
+                    );
+                    LinearLayoutManager manager = new LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false);
+                    episodeRecycler.setLayoutManager(manager);
+                    episodeRecycler.setAdapter(adapter);
                 }
-                handler.post(() -> {
-                    if (isJikan) {
-                        EpisodeAdapter adapter = new EpisodeAdapter(
-                                activity,
-                                fragmentManager,
-                                layout,
-                                isJikan
-                        );
-                        LinearLayoutManager manager = new LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false);
-                        episodeRecycler.setLayoutManager(manager);
-                        episodeRecycler.setAdapter(adapter);
-                    }
-                    Constants.ANIME_CURRENT_PAGE = pos;
-                });
-            });
+                Constants.ANIME_CURRENT_PAGE = pos;
+            }));
         });
     }
 

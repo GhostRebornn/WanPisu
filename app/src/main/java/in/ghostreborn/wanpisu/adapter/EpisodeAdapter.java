@@ -25,11 +25,9 @@ public class EpisodeAdapter extends RecyclerView.Adapter<EpisodeAdapter.ViewHold
     Activity activity;
     FragmentManager fragmentManager;
     FrameLayout layout;
-    boolean isJikan;
 
-    public EpisodeAdapter(Activity activity, FragmentManager fragmentManager, FrameLayout layout, boolean isJikan) {
+    public EpisodeAdapter(Activity activity, FragmentManager fragmentManager, FrameLayout layout) {
         this.activity = activity;
-        this.isJikan = isJikan;
         this.fragmentManager = fragmentManager;
         this.layout = layout;
     }
@@ -47,15 +45,11 @@ public class EpisodeAdapter extends RecyclerView.Adapter<EpisodeAdapter.ViewHold
         String episodeNumber;
         String episode;
         String episodeText;
-        if (isJikan) {
-            episode = Constants.jikanEpisodes.get(pos);
-            episodeNumber = Integer.parseInt(Constants.episodes.get(pos)) + (Constants.ANIME_CURRENT_PAGE * 100) + "";
-            episodeText = episode;
-        } else {
-            episodeNumber = Constants.episodes.get(pos);
-            episode = Constants.episodes.get(pos);
-            episodeText = "Episode " + episode;
-        }
+
+        episodeNumber = Constants.episodes.get(pos);
+        episode = Constants.episodes.get(pos);
+        episodeText = "Episode " + episode;
+
         holder.animeTextView.setText(episodeText);
         holder.animeEpisodeTextView.setText(episodeNumber);
         holder.itemView.setOnClickListener(v -> {

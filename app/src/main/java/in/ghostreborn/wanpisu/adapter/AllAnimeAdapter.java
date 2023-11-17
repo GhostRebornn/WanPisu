@@ -48,23 +48,7 @@ public class AllAnimeAdapter extends RecyclerView.Adapter<AllAnimeAdapter.ViewHo
         AllAnime allAnime = allAnimes.get(position);
         holder.animeTextView.setText(allAnime.getName());
         Picasso.get().load(allAnime.getThumbnail()).into(holder.animeImageView);
-        holder.itemView.setOnClickListener(v -> {
-            if (holder.animeInfoLinearLayout.getVisibility() == View.VISIBLE){
-                holder.animeInfoLinearLayout.setVisibility(View.GONE);
-            }else {
-                holder.animeInfoLinearLayout.animate()
-                                .alpha(0.85f)
-                                        .setDuration(250)
-                        .setListener(new AnimatorListenerAdapter() {
-                            @Override
-                            public void onAnimationEnd(Animator animation) {
-                                super.onAnimationEnd(animation);
-                                holder.animeInfoLinearLayout.setVisibility(View.VISIBLE);
-                            }
-                        })
-                        .start();
-            }
-        });
+        holder.itemView.setOnClickListener(v -> itemViewClickListener(holder));
         holder.animeInfoButton.setOnClickListener(v -> {
             setupVariables(allAnime);
             Context context = holder.itemView.getContext();
@@ -79,6 +63,24 @@ public class AllAnimeAdapter extends RecyclerView.Adapter<AllAnimeAdapter.ViewHo
                     context, EpisodeActivity.class
             ));
         });
+    }
+
+    private void itemViewClickListener(AllAnimeAdapter.ViewHolder holder){
+        if (holder.animeInfoLinearLayout.getVisibility() == View.VISIBLE){
+            holder.animeInfoLinearLayout.setVisibility(View.GONE);
+        }else {
+            holder.animeInfoLinearLayout.animate()
+                    .alpha(0.85f)
+                    .setDuration(250)
+                    .setListener(new AnimatorListenerAdapter() {
+                        @Override
+                        public void onAnimationEnd(Animator animation) {
+                            super.onAnimationEnd(animation);
+                            holder.animeInfoLinearLayout.setVisibility(View.VISIBLE);
+                        }
+                    })
+                    .start();
+        }
     }
 
     private void setupVariables(AllAnime allAnime){

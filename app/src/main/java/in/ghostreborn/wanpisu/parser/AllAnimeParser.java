@@ -1,6 +1,7 @@
 package in.ghostreborn.wanpisu.parser;
 
 import android.net.Uri;
+import android.util.Log;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -41,6 +42,7 @@ public class AllAnimeParser {
             try (Response response = client.newCall(request).execute()) {
                 assert response.body() != null;
                 JSONArray edgesArray = new JSONObject(response.body().string()).getJSONObject("data").getJSONObject("shows").getJSONArray("edges");
+                Log.e("TAG", edgesArray.toString());
                 for (int i = 0; i < edgesArray.length(); i++) {
                     JSONObject edges = edgesArray.getJSONObject(i);
                     String animeID = edges.getString("_id");
@@ -61,7 +63,7 @@ public class AllAnimeParser {
      *
      * @param allAnimeID - AllAnime anime ID
      */
-    public static void getEpisodes(String allAnimeID, boolean getDetails, String page) {
+    public static void getEpisodes(String allAnimeID) {
         Constants.episodes = new ArrayList<>();
         OkHttpClient client = new OkHttpClient();
 
@@ -95,11 +97,6 @@ public class AllAnimeParser {
             }
 
             Constants.ALL_ANIME_TOTAL_EPISODES = episodes.length();
-
-            if (!getDetails) {
-                JikanParser.getEpisodes(Constants.ANIME_MAL_ID, page);
-                return;
-            }
 
             String name = showObject.getString("name");
             String thumbnail = showObject.getString("thumbnail");
