@@ -42,6 +42,8 @@ public class EpisodeActivity extends AppCompatActivity {
         episodeGroupRecycler = findViewById(R.id.episode_group_recycler);
         episodeProgress = findViewById(R.id.episode_progress);
 
+        Constants.ANIME_CURRENT_PAGE = 0;
+
         getEpisodes();
 
     }
