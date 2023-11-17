@@ -41,7 +41,7 @@ public class EpisodeAdapter extends RecyclerView.Adapter<EpisodeAdapter.ViewHold
 
     @Override
     public void onBindViewHolder(@NonNull EpisodeAdapter.ViewHolder holder, int position) {
-        int pos = holder.getAbsoluteAdapterPosition();
+        int pos = holder.getAbsoluteAdapterPosition() + (Constants.ANIME_CURRENT_PAGE * 100);
         String episodeNumber;
         String episode;
         String episodeText;
@@ -63,7 +63,11 @@ public class EpisodeAdapter extends RecyclerView.Adapter<EpisodeAdapter.ViewHold
 
     @Override
     public int getItemCount() {
-        return Constants.ALL_ANIME_TOTAL_EPISODES;
+        if (Constants.ANIME_CURRENT_PAGE + 1 < Constants.ANIME_TOTAL_PAGES) {
+            return 100;
+        } else {
+            return Constants.ALL_ANIME_TOTAL_EPISODES % 100;
+        }
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {

@@ -45,7 +45,7 @@ public class UserAnimeFragment extends Fragment {
                 String id = cursor.getString(0);
                 String anime = cursor.getString(1);
                 String thumbnail = cursor.getString(2);
-                Constants.userAnimes.add(new AllAnime(id, "",anime,thumbnail, ""));
+                Constants.userAnimes.add(new AllAnime(id,anime,thumbnail));
             }
             cursor.close();
         }finally {

@@ -23,7 +23,6 @@ import in.ghostreborn.wanpisu.parser.AllAnimeParser;
 
 public class EpisodeActivity extends AppCompatActivity {
 
-    boolean isJikan;
     FrameLayout layout;
     EpisodeAdapter adapter;
     EpisodeGroupAdapter groupAdapter;
@@ -42,7 +41,6 @@ public class EpisodeActivity extends AppCompatActivity {
         episodeRecycler = findViewById(R.id.episode_recycler);
         episodeGroupRecycler = findViewById(R.id.episode_group_recycler);
         episodeProgress = findViewById(R.id.episode_progress);
-        isJikan = !Constants.ANIME_MAL_ID.equals("null") && !Constants.ANIME_MAL_ID.equals("");
 
         getEpisodes();
 
@@ -64,11 +62,10 @@ public class EpisodeActivity extends AppCompatActivity {
     }
 
     private void setEpisodeGroupAdapter() {
-        int pages = getPages(isJikan);
+        int pages = getPages();
         if (pages != 1) {
             groupAdapter = new EpisodeGroupAdapter(
                     pages,
-                    isJikan,
                     episodeRecycler,
                     EpisodeActivity.this,
                     getSupportFragmentManager(),
@@ -91,16 +88,13 @@ public class EpisodeActivity extends AppCompatActivity {
         episodeRecycler.setAdapter(adapter);
     }
 
-    private int getPages(boolean isJikan) {
-        if (isJikan) {
-            return Constants.ANIME_TOTAL_PAGES;
+    private int getPages() {
+        if (Constants.ALL_ANIME_TOTAL_EPISODES % 100 == 0) {
+            Constants.ANIME_TOTAL_PAGES = Constants.ALL_ANIME_TOTAL_EPISODES / 100;
         } else {
-            if (Constants.ALL_ANIME_TOTAL_EPISODES % 100 == 0) {
-                return Constants.ALL_ANIME_TOTAL_EPISODES / 100;
-            } else {
-                return (Constants.ALL_ANIME_TOTAL_EPISODES / 100) + 1;
-            }
+            Constants.ANIME_TOTAL_PAGES = (Constants.ALL_ANIME_TOTAL_EPISODES / 100) + 1;
         }
+        return Constants.ANIME_TOTAL_PAGES;
     }
 
 }

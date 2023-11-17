@@ -22,7 +22,6 @@ public class Constants {
 
     // AllAnime ID
     public static String ANIME_ID = "";
-    public static String ANIME_MAL_ID = "";
     // Anime episode number
     public static String ANIME_EPISODE = "";
     // Anime server url

@@ -32,7 +32,6 @@ public class AllAnimeParser {
         OkHttpClient client = new OkHttpClient();
         String queryUrl = "https://api.allanime.day/api?variables=" + Uri.encode("{\"search\":{\"allowAdult\":true,\"allowUnknown\":true,\"query\":\"" + anime + "\"},\"limit\":39,\"page\":1,\"translationType\":\"sub\",\"countryOrigin\":\"JP\"}") + "&query=" + Uri.encode("query($search:SearchInput,$limit:Int,$page:Int,$translationType:VaildTranslationTypeEnumType,$countryOrigin:VaildCountryOriginEnumType){shows(search:$search,limit:$limit,page:$page,translationType:$translationType,countryOrigin:$countryOrigin){edges{" +
                 "_id, " +
-                "malId, " +
                 "name, " +
                 "thumbnail" +
                 "}}}");
@@ -46,10 +45,9 @@ public class AllAnimeParser {
                 for (int i = 0; i < edgesArray.length(); i++) {
                     JSONObject edges = edgesArray.getJSONObject(i);
                     String animeID = edges.getString("_id");
-                    String malId = edges.getString("malId");
                     String animeName = edges.getString("name");
                     String thumbnail = edges.getString("thumbnail");
-                    Constants.allAnimes.add(new AllAnime(animeID, malId, animeName, thumbnail, ""));
+                    Constants.allAnimes.add(new AllAnime(animeID, animeName, thumbnail));
                 }
             }
 
@@ -100,13 +98,10 @@ public class AllAnimeParser {
 
             String name = showObject.getString("name");
             String thumbnail = showObject.getString("thumbnail");
-            String description = showObject.getString("description");
             Constants.allAnime = new AllAnime(
                     allAnimeID,
-                    "",
                     name,
-                    thumbnail,
-                    description
+                    thumbnail
             );
 
         } catch (Exception e) {

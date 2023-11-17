@@ -19,7 +19,7 @@
         android:id="@+id/episode_recycler"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        app:layout_constraintBottom_toTopOf="@+id/server_fragment_container"
+        app:layout_constraintBottom_toTopOf="@id/episode_group_recycler"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"

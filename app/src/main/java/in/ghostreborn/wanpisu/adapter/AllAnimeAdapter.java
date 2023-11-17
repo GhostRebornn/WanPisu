@@ -85,7 +85,6 @@ public class AllAnimeAdapter extends RecyclerView.Adapter<AllAnimeAdapter.ViewHo
 
     private void setupVariables(AllAnime allAnime){
         Constants.ANIME_ID = allAnime.getId();
-        Constants.ANIME_MAL_ID = allAnime.getMalID();
         Constants.allAnime = allAnime;
     }
 

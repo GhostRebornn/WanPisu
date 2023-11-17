@@ -72,7 +72,6 @@ public class AnimeDetailFragment extends Fragment {
         executor.execute(() -> handler.post(() -> {
             AllAnime allAnime = Constants.allAnime;
             detailAnimeNameText.setText(allAnime.getName());
-            detailAnimeSynopsisText.setText(allAnime.getDescription());
             Picasso.get().load(allAnime.getThumbnail()).into(detailAnimeImageView);
             detailWatchFloatingButton.setOnClickListener(v -> requireContext().startActivity(
                     new Intent(getContext(), EpisodeActivity.class)
