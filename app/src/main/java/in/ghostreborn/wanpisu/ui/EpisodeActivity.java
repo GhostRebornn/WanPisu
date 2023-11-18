@@ -52,9 +52,7 @@ public class EpisodeActivity extends AppCompatActivity {
         ExecutorService executor = Executors.newSingleThreadExecutor();
         Handler handler = new Handler(Looper.getMainLooper());
         executor.execute(() -> {
-            AllAnimeParser.getEpisodes(
-                    Constants.ANIME_ID
-            );
+            AllAnimeParser.getEpisodes(Constants.ANIME_ID);
             handler.post(() -> {
                 setEpisodeAdapter();
                 setEpisodeGroupAdapter();
@@ -91,10 +89,10 @@ public class EpisodeActivity extends AppCompatActivity {
     }
 
     private int getPages() {
-        if (Constants.ALL_ANIME_TOTAL_EPISODES % 100 == 0) {
-            Constants.ANIME_TOTAL_PAGES = Constants.ALL_ANIME_TOTAL_EPISODES / 100;
+        if (Constants.ALL_ANIME_TOTAL_EPISODES % 25 == 0) {
+            Constants.ANIME_TOTAL_PAGES = Constants.ALL_ANIME_TOTAL_EPISODES / 25;
         } else {
-            Constants.ANIME_TOTAL_PAGES = (Constants.ALL_ANIME_TOTAL_EPISODES / 100) + 1;
+            Constants.ANIME_TOTAL_PAGES = (Constants.ALL_ANIME_TOTAL_EPISODES / 25) + 1;
         }
         return Constants.ANIME_TOTAL_PAGES;
     }

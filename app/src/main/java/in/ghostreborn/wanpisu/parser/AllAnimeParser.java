@@ -1,7 +1,6 @@
 package in.ghostreborn.wanpisu.parser;
 
 import android.net.Uri;
-import android.util.Log;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -50,7 +49,6 @@ public class AllAnimeParser {
             try (Response response = client.newCall(request).execute()) {
                 assert response.body() != null;
                 JSONArray edgesArray = new JSONObject(response.body().string()).getJSONObject("data").getJSONObject("shows").getJSONArray("edges");
-                Log.e("TAG", edgesArray.toString());
                 for (int i = 0; i < edgesArray.length(); i++) {
                     JSONObject edges = edgesArray.getJSONObject(i);
                     String animeID = edges.getString("_id");
@@ -98,8 +96,6 @@ public class AllAnimeParser {
             if (!englishName.equals("null")){
                 name = englishName;
             }
-
-            Log.e("TAG", showObject.toString());
 
             String thumbnail = showObject.getString("thumbnail");
             String sequel = "";
@@ -178,7 +174,9 @@ public class AllAnimeParser {
                     .getJSONArray("sub");
 
             for (int i = episodes.length() - 1; i >= 0; i--) {
-                Constants.episodes.add(episodes.getString(i));
+                Constants.episodes.add(
+                        episodes.getString(i)
+                );
             }
 
             Constants.ALL_ANIME_TOTAL_EPISODES = episodes.length();
@@ -351,6 +349,49 @@ public class AllAnimeParser {
         } catch (JSONException | IOException e) {
             e.printStackTrace();
         }
+
+    }
+
+    public static String getTitle(String showID, String episodeNumber) {
+
+        OkHttpClient client = new OkHttpClient();
+        Constants.servers = new ArrayList<>();
+
+        String baseUrl = "https://api.allanime.day/api";
+        String queryUrl = baseUrl + "?variables=" +
+                Uri.encode("{\"showId\":\"" +
+                        showID +
+                        "\",\"translationType\":\"" +
+                        Constants.subOrDub +
+                        "\",\"episodeString\":\"" +
+                        episodeNumber +
+                        "\"}") +
+                "&query=" +
+                Uri.encode("query($showId:String!,$translationType:VaildTranslationTypeEnumType!,$episodeString:String!){episode(showId:$showId,translationType:$translationType,episodeString:$episodeString){" +
+                        "episodeInfo{notes}" +
+                        "}}");
+
+        Request request = new Request.Builder()
+                .url(queryUrl)
+                .header("Referer", "https://allanime.to")
+                .header("Cipher", "AES256-SHA256")
+                .header("User-Agent", "Mozilla/5.0 (Windows NT 6.1; Win64; rv:109.0) Gecko/20100101 Firefox/109.0")
+                .build();
+
+        try (Response response = client.newCall(request).execute()) {
+            assert response.body() != null;
+            String rawJSON = response.body().string();
+            JSONObject jsonObject = new JSONObject(rawJSON);
+            JSONObject episodeInfo = jsonObject
+                    .getJSONObject("data")
+                            .getJSONObject("episode")
+                                    .getJSONObject("episodeInfo");
+            return episodeInfo.getString("notes");
+        } catch (IOException | JSONException e) {
+            e.printStackTrace();
+        }
+
+        return "NULL";
 
     }
 

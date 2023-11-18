@@ -1,6 +1,8 @@
 package in.ghostreborn.wanpisu.adapter;
 
 import android.app.Activity;
+import android.os.Handler;
+import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,9 +15,13 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
 import in.ghostreborn.wanpisu.R;
 import in.ghostreborn.wanpisu.constants.Constants;
 import in.ghostreborn.wanpisu.fragment.ServersFragment;
+import in.ghostreborn.wanpisu.parser.AllAnimeParser;
 
 /**
  * Adapter used for the list view of episodes of anime
@@ -25,6 +31,9 @@ public class EpisodeAdapter extends RecyclerView.Adapter<EpisodeAdapter.ViewHold
     Activity activity;
     FragmentManager fragmentManager;
     FrameLayout layout;
+    String episodeNumber;
+    int pos;
+    String episodeText;
 
     public EpisodeAdapter(Activity activity, FragmentManager fragmentManager, FrameLayout layout) {
         this.activity = activity;
@@ -41,14 +50,12 @@ public class EpisodeAdapter extends RecyclerView.Adapter<EpisodeAdapter.ViewHold
 
     @Override
     public void onBindViewHolder(@NonNull EpisodeAdapter.ViewHolder holder, int position) {
-        int pos = holder.getAbsoluteAdapterPosition() + (Constants.ANIME_CURRENT_PAGE * 100);
-        String episodeNumber;
-        String episode;
-        String episodeText;
+        pos = holder.getAbsoluteAdapterPosition() + (Constants.ANIME_CURRENT_PAGE * 25);
 
         episodeNumber = Constants.episodes.get(pos);
-        episode = Constants.episodes.get(pos);
-        episodeText = "Episode " + episode;
+        episodeText = "Episode " + episodeNumber;
+
+        getTitle(holder, episodeNumber);
 
         holder.animeTextView.setText(episodeText);
         holder.animeEpisodeTextView.setText(episodeNumber);
@@ -61,12 +68,25 @@ public class EpisodeAdapter extends RecyclerView.Adapter<EpisodeAdapter.ViewHold
         });
     }
 
+    private void getTitle(EpisodeAdapter.ViewHolder holder, String episode) {
+        ExecutorService executor = Executors.newSingleThreadExecutor();
+        Handler handler = new Handler(Looper.getMainLooper());
+        executor.execute(() -> {
+            String title = AllAnimeParser.getTitle(Constants.ANIME_ID, episode);
+            handler.post(() -> {
+                if (!title.equals("null")&&!title.equals("NULL")){
+                    holder.animeTextView.setText(title);
+                }
+            });
+        });
+    }
+
     @Override
     public int getItemCount() {
         if (Constants.ANIME_CURRENT_PAGE + 1 < Constants.ANIME_TOTAL_PAGES) {
-            return 100;
+            return 25;
         } else {
-            return Constants.ALL_ANIME_TOTAL_EPISODES % 100;
+            return Constants.ALL_ANIME_TOTAL_EPISODES % 25;
         }
     }
 
