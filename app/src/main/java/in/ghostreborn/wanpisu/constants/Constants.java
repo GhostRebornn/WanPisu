@@ -35,4 +35,7 @@ public class Constants {
     public static final String TABLE_ANIME_THUMBNAIL = "ANIME_THUMBNAIL";
 
     public static int ALL_ANIME_TOTAL_EPISODES;
+    public static boolean isAdult = false;
+    public static boolean isUnknown = false;
+    public static String subOrDub = "sub";
 }
