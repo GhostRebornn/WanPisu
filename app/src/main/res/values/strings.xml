@@ -23,4 +23,8 @@
     <string name="settings">Settings</string>
     <string name="prequel">PREQUEL</string>
     <string name="sequel">SEQUEL</string>
+    <string name="allow_adult">Allow Adult</string>
+    <string name="allow_unknown">Allow Unknown</string>
+    <string name="sub">sub</string>
+    <string name="dub">dub</string>
 </resources>

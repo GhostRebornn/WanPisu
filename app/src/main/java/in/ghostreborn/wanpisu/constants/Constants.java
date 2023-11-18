@@ -1,5 +1,7 @@
 package in.ghostreborn.wanpisu.constants;
 
+import android.content.SharedPreferences;
+
 import java.util.ArrayList;
 
 import in.ghostreborn.wanpisu.model.AllAnime;
@@ -35,7 +37,18 @@ public class Constants {
     public static final String TABLE_ANIME_THUMBNAIL = "ANIME_THUMBNAIL";
 
     public static int ALL_ANIME_TOTAL_EPISODES;
-    public static boolean isAdult = false;
-    public static boolean isUnknown = false;
-    public static String subOrDub = "sub";
+    public static String isAdult = Constants.FALSE;
+    public static String isUnknown = Constants.FALSE;
+    public static String subOrDub = Constants.SUB;
+
+    public static SharedPreferences WanpisuPreference;
+    public static final String WANPISU_PREFERENCE = "WANPISU_PREFERENCE";
+    public static final String PREFERENCE_ALLOW_ADULT = "ALLOW_ADULT";
+    public static final String PREFERENCE_ALLOW_UNKNOWN = "ALLOW_UNKNOWN";
+    public static final String PREFERENCE_SUB_DUB = "SUB_DUB";
+    public static final String SUB = "sub";
+    public static final String DUB = "dub";
+    public static final String TRUE = "true";
+    public static final String FALSE = "false";
+
 }

@@ -32,13 +32,14 @@ public class AllAnimeParser {
 
         Constants.allAnimes = new ArrayList<>();
         OkHttpClient client = new OkHttpClient();
-        String queryUrl = "https://api.allanime.day/api?variables=" + Uri.encode("{\"search\":{\"allowAdult\":" +
-                Constants.isAdult +
-                ",\"allowUnknown\":" +
-                Constants.isUnknown +
+        String queryUrl = "https://api.allanime.day/api?variables=" + Uri.encode(
+                "{\"search\":{\"allowAdult\":" +
+                        Constants.isAdult +
+                        ",\"allowUnknown\":" +
+                        Constants.isUnknown +
                 ",\"query\":\"" + anime + "\"},\"limit\":39,\"page\":1,\"translationType\":\"" +
                 Constants.subOrDub +
-                "\",\"countryOrigin\":\"JP\"}") + "&query=" + Uri.encode("query($search:SearchInput,$limit:Int,$page:Int,$translationType:VaildTranslationTypeEnumType,$countryOrigin:VaildCountryOriginEnumType){shows(search:$search,limit:$limit,page:$page,translationType:$translationType,countryOrigin:$countryOrigin){edges{" +
+                "\",\"countryOrigin\":\"ALL\"}") + "&query=" + Uri.encode("query($search:SearchInput,$limit:Int,$page:Int,$translationType:VaildTranslationTypeEnumType,$countryOrigin:VaildCountryOriginEnumType){shows(search:$search,limit:$limit,page:$page,translationType:$translationType,countryOrigin:$countryOrigin){edges{" +
                 "_id, " +
                 "name, " +
                 "thumbnail" +
@@ -210,7 +211,9 @@ public class AllAnimeParser {
         String queryUrl = baseUrl + "?variables=" +
                 Uri.encode("{\"showId\":\"" +
                         showID +
-                        "\",\"translationType\":\"sub\",\"episodeString\":\"" +
+                        "\",\"translationType\":\"" +
+                        Constants.subOrDub +
+                        "\",\"episodeString\":\"" +
                         episodeNumber +
                         "\"}") +
                 "&query=" +

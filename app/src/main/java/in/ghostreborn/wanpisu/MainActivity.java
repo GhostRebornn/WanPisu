@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+import in.ghostreborn.wanpisu.constants.Constants;
 import in.ghostreborn.wanpisu.fragment.AnimeSearchFragment;
 import in.ghostreborn.wanpisu.fragment.SettingsFragment;
 import in.ghostreborn.wanpisu.fragment.UserAnimeFragment;
@@ -22,6 +23,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        setupVariables();
 
         BottomNavigationView navigationView = findViewById(R.id.main_bottom_navigation);
         navigationView.setSelectedItemId(R.id.navigation_home);
@@ -52,6 +55,13 @@ public class MainActivity extends AppCompatActivity {
             return true;
         });
 
+    }
+
+    private void setupVariables(){
+        Constants.WanpisuPreference = getSharedPreferences(Constants.WANPISU_PREFERENCE, MODE_PRIVATE);
+        Constants.isAdult = Constants.WanpisuPreference.getString(Constants.PREFERENCE_ALLOW_ADULT, Constants.FALSE);
+        Constants.isUnknown = Constants.WanpisuPreference.getString(Constants.PREFERENCE_ALLOW_UNKNOWN, Constants.FALSE);
+        Constants.subOrDub = Constants.WanpisuPreference.getString(Constants.PREFERENCE_SUB_DUB, Constants.SUB);
     }
 
 }
