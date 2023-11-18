@@ -52,10 +52,12 @@ public class SettingsFragment extends Fragment {
                 Constants.WanpisuPreference.edit()
                         .putString(Constants.PREFERENCE_ALLOW_ADULT, Constants.TRUE)
                         .apply();
+                Constants.isAdult = Constants.TRUE;
             }else {
                 Constants.WanpisuPreference.edit()
                         .putString(Constants.PREFERENCE_ALLOW_ADULT, Constants.FALSE)
                         .apply();
+                Constants.isAdult = Constants.FALSE;
             }
         });
 
@@ -64,10 +66,12 @@ public class SettingsFragment extends Fragment {
                 Constants.WanpisuPreference.edit()
                         .putString(Constants.PREFERENCE_ALLOW_UNKNOWN, Constants.TRUE)
                         .apply();
+                Constants.isUnknown = Constants.TRUE;
             }else {
                 Constants.WanpisuPreference.edit()
                         .putString(Constants.PREFERENCE_ALLOW_UNKNOWN, Constants.FALSE)
                         .apply();
+                Constants.isUnknown = Constants.FALSE;
             }
         });
 
@@ -76,10 +80,12 @@ public class SettingsFragment extends Fragment {
                 Constants.WanpisuPreference.edit()
                         .putString(Constants.PREFERENCE_SUB_DUB, Constants.SUB)
                         .apply();
+                Constants.subOrDub = Constants.SUB;
             }else if(checkedId == R.id.settings_radio_dub){
                 Constants.WanpisuPreference.edit()
                         .putString(Constants.PREFERENCE_SUB_DUB, Constants.DUB)
                         .apply();
+                Constants.subOrDub = Constants.DUB;
             }
         });
     }
