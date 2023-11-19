@@ -27,4 +27,5 @@
     <string name="allow_unknown">Allow Unknown</string>
     <string name="sub">sub</string>
     <string name="dub">dub</string>
+    <string name="play">Play</string>
 </resources>
