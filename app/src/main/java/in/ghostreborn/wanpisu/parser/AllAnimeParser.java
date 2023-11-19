@@ -1,6 +1,7 @@
 package in.ghostreborn.wanpisu.parser;
 
 import android.net.Uri;
+import android.util.Log;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -14,6 +15,7 @@ import in.ghostreborn.wanpisu.constants.Constants;
 import in.ghostreborn.wanpisu.model.AllAnime;
 import in.ghostreborn.wanpisu.model.AnimeCharacter;
 import in.ghostreborn.wanpisu.model.AnimeDetails;
+import in.ghostreborn.wanpisu.model.AnimeMusic;
 import in.ghostreborn.wanpisu.model.Server;
 import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
@@ -72,6 +74,7 @@ public class AllAnimeParser {
                 "characters, " +
                 "englishName, " +
                 "thumbnail, " +
+                "musics, " +
                 "relatedShows " +
                 " }}";
 
@@ -125,12 +128,32 @@ public class AllAnimeParser {
                 animeCharacters.add(new AnimeCharacter(role, characterName, image));
             }
 
+            ArrayList<AnimeMusic> animeMusics = new ArrayList<>();
+            if (showObject.has("musics")){
+                JSONArray musicArray = showObject.getJSONArray("musics");
+                for (int i=0; i<musicArray.length(); i++){
+                    JSONObject musicObject = musicArray.getJSONObject(i);
+                    String type = musicObject.getString("type");
+                    String title = musicObject.getString("title");
+                    String format = musicObject.getString("format");
+                    String musicUrl = musicObject.getString("url");
+                    animeMusics.add(new AnimeMusic(
+                            type,
+                            title,
+                            format,
+                            musicUrl
+                    ));
+                }
+                Log.e("TAG", musicArray.toString());
+            }
+
             Constants.animeDetails = new AnimeDetails(
                     name,
                     thumbnail,
                     sequel,
                     prequel,
-                    animeCharacters
+                    animeCharacters,
+                    animeMusics
             );
 
         } catch (IOException | JSONException e) {

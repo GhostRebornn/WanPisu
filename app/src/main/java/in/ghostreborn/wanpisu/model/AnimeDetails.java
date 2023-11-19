@@ -9,19 +9,26 @@ public class AnimeDetails {
     String sequel;
     String prequel;
     ArrayList<AnimeCharacter> animeCharacters;
+    ArrayList<AnimeMusic> animeMusics;
 
     public AnimeDetails(
             String englishName,
             String thumbnail,
             String sequel,
             String prequel,
-            ArrayList<AnimeCharacter> animeCharacters
+            ArrayList<AnimeCharacter> animeCharacters,
+            ArrayList<AnimeMusic> animeMusics
     ) {
         this.englishName = englishName;
         this.thumbnail = thumbnail;
         this.sequel = sequel;
         this.prequel = prequel;
         this.animeCharacters = animeCharacters;
+        this.animeMusics = animeMusics;
+    }
+
+    public ArrayList<AnimeMusic> getAnimeMusics() {
+        return animeMusics;
     }
 
     public ArrayList<AnimeCharacter> getAnimeCharacters() {
