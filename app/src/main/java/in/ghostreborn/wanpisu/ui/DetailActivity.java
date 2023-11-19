@@ -22,6 +22,7 @@ import java.util.concurrent.Executors;
 
 import in.ghostreborn.wanpisu.R;
 import in.ghostreborn.wanpisu.adapter.CharacterAdapter;
+import in.ghostreborn.wanpisu.adapter.MusicAdapter;
 import in.ghostreborn.wanpisu.constants.Constants;
 import in.ghostreborn.wanpisu.database.UserAnimeDatabase;
 import in.ghostreborn.wanpisu.helper.WanPisuUtils;
@@ -38,6 +39,7 @@ public class DetailActivity extends AppCompatActivity {
     FloatingActionButton detailAddFloatingButton;
     ProgressBar detailsFragmentProgress;
     RecyclerView charactersRecycler;
+    RecyclerView musicRecycler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,6 +64,7 @@ public class DetailActivity extends AppCompatActivity {
         detailWatchFloatingButton = findViewById(R.id.detail_watch_floating_button);
         detailAddFloatingButton = findViewById(R.id.detail_add_floating_button);
         charactersRecycler = findViewById(R.id.characters_recycler);
+        musicRecycler = findViewById(R.id.detail_anime_music_recycler);
     }
 
     private void checkAnime(){
@@ -114,6 +117,10 @@ public class DetailActivity extends AppCompatActivity {
                 CharacterAdapter adapter = new CharacterAdapter(Constants.animeDetails.getAnimeCharacters());
                 charactersRecycler.setLayoutManager(new LinearLayoutManager(DetailActivity.this, LinearLayoutManager.HORIZONTAL, false));
                 charactersRecycler.setAdapter(adapter);
+
+                MusicAdapter musicAdapter = new MusicAdapter(Constants.animeDetails.getAnimeMusics());
+                musicRecycler.setLayoutManager(new LinearLayoutManager(DetailActivity.this, LinearLayoutManager.HORIZONTAL, false));
+                musicRecycler.setAdapter(musicAdapter);
 
             });
         });

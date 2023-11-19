@@ -38,9 +38,9 @@ public class AllAnimeParser {
                         Constants.isAdult +
                         ",\"allowUnknown\":" +
                         Constants.isUnknown +
-                ",\"query\":\"" + anime + "\"},\"limit\":39,\"page\":1,\"translationType\":\"" +
-                Constants.subOrDub +
-                "\",\"countryOrigin\":\"ALL\"}") + "&query=" + Uri.encode("query($search:SearchInput,$limit:Int,$page:Int,$translationType:VaildTranslationTypeEnumType,$countryOrigin:VaildCountryOriginEnumType){shows(search:$search,limit:$limit,page:$page,translationType:$translationType,countryOrigin:$countryOrigin){edges{" +
+                        ",\"query\":\"" + anime + "\"},\"limit\":39,\"page\":1,\"translationType\":\"" +
+                        Constants.subOrDub +
+                        "\",\"countryOrigin\":\"ALL\"}") + "&query=" + Uri.encode("query($search:SearchInput,$limit:Int,$page:Int,$translationType:VaildTranslationTypeEnumType,$countryOrigin:VaildCountryOriginEnumType){shows(search:$search,limit:$limit,page:$page,translationType:$translationType,countryOrigin:$countryOrigin){edges{" +
                 "_id, " +
                 "name, " +
                 "thumbnail" +
@@ -90,35 +90,38 @@ public class AllAnimeParser {
         try (Response response = client.newCall(request).execute()) {
             assert response.body() != null;
 
-            JSONObject showObject = new JSONObject(response.body().string())
+            String rawJSON = response.body().string();
+            Log.e("TAG", rawJSON);
+
+            JSONObject showObject = new JSONObject(rawJSON)
                     .getJSONObject("data")
                     .getJSONObject("show");
 
             String name = showObject.getString("name");
             String englishName = showObject.getString("englishName");
-            if (!englishName.equals("null")){
+            if (!englishName.equals("null")) {
                 name = englishName;
             }
 
             String thumbnail = showObject.getString("thumbnail");
             String sequel = "";
             String prequel = "";
-            if (showObject.has("relatedShows")){
+            if (showObject.has("relatedShows")) {
                 JSONArray relationArray = showObject.getJSONArray("relatedShows");
                 for (int i = 0; i < relationArray.length(); i++) {
                     JSONObject relationObject = relationArray.getJSONObject(i);
                     String relation = relationObject.getString("relation");
-                    if (relation.equals("prequel")){
+                    if (relation.equals("prequel")) {
                         prequel = relationObject.getString("showId");
                     }
-                    if (relation.equals("sequel")){
+                    if (relation.equals("sequel")) {
                         sequel = relationObject.getString("showId");
                     }
                 }
             }
 
             JSONArray charactersArray = showObject.getJSONArray("characters");
-            for (int i=0; i<charactersArray.length(); i++){
+            for (int i = 0; i < charactersArray.length(); i++) {
                 JSONObject charactersObject = charactersArray.getJSONObject(i);
                 String role = charactersObject.getString("role");
                 String characterName = charactersObject.getJSONObject("name")
@@ -129,9 +132,10 @@ public class AllAnimeParser {
             }
 
             ArrayList<AnimeMusic> animeMusics = new ArrayList<>();
-            if (showObject.has("musics")){
+            if (showObject.has("musics")) {
                 JSONArray musicArray = showObject.getJSONArray("musics");
-                for (int i=0; i<musicArray.length(); i++){
+                Log.e("TAG", musicArray.toString());
+                for (int i = 0; i < musicArray.length(); i++) {
                     JSONObject musicObject = musicArray.getJSONObject(i);
                     String type = musicObject.getString("type");
                     String title = musicObject.getString("title");
@@ -144,7 +148,6 @@ public class AllAnimeParser {
                             musicUrl
                     ));
                 }
-                Log.e("TAG", musicArray.toString());
             }
 
             Constants.animeDetails = new AnimeDetails(
@@ -407,8 +410,8 @@ public class AllAnimeParser {
             JSONObject jsonObject = new JSONObject(rawJSON);
             JSONObject episodeInfo = jsonObject
                     .getJSONObject("data")
-                            .getJSONObject("episode")
-                                    .getJSONObject("episodeInfo");
+                    .getJSONObject("episode")
+                    .getJSONObject("episodeInfo");
             return episodeInfo.getString("notes");
         } catch (IOException | JSONException e) {
             e.printStackTrace();
