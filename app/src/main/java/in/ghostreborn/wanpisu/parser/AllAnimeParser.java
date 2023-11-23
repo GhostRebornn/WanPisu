@@ -143,7 +143,10 @@ public class AllAnimeParser {
                     String type = musicObject.getString("type");
                     String title = musicObject.getString("title");
                     String format = musicObject.getString("format");
-                    String musicUrl = musicObject.getString("url");
+                    String musicUrl = "";
+                    if (musicObject.has("url") && !musicObject.getString("url").equals("null")){
+                        musicUrl = musicObject.getString("url");
+                    }
                     animeMusics.add(new AnimeMusic(
                             type,
                             title,
