@@ -120,19 +120,22 @@ public class AllAnimeParser {
                 }
             }
 
-            JSONArray charactersArray = showObject.getJSONArray("characters");
-            for (int i = 0; i < charactersArray.length(); i++) {
-                JSONObject charactersObject = charactersArray.getJSONObject(i);
-                String role = charactersObject.getString("role");
-                String characterName = charactersObject.getJSONObject("name")
-                        .getString("full");
-                String image = charactersObject.getJSONObject("image")
-                        .getString("large");
-                animeCharacters.add(new AnimeCharacter(role, characterName, image));
+            if (!showObject.getString("characters").equals("null")){
+                JSONArray charactersArray = showObject.getJSONArray("characters");
+                for (int i = 0; i < charactersArray.length(); i++) {
+                    JSONObject charactersObject = charactersArray.getJSONObject(i);
+                    String role = charactersObject.getString("role");
+                    String characterName = charactersObject.getJSONObject("name")
+                            .getString("full");
+                    String image = charactersObject.getJSONObject("image")
+                            .getString("large");
+                    animeCharacters.add(new AnimeCharacter(role, characterName, image));
+                }
             }
 
             ArrayList<AnimeMusic> animeMusics = new ArrayList<>();
-            if (showObject.has("musics")) {
+            if (showObject.has("musics") &&
+                    !showObject.getString("musics").equals("null")) {
                 JSONArray musicArray = showObject.getJSONArray("musics");
                 Log.e("TAG", musicArray.toString());
                 for (int i = 0; i < musicArray.length(); i++) {
